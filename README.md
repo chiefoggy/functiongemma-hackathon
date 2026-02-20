@@ -31,7 +31,8 @@
 - Note: Final objective score will be done on held-out evals, top 10 are then judged subjectively.
 
 ## Submissions
-- Do not modify the `generate_hybrid` keep the hybrid interface compatible with benchmark.py.
+- Your main task is to modify the **internal logic** of the `generate_hybrid` method in `main.py`. 
+- Do not modify the input or output signature (function arguments and return variables) of the `generate_hybrid` method. Keep the hybrid interface compatible with `benchmark.py`.
 - Submit to the leaderboard `python submit.py --team "YourTeamName" --location "YourCity"`, only 1x every 1hr.
 - The dataset is a hidden Cactus eval, quite difficult for FunctionGemma by design.
 - Use `python benchmark.py` to iterate, but your best score is preserved.
