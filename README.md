@@ -35,7 +35,8 @@
 - Submit to the leaderboard `python submit.py --team "YourTeamName" --location "YourCity"`, only 1x every 1hr.
 - The dataset is a hidden Cactus eval, quite difficult for FunctionGemma by design.
 - Use `python benchmark.py` to iterate, but your best score is preserved.
-- For transparency, hackers can see live rankings on the [leaderboard](https://cactusevals.ngrok.app), 
+- For transparency, hackers can see live rankings on the [leaderboard](https://cactusevals.ngrok.app).
+- Leaderboard will start accepting submissions once event starts. 
 - The top 10 in each location will make it to judging.
 
 ## Qualitative Judging 
