@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance-Gemma Hybrid AI</title>
+    <title>Deep-Focus OS Assistant</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -234,52 +234,46 @@
             border-left: 4px solid var(--accent-primary);
         }
 
-        .stock-widget {
+        .os-widget {
             border-left-color: var(--success);
         }
 
-        .stock-widget .ticker {
-            font-size: 0.85rem;
+        .os-widget .title {
+            font-size: 0.9rem;
             color: var(--text-muted);
             font-weight: 600;
             letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
-        .stock-widget .price {
-            font-size: 1.8rem;
+        .os-widget .status {
+            font-size: 1.2rem;
             font-weight: 700;
             color: white;
-            text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .news-widget {
+        .cognition-widget {
             border-left-color: #a78bfa;
+            background: rgba(167, 139, 250, 0.1);
         }
 
-        .news-widget .title {
+        .cognition-widget .title {
             font-size: 0.9rem;
             font-weight: 600;
-            color: var(--text-muted);
+            color: #c4b5fd;
             margin-bottom: 0.5rem;
         }
 
-        .news-widget ul {
-            margin: 0;
-            padding-left: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .news-widget a {
-            color: #60a5fa;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .news-widget a:hover {
-            color: #93c5fd;
-            text-decoration: underline;
+        .cognition-widget .snippet {
+            font-family: monospace;
+            color: var(--text-muted);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px;
+            border-radius: 4px;
+            border-left: 2px solid #8b5cf6;
         }
 
         .input-area {
@@ -401,9 +395,9 @@
 
     <aside>
         <div>
-            <h1>Finance Gemma</h1>
+            <h1>Deep-Focus</h1>
             <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-top: 0.5rem;">
-                A hybrid edge-cloud AI explicitly trained for financial tool calling and routing.
+                OS-Level Executive Assistant powered securely by FunctionGemma (Edge) and Gemini (Cloud).
             </p>
         </div>
 
@@ -442,17 +436,17 @@
         <div class="chat-container" id="chatContainer">
             <div class="message assistant">
                 <div class="bubble">
-                    Hello! I'm your hybrid financial assistant. I can help you look up stock prices, analyze company
-                    news, and calculate ROI. <br><br>
-                    <i>Powered by FunctionGemma (Device) & Gemini 2.5 Flash (Cloud).</i>
+                    Hello! I'm Deep-Focus, your local OS Assistant. I can trigger Mac commands instantly, or summarize
+                    your meetings in the cloud. <br><br>
+                    <i>Powered by FunctionGemma & Gemini 2.5 Flash.</i>
                 </div>
             </div>
         </div>
 
         <div class="input-area">
             <form id="chatForm">
-                <input type="text" id="userInput" placeholder="E.g., What is the stock price of AAPL?"
-                    autocomplete="off" required>
+                <input type="text" id="userInput" placeholder="E.g., Turn on Do Not Disturb" autocomplete="off"
+                    required>
                 <button type="button" id="recordBtn"
                     style="background: var(--panel-bg); color: var(--text-main); border: 1px solid var(--border-color); padding: 0 1rem; border-radius: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center; transform: none;"
                     title="Hold to record">🎤</button>
@@ -487,24 +481,44 @@
                         formattedContent = formattedContent.replace(/\\n/g, '<br>');
                         textDiv.innerHTML = formattedContent;
                         bubble.appendChild(textDiv);
-                    } else if (block.type === 'stock_widget') {
+                    } else if (block.type === 'os_widget') {
                         const widget = document.createElement('div');
-                        widget.className = 'widget stock-widget';
+                        widget.className = 'widget os-widget';
                         widget.innerHTML = `
-                            <div class="ticker">${block.data.ticker} - ${block.data.name}</div>
-                            <div class="price">$${block.data.price.toFixed(2)}</div>
+                            <div class="title">OS Automation Triggered</div>
+                            <div class="status">⚡ ${block.data.message}</div>
                         `;
                         bubble.appendChild(widget);
-                    } else if (block.type === 'news_widget') {
+                    } else if (block.type === 'cognition_widget') {
                         const widget = document.createElement('div');
-                        widget.className = 'widget news-widget';
-                        let html = `<div class="title">Latest News for ${block.data.ticker}</div><ul>`;
-                        block.data.headlines.forEach(h => {
-                            html += `<li><a href="${h.link}" target="_blank">${h.title}</a></li>`;
-                        });
-                        html += `</ul>`;
-                        widget.innerHTML = html;
+                        widget.className = 'widget cognition-widget';
+                        widget.innerHTML = `
+                            <div class="title">Meeting Summary (Gemini)</div>
+                            <div style="margin-bottom: 8px; font-weight: 500;">${block.data.message}</div>
+                            <div class="snippet" style="white-space: pre-wrap; font-family: 'Inter', sans-serif; color: var(--text-main);">${block.data.summary}</div>
+                        `;
                         bubble.appendChild(widget);
+                    } else if (block.type === 'focus_widget') {
+                        const widget = document.createElement('div');
+                        widget.className = 'widget focus-widget';
+                        widget.innerHTML = `
+                            <div class="title">Focus Mode Active</div>
+                            <div style="font-size: 24px; font-weight: 700; margin: 10px 0;" id="timer-${Date.now()}">${block.data.duration}:00</div>
+                            <div style="font-size: 12px; opacity: 0.8;">${block.data.message}</div>
+                        `;
+                        bubble.appendChild(widget);
+
+                        // Simple countdown logic
+                        let seconds = block.data.duration * 60;
+                        const timerId = `timer-${Date.now()}`;
+                        const interval = setInterval(() => {
+                            seconds--;
+                            const m = Math.floor(seconds / 60);
+                            const s = seconds % 60;
+                            const el = document.getElementById(timerId);
+                            if (el) el.textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
+                            if (seconds <= 0) clearInterval(interval);
+                        }, 1000);
                     }
                 });
             } else {
