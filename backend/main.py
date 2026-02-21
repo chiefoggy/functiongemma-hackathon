@@ -16,7 +16,11 @@ import yfinance as yf
 
 from main import generate_hybrid, generate_cactus, transcribe_audio
 
-app = FastAPI(title="Finance-Gemma API")
+from backend import config as library_config
+from backend.indexer import run_index, get_status as get_index_status
+from backend.retrieval import search as retrieval_search
+
+app = FastAPI(title="Deep-Focus API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -108,12 +112,155 @@ TOOL_HANDLERS = {
     "calculate_mortgage_payment": lambda **kw: {"type": "text", "data": calculate_mortgage_payment(**kw)},
 }
 
+# Hub tools: search the library corpus (syllabi, timelines, notes)
+HUB_TOOLS = [
+    {
+        "name": "search_hub",
+        "description": "Search the user's library (indexed files: PDFs, docs, code, spreadsheets) for a query. Use for questions like 'quiz timeline', 'syllabus summary', 'assignment due dates', or any content in the user's learning materials.",
+        "parameters": {
+            "type": "object",
+            "properties": {"query": {"type": "string", "description": "Search query, e.g. 'quiz timeline' or 'syllabus'"}},
+            "required": ["query"],
+        },
+    },
+]
+
+
+def search_hub(query: str):
+    """Handler: search corpus and return text for the model. Includes files_touched for sidebar."""
+    results = retrieval_search(query, top_k=5)
+    if not results:
+        return {"type": "text", "data": "No matching content found in the library. Try indexing files first (set library root and run Index).", "files_touched": []}
+    parts = [f"**{r['path']}**: {r['snippet']}" for r in results]
+    files_touched = list({r["path"] for r in results})
+    return {"type": "text", "data": "\n\n".join(parts), "files_touched": files_touched}
+
+
+TOOL_HANDLERS["search_hub"] = lambda **kw: search_hub(kw["query"])
+
+
+def get_chat_tools():
+    """Tools for chat: finance + hub if library root is set."""
+    tools = list(FINANCE_TOOLS)
+    if library_config.get_library_root():
+        tools = list(HUB_TOOLS) + tools
+    return tools
+
+
 conversation_history = []
 
 
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+
+# ---- Library hub API ----
+def _normalize_path(path: str) -> str:
+    """Strip leading/trailing whitespace only, expand ~, then normpath. Preserves spaces inside path."""
+    if not path or not isinstance(path, str):
+        return ""
+    path = path.strip()
+    path = os.path.expanduser(path)
+    return os.path.normpath(path)
+
+
+@app.get("/api/library/root")
+def get_library_root():
+    return {"root": library_config.get_library_root()}
+
+
+@app.put("/api/library/root")
+async def put_library_root(request: Request):
+    body = await request.json()
+    raw = (body.get("root") or "").strip()
+    library_config.set_library_root(_normalize_path(raw) if raw else "")
+    return {"root": library_config.get_library_root()}
+
+
+@app.post("/api/library/index")
+def trigger_index():
+    root = library_config.get_library_root()
+    if not root:
+        return {"ok": False, "error": "Library root not set"}
+    status = run_index(root)
+    return {"ok": True, "status": status}
+
+
+@app.get("/api/library/status")
+def library_status():
+    return get_index_status()
+
+
+@app.post("/api/library/validate")
+async def validate_path(request: Request):
+    """Validate that a path exists and is a directory (path sent in body; if omitted, use current root)."""
+    import os
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    raw = (body.get("path") or "").strip() or library_config.get_library_root() or ""
+    if not raw:
+        return {"ok": False, "error": "No path provided", "path": ""}
+    path = _normalize_path(raw)
+    if not os.path.exists(path):
+        return {"ok": False, "error": f"Path does not exist (resolved: {path})", "path": path}
+    if not os.path.isdir(path):
+        return {"ok": False, "error": f"Not a directory (resolved: {path})", "path": path}
+    try:
+        count = sum(1 for _ in Path(path).rglob("*") if _.is_file())
+    except Exception as e:
+        return {"ok": False, "error": f"Cannot read directory: {e}", "path": path}
+    return {"ok": True, "path": path, "exists": True, "is_dir": True, "file_count": count}
+
+
+@app.get("/api/library/suggested-roots")
+def suggested_roots():
+    """Return common machine locations for the user to pick (no typing)."""
+    import os
+    home = os.path.expanduser("~")
+    candidates = [
+        ("Home", home),
+        ("Documents", os.path.join(home, "Documents")),
+        ("Desktop", os.path.join(home, "Desktop")),
+        ("Downloads", os.path.join(home, "Downloads")),
+    ]
+    out = []
+    for label, path in candidates:
+        if os.path.isdir(path):
+            out.append({"label": label, "path": path})
+    try:
+        cwd = os.getcwd()
+        if cwd not in [p["path"] for p in out]:
+            out.append({"label": "Current folder", "path": cwd})
+    except Exception:
+        pass
+    return {"roots": out}
+
+
+@app.post("/api/library/upload")
+async def upload_library(files: list[UploadFile] = File("files")):
+    """
+    Accept a folder of files (from browser folder picker). Save to cache, set as library root, run index.
+    """
+    import uuid
+    if not files:
+        return {"ok": False, "error": "No files received"}
+    cache_base = _REPO_ROOT / "cache"
+    upload_dir = cache_base / f"upload_{uuid.uuid4().hex[:12]}"
+    upload_dir.mkdir(parents=True, exist_ok=True)
+    for f in files:
+        if not f.filename or f.filename.startswith("."):
+            continue
+        safe = f.filename.replace("..", "").lstrip("/")
+        path = upload_dir / safe
+        path.parent.mkdir(parents=True, exist_ok=True)
+        content = await f.read()
+        path.write_bytes(content)
+    library_config.set_library_root(str(upload_dir))
+    status = run_index(str(upload_dir))
+    return {"ok": True, "root": str(upload_dir), "status": status, "files_received": len(files)}
 
 
 @app.post("/api/chat")
@@ -129,13 +276,15 @@ async def chat(request: Request):
 
     conversation_history.append({"role": "user", "content": user_msg})
 
+    tools = get_chat_tools()
     if force_local:
-        result = generate_cactus(conversation_history, FINANCE_TOOLS)
+        result = generate_cactus(conversation_history, tools)
         result["source"] = "on-device (forced)"
     else:
-        result = generate_hybrid(conversation_history, FINANCE_TOOLS)
+        result = generate_hybrid(conversation_history, tools)
 
     calls = result.get("function_calls", [])
+    files_touched = []
     if calls:
         blocks = [{"type": "text", "content": "Here are the results of my financial tool calls:\n"}]
         text_for_history = "Here are the results of my financial tool calls:\n"
@@ -143,6 +292,8 @@ async def chat(request: Request):
             name, args = c["name"], c["arguments"]
             try:
                 res = TOOL_HANDLERS.get(name, lambda **_: {"type": "text", "data": "Unknown tool."})(**args)
+                if isinstance(res, dict) and res.get("files_touched"):
+                    files_touched.extend(res["files_touched"])
                 blocks.append(res if isinstance(res, dict) and "type" in res else {"type": "text", "content": str(res)})
                 text_for_history += f"- **{name}**: {res.get('data', res) if isinstance(res, dict) else res}\n"
             except Exception as e:
@@ -162,6 +313,7 @@ async def chat(request: Request):
             "confidence": result.get("confidence", 0.0),
             "latency_ms": result.get("total_time_ms", 0.0),
         },
+        "files_touched": list(dict.fromkeys(files_touched)),
     }
 
 

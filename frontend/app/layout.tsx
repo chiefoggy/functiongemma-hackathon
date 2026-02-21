@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Finance Gemma",
-  description: "Hybrid edge–cloud AI for financial tool calling",
+  title: "Deep-Focus",
+  description: "Privacy-first library & learning hub: index your files, ask in plain language, local or cloud.",
 };
 
 export default function RootLayout({
