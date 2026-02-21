@@ -1,9 +1,11 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, UploadFile, File
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 import os
+import tempfile
+import yfinance as yf
 
-from main import generate_hybrid, generate_cactus
+from main import generate_hybrid, generate_cactus, transcribe_audio
 
 app = FastAPI()
 
@@ -11,12 +13,35 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 def get_stock_price(ticker: str):
-    prices = {"AAPL": 150.0, "GOOG": 2800.0, "TSLA": 700.0, "MSFT": 300.0}
-    price = prices.get(ticker.upper(), 100.0)
-    return f"The current stock price for {ticker.upper()} is ${price:.2f}."
+    try:
+        stock = yf.Ticker(ticker)
+        info = stock.info
+        price = info.get('currentPrice') or info.get('regularMarketPrice') or info.get('previousClose')
+        name = info.get('shortName', ticker.upper())
+        if price:
+            return {"type": "stock_widget", "data": {"ticker": ticker.upper(), "name": name, "price": price}}
+        else:
+            return {"type": "text", "data": f"Could not retrieve the current price for {ticker.upper()}."}
+    except Exception as e:
+        return {"type": "text", "data": f"Error fetching data for {ticker.upper()}: {str(e)}"}
 
 def get_company_news(ticker: str):
-    return f"{ticker.upper()} has announced record-breaking quarterly profits."
+    try:
+        stock = yf.Ticker(ticker)
+        news = stock.news
+        if not news:
+            return {"type": "text", "data": f"No recent news found for {ticker.upper()}."}
+        
+        headlines = []
+        for item in news[:3]:
+            if 'title' in item:
+                link = item.get('link', '#')
+                headlines.append({"title": item['title'], "link": link})
+        if headlines:
+            return {"type": "news_widget", "data": {"ticker": ticker.upper(), "headlines": headlines}}
+        return {"type": "text", "data": f"No recent headlines found for {ticker.upper()}."}
+    except Exception as e:
+        return {"type": "text", "data": f"Error fetching news for {ticker.upper()}: {str(e)}"}
 
 def calculate_roi(initial_value: float, final_value: float):
     roi = ((final_value - initial_value) / initial_value) * 100
@@ -180,7 +205,9 @@ async def chat_endpoint(request: Request):
     calls = result.get("function_calls", [])
     
     if calls:
-        agent_reply = "Here are the results of my financial tool calls:\\n\\n"
+        blocks = [{"type": "text", "content": "Here are the results of my financial tool calls:\\n"}]
+        text_for_history = "Here are the results of my financial tool calls:\\n"
+        
         for c in calls:
             name = c["name"]
             args = c["arguments"]
@@ -190,26 +217,41 @@ async def chat_endpoint(request: Request):
                 elif name == "get_company_news":
                     res = get_company_news(**args)
                 elif name == "calculate_roi":
-                    res = calculate_roi(**args)
+                    res = {"type": "text", "data": calculate_roi(**args)}
                 elif name == "get_exchange_rate":
-                    res = get_exchange_rate(**args)
+                    res = {"type": "text", "data": get_exchange_rate(**args)}
                 elif name == "calculate_compound_interest":
-                    res = calculate_compound_interest(**args)
+                    res = {"type": "text", "data": calculate_compound_interest(**args)}
                 elif name == "get_crypto_price":
-                    res = get_crypto_price(**args)
+                    res = {"type": "text", "data": get_crypto_price(**args)}
                 elif name == "calculate_mortgage_payment":
-                    res = calculate_mortgage_payment(**args)
+                    res = {"type": "text", "data": calculate_mortgage_payment(**args)}
                 else:
-                    res = "Unknown tool."
+                    res = {"type": "text", "data": "Unknown tool."}
                 
-                agent_reply += f"- **{name}**: {res}\\n"
+                if isinstance(res, dict) and "type" in res:
+                    blocks.append(res)
+                    if res.get("type") == "text":
+                        text_for_history += f"- **{name}**: {res.get('data')}\\n"
+                    elif res.get("type") == "stock_widget":
+                        text_for_history += f"- **{name}**: Stock {res['data']['ticker']} is at ${res['data']['price']:.2f}\\n"
+                    elif res.get("type") == "news_widget":
+                        text_for_history += f"- **{name}**: Pulled top {len(res['data']['headlines'])} news headlines for {res['data']['ticker']}\\n"
+                else:
+                    blocks.append({"type": "text", "content": f"- **{name}**: {res}"})
+                    text_for_history += f"- **{name}**: {res}\\n"
             except Exception as e:
-                agent_reply += f"- **{name}**: Error executing tool - {str(e)}\\n"
+                msg = f"- **{name}**: Error executing tool - {str(e)}"
+                blocks.append({"type": "text", "content": msg})
+                text_for_history += f"{msg}\\n"
+                
+        conversation_history.append({"role": "assistant", "content": text_for_history})
+        agent_reply = blocks
     else:
-        agent_reply = "I couldn't determine a financial tool to use for that query."
+        msg = "I couldn't determine a financial tool to use for that query."
+        conversation_history.append({"role": "assistant", "content": msg})
+        agent_reply = msg
         
-    conversation_history.append({"role": "assistant", "content": agent_reply})
-    
     return {
         "response": agent_reply,
         "metrics": {
@@ -218,6 +260,21 @@ async def chat_endpoint(request: Request):
             "latency_ms": result.get("total_time_ms", 0.0)
         }
     }
+
+@app.post("/api/transcribe")
+async def transcribe_endpoint(audio: UploadFile = File(...)):
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+        content = await audio.read()
+        tmp.write(content)
+        tmp_path = tmp.name
+
+    try:
+        text = transcribe_audio(tmp_path)
+    finally:
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
+
+    return {"text": text.strip()}
 
 if __name__ == "__main__":
     import uvicorn

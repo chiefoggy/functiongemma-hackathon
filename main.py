@@ -105,38 +105,58 @@ def generate_cloud(messages, tools):
 
 
 def generate_hybrid(messages, tools, default_threshold=0.85):
-    """Smart hybrid inference strategy optimizing for speed, correctness, and local execution."""
-    
-    # 1. Analyze the complexity of the user query
+    """Deep-Focus Hybrid routing: intelligently route OS actions locally, cloud for deep cognition."""
     content = " ".join([m["content"].lower() for m in messages if m["role"] == "user"])
+
+    # =====================================================================
+    # STRATEGY 1: Semantic OS/Action Escaping
+    # =====================================================================
+    # If the user asks for deep summary cognition or heavy text extraction, instantly route to Cloud.
+    # The 270M parameters of FunctionGemma cannot handle complex NLP summarization effectively.
+    cognition_keywords = ["summarize", "draft", "email", "transcript", "analyze", "explain"]
+    requires_cognition = any(kw in content for kw in cognition_keywords)
     
-    # Heuristic for multi-call or complex queries
-    complex_indicators = [" and ", "also", "then", ", "]
-    is_complex = any(ind in content for ind in complex_indicators)
-    
-    # If the user provides many tools and the query has complex indicators, FunctionGemma might struggle.
-    # Routing directly to cloud saves local execution time, preserving the Time Score.
-    if is_complex and len(tools) >= 3:
+    if requires_cognition:
         cloud = generate_cloud(messages, tools)
-        cloud["source"] = "cloud (direct)"
+        cloud["source"] = "cloud (deep cognition)"
         return cloud
 
-    # 2. Try on-device (Cactus / FunctionGemma)
+    # =====================================================================
+    # STRATEGY 2: Syntactic Complexity Bypass (Latency Protection)
+    # =====================================================================
+    # Compound multi-step queries paralyze the local model's tool mapping logic.
+    complex_indicators = [" and ", "also", "then", ", ", "after", "before"]
+    is_compound = any(ind in content for ind in complex_indicators)
+    is_long = len(content.split()) > 25
+    
+    if (is_compound and len(tools) > 1) or is_long:
+        cloud = generate_cloud(messages, tools)
+        cloud["source"] = "cloud (syntactic bypass)"
+        return cloud
+
+    # =====================================================================
+    # STRATEGY 3: Dynamic Edge Authority Auditing (Privacy First)
+    # =====================================================================
+    # Boot the local macOS model for OS-level triggers.
     local = generate_cactus(messages, tools)
 
-    # 3. Dynamic Confidence Threshold
-    # If there's only 1 tool, it's very likely an easy task, so we can trust the local model more.
-    dynamic_threshold = 0.70 if len(tools) == 1 else default_threshold
+    # Scale our functional trust based on toolset complexity
+    if len(tools) == 1:
+        dynamic_threshold = 0.65 
+    elif len(tools) == 2:
+        dynamic_threshold = 0.80
+    else:
+        dynamic_threshold = default_threshold
 
     if local["confidence"] >= dynamic_threshold:
         local["source"] = "on-device"
         return local
 
-    # 4. Fallback to Cloud (Gemini)
+    # Handoff securely if local macOS execution fails the confidence audit
     cloud = generate_cloud(messages, tools)
     cloud["source"] = "cloud (fallback)"
     cloud["local_confidence"] = local["confidence"]
-    cloud["total_time_ms"] += local["total_time_ms"]
+    cloud["total_time_ms"] += local["total_time_ms"] # Latency penalty applied
     return cloud
 
 

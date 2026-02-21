@@ -47,6 +47,7 @@
             margin: 0;
             background: linear-gradient(135deg, #60a5fa, #a78bfa);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -222,6 +223,65 @@
             backdrop-filter: blur(10px);
         }
 
+        .widget {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 1rem 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-primary);
+        }
+
+        .stock-widget {
+            border-left-color: var(--success);
+        }
+
+        .stock-widget .ticker {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .stock-widget .price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+        }
+
+        .news-widget {
+            border-left-color: #a78bfa;
+        }
+
+        .news-widget .title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .news-widget ul {
+            margin: 0;
+            padding-left: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .news-widget a {
+            color: #60a5fa;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .news-widget a:hover {
+            color: #93c5fd;
+            text-decoration: underline;
+        }
+
         .input-area {
             padding: 2rem;
             background: rgba(15, 17, 21, 0.8);
@@ -393,6 +453,9 @@
             <form id="chatForm">
                 <input type="text" id="userInput" placeholder="E.g., What is the stock price of AAPL?"
                     autocomplete="off" required>
+                <button type="button" id="recordBtn"
+                    style="background: var(--panel-bg); color: var(--text-main); border: 1px solid var(--border-color); padding: 0 1rem; border-radius: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center; transform: none;"
+                    title="Hold to record">🎤</button>
                 <button type="submit" id="sendBtn">Send</button>
             </form>
         </div>
@@ -402,6 +465,7 @@
         const chatForm = document.getElementById('chatForm');
         const userInput = document.getElementById('userInput');
         const sendBtn = document.getElementById('sendBtn');
+        const recordBtn = document.getElementById('recordBtn');
         const chatContainer = document.getElementById('chatContainer');
 
         // Metrics DOM elements
@@ -412,14 +476,42 @@
         function appendMessage(role, content) {
             const msgDiv = document.createElement('div');
             msgDiv.className = `message ${role}`;
-
-            // Format content basic markdown-like syntax for bold logic
-            let formattedContent = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            formattedContent = formattedContent.replace(/\\n/g, '<br>');
-
             const bubble = document.createElement('div');
             bubble.className = 'bubble';
-            bubble.innerHTML = formattedContent;
+
+            if (Array.isArray(content)) {
+                content.forEach(block => {
+                    if (block.type === 'text') {
+                        const textDiv = document.createElement('div');
+                        let formattedContent = (block.content || block.data || "").replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                        formattedContent = formattedContent.replace(/\\n/g, '<br>');
+                        textDiv.innerHTML = formattedContent;
+                        bubble.appendChild(textDiv);
+                    } else if (block.type === 'stock_widget') {
+                        const widget = document.createElement('div');
+                        widget.className = 'widget stock-widget';
+                        widget.innerHTML = `
+                            <div class="ticker">${block.data.ticker} - ${block.data.name}</div>
+                            <div class="price">$${block.data.price.toFixed(2)}</div>
+                        `;
+                        bubble.appendChild(widget);
+                    } else if (block.type === 'news_widget') {
+                        const widget = document.createElement('div');
+                        widget.className = 'widget news-widget';
+                        let html = `<div class="title">Latest News for ${block.data.ticker}</div><ul>`;
+                        block.data.headlines.forEach(h => {
+                            html += `<li><a href="${h.link}" target="_blank">${h.title}</a></li>`;
+                        });
+                        html += `</ul>`;
+                        widget.innerHTML = html;
+                        bubble.appendChild(widget);
+                    }
+                });
+            } else {
+                let formattedContent = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                formattedContent = formattedContent.replace(/\\n/g, '<br>');
+                bubble.innerHTML = formattedContent;
+            }
 
             msgDiv.appendChild(bubble);
             chatContainer.appendChild(msgDiv);
@@ -527,6 +619,128 @@
                 userInput.focus();
             }
         });
+
+        // -----------------------------------------------------
+        // Voice-to-Action: Audio Recording Logic (16kHz WAV)
+        // -----------------------------------------------------
+        let isRecording = false;
+        let audioRecorder = null;
+
+        async function startRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
+                const mediaStreamSource = audioContext.createMediaStreamSource(stream);
+                const processor = audioContext.createScriptProcessor(4096, 1, 1);
+
+                let leftchannel = [];
+                let recordingLength = 0;
+
+                processor.onaudioprocess = function (e) {
+                    if (!isRecording) return;
+                    const left = e.inputBuffer.getChannelData(0);
+                    leftchannel.push(new Float32Array(left));
+                    recordingLength += 4096;
+                };
+
+                mediaStreamSource.connect(processor);
+                processor.connect(audioContext.destination);
+
+                isRecording = true;
+                recordBtn.style.background = 'rgba(239, 68, 68, 0.4)'; // Red indicating recording
+                recordBtn.textContent = 'Recording...';
+
+                audioRecorder = {
+                    stop: async () => {
+                        isRecording = false;
+                        recordBtn.style.background = 'var(--panel-bg)';
+                        recordBtn.textContent = '🎤';
+                        stream.getTracks().forEach(t => t.stop());
+                        processor.disconnect();
+                        mediaStreamSource.disconnect();
+
+                        // Flatten the array
+                        let result = new Float32Array(recordingLength);
+                        let offset = 0;
+                        for (let i = 0; i < leftchannel.length; i++) {
+                            result.set(leftchannel[i], offset);
+                            offset += leftchannel[i].length;
+                        }
+
+                        // Convert Float32 to Int16
+                        let pcm = new Int16Array(result.length);
+                        for (let i = 0; i < result.length; i++) {
+                            let s = Math.max(-1, Math.min(1, result[i]));
+                            pcm[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+                        }
+
+                        // Write WAV header
+                        const wavData = createWavFile(pcm, 16000);
+                        const audioBlob = new Blob([wavData], { type: 'audio/wav' });
+
+                        // Upload to /api/transcribe
+                        const formData = new FormData();
+                        formData.append("audio", audioBlob, "audio.wav");
+
+                        userInput.value = "Transcribing audio...";
+                        userInput.disabled = true;
+
+                        try {
+                            const response = await fetch('/api/transcribe', {
+                                method: 'POST',
+                                body: formData
+                            });
+                            const data = await response.json();
+                            userInput.value = data.text;
+                            userInput.disabled = false;
+
+                            if (data.text && data.text.trim() !== '') {
+                                chatForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                            }
+                        } catch (err) {
+                            console.error(err);
+                            userInput.value = "";
+                            userInput.disabled = false;
+                        }
+                    }
+                };
+            } catch (err) {
+                console.error("Microphone access denied", err);
+            }
+        }
+
+        function createWavFile(pcmArray, sampleRate) {
+            const buffer = new ArrayBuffer(44 + pcmArray.length * 2);
+            const view = new DataView(buffer);
+            const writeString = (view, offset, string) => {
+                for (let i = 0; i < string.length; i++) {
+                    view.setUint8(offset + i, string.charCodeAt(i));
+                }
+            };
+            writeString(view, 0, 'RIFF');
+            view.setUint32(4, 36 + pcmArray.length * 2, true);
+            writeString(view, 8, 'WAVE');
+            writeString(view, 12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, 1, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * 2, true);
+            view.setUint16(32, 2, true);
+            view.setUint16(34, 16, true);
+            writeString(view, 36, 'data');
+            view.setUint32(40, pcmArray.length * 2, true);
+            let offset = 44;
+            for (let i = 0; i < pcmArray.length; i++) {
+                view.setInt16(offset, pcmArray[i], true);
+                offset += 2;
+            }
+            return buffer;
+        }
+
+        recordBtn.addEventListener('mousedown', startRecording);
+        recordBtn.addEventListener('mouseup', () => { if (audioRecorder) audioRecorder.stop(); });
+        recordBtn.addEventListener('mouseleave', () => { if (isRecording && audioRecorder) audioRecorder.stop(); });
     </script>
 </body>
 
