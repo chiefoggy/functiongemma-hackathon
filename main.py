@@ -97,7 +97,8 @@ def generate_cactus(messages, tools):
         "function_calls": raw.get("function_calls", []),
         "total_time_ms": raw.get("total_time_ms", 0),
         "confidence": raw.get("confidence", 0),
-        "cloud_handoff": raw.get("cloud_handoff", False)
+        "cloud_handoff": raw.get("cloud_handoff", False),
+        "response": raw.get("response", ""),
     }
 
 def generate_cactus_text(messages, max_tokens=256):
@@ -171,7 +172,7 @@ def generate_cloud(messages, tools):
 
     try:
         gemini_response = client.models.generate_content(
-            model="gemini-1.5-flash",
+            model="gemini-2.5-flash",
             contents=contents,
             config=types.GenerateContentConfig(
                 system_instruction=system_instruction,
@@ -290,6 +291,17 @@ def generate_hybrid(messages, tools, default_threshold=0.85):
     # -------------------------------------------------
     # Early cloud routing rules
     # -------------------------------------------------
+    # If the local model returned a text response and didn't request cloud handoff, use it
+    if local.get("response") and not local.get("cloud_handoff", False):
+        local["source"] = "on-device (text)"
+        return local
+
+    # Only hand off to cloud if local explicitly requests it or has no useful output
+    cloud = generate_cloud(messages, tools)
+    cloud["source"] = "cloud (fallback)"
+    cloud["local_confidence"] = local.get("confidence", 0)
+    cloud["total_time_ms"] += local.get("total_time_ms", 0)
+    return cloud
 
     # 1. No function calls predicted
     if not calls:

@@ -56,9 +56,7 @@ echo "Ensuring google-genai is installed (Step 8)..."
 pip install google-genai -q
 
 # Step 6/7 reminder: get cactus key from website and run cactus auth if needed
-if ! cactus auth --check 2>/dev/null; then
-    echo "Reminder: Get your key from https://cactuscompute.com/dashboard/api-keys then run: cactus auth"
-fi
+echo "Reminder: If you haven't authenticated, get your key from https://cactuscompute.com/dashboard/api-keys then run: cactus auth"
 
 # Load environment variables if .env exists
 if [ -f ".env" ]; then

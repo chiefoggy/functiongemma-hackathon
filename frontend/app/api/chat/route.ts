@@ -10,11 +10,18 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
-  const res = await fetch(`${BACKEND}/api/chat`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body ?? {}),
-  });
-  const data = await res.json();
-  return Response.json(data, { status: res.status });
+  try {
+    const res = await fetch(`${BACKEND}/api/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body ?? {}),
+    });
+    const data = await res.json();
+    return Response.json(data, { status: res.status });
+  } catch (err) {
+    return Response.json(
+      { response: `Backend unreachable at ${BACKEND}. Is the FastAPI server running on port 8000?`, metrics: null, files_touched: [] },
+      { status: 502 }
+    );
+  }
 }
