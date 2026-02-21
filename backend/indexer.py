@@ -14,6 +14,7 @@ from .parsers import SUPPORTED_EXTENSIONS
 _index_status: Dict[str, Any] = {
     "last_run": None,
     "files_indexed": 0,
+    "indexed_files": [],
     "errors": [],
     "library_root": None,
 }
@@ -54,11 +55,17 @@ def run_index(library_root: str) -> Dict[str, Any]:
     errors = []
     files_indexed = 0
 
-    for path in root.rglob("*"):
+    all_paths = list(root.rglob("*"))
+
+    for path in all_paths:
         if not path.is_file():
+            continue
+        # Skip hidden files/directories and the cache directory itself
+        if any(part.startswith(".") for part in path.parts):
             continue
         if path.suffix.lower() not in SUPPORTED_EXTENSIONS:
             continue
+        
         try:
             rel = path.relative_to(root)
             rel_str = str(rel).replace("\\", "/")
@@ -77,6 +84,7 @@ def run_index(library_root: str) -> Dict[str, Any]:
     _index_status = {
         "last_run": time.time(),
         "files_indexed": files_indexed,
+        "indexed_files": sorted(list(manifest.keys())),
         "errors": errors[:20],
         "library_root": str(root),
     }
@@ -84,5 +92,30 @@ def run_index(library_root: str) -> Dict[str, Any]:
 
 
 def get_status() -> Dict[str, Any]:
-    """Return last index run status."""
+    """Return last index run status. Reloads from manifest if needed."""
+    global _index_status
+    
+    # If in-memory status is empty but we have a root, try to reload from manifest
+    import os
+    from .config import get_library_root
+    
+    root_str = get_library_root()
+    if not _index_status["last_run"] and root_str:
+        root = Path(root_str)
+        cache_dir = get_cache_dir(root)
+        manifest_path = cache_dir / "manifest.json"
+        
+        if manifest_path.exists():
+            try:
+                manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+                _index_status = {
+                    "last_run": os.path.getmtime(manifest_path),
+                    "files_indexed": len(manifest),
+                    "indexed_files": sorted(list(manifest.keys())),
+                    "errors": [],
+                    "library_root": root_str,
+                }
+            except:
+                pass
+                
     return dict(_index_status)
