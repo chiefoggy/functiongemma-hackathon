@@ -157,48 +157,143 @@ def generate_cloud(messages, tools):
         print(f"CLOUD ERROR: {e}")
         return {"function_calls": [], "total_time_ms": 0}
 
+
 def generate_hybrid(messages, tools, default_threshold=0.85):
-    """Deep-Focus Hybrid routing: intelligently route OS actions locally, cloud for deep cognition."""
-    content = " ".join([m["content"].lower() for m in messages if m["role"] == "user"])
+    """
+    Structure + semantic guarded hybrid router.
+    No task hardcoding.
+    No difficulty reliance.
+    """
 
-    # Strategy 1: Cognition Escaping
-    cognition_keywords = ["summarize", "draft", "email", "transcript", "analyze", "explain"]
-    if any(kw in content for kw in cognition_keywords):
-        cloud = generate_cloud(messages, tools)
-        cloud["source"] = "cloud (deep cognition)"
-        return cloud
+    tool_map = {t["name"]: t for t in tools}
 
-    # Strategy 2: Syntactic Complexity Bypass
-    complex_indicators = [" then ", " after ", " before "]
-    is_compound = any(ind in content for ind in complex_indicators)
-    is_long = len(content.split()) > 35
-    if (is_compound and len(tools) > 1) or is_long:
-        cloud = generate_cloud(messages, tools)
-        cloud["source"] = "cloud (syntactic bypass)"
-        return cloud
+    # -------------------------------------------------
+    # Helper: validate tool call structure + semantics
+    # -------------------------------------------------
+    def validate_calls(result):
+        calls = result.get("function_calls", [])
 
-    # Strategy 3: Dynamic Edge Authority
+        if not isinstance(calls, list) or len(calls) == 0:
+            return False
+
+        for call in calls:
+            if not isinstance(call, dict):
+                return False
+
+            name = call.get("name")
+            args = call.get("arguments")
+
+            # Tool must exist
+            if name not in tool_map:
+                return False
+
+            if not isinstance(args, dict):
+                return False
+
+            schema = tool_map[name].get("parameters", {})
+            props = schema.get("properties", {})
+            required = schema.get("required", [])
+
+            # Required fields
+            for r in required:
+                if r not in args:
+                    return False
+
+            for k, v in args.items():
+
+                if k not in props:
+                    return False
+
+                expected = props[k].get("type", "").lower()
+
+                # --- type validation ---
+                if expected == "integer" and not isinstance(v, int):
+                    return False
+                if expected == "number" and not isinstance(v, (int, float)):
+                    return False
+                if expected == "string" and not isinstance(v, str):
+                    return False
+                if expected == "boolean" and not isinstance(v, bool):
+                    return False
+
+                # --- generic semantic sanity rules ---
+
+                # Reject negative numeric values
+                if isinstance(v, (int, float)) and v < 0:
+                    return False
+
+                # Reject clearly corrupted strings
+                if isinstance(v, str):
+
+                    # Reject non-ASCII (乱码时间字段问题)
+                    if any(ord(c) > 127 for c in v):
+                        return False
+
+                    # Reject obvious broken ISO time patterns
+                    if "T" in v and ":" in v and "*" in v:
+                        return False
+
+                    # Reject strings with unmatched brackets or invalid patterns
+                    if any(sym in v for sym in ["{", "}", "]", "[", "<escape>"]):
+                        return False
+
+        return True
+
+    # -------------------------------------------------
+    # Phase 1: local preview
+    # -------------------------------------------------
     local = generate_cactus(messages, tools)
-    
-    # Scale functional trust
-    if len(tools) == 1:
-        dynamic_threshold = 0.50
-    elif len(tools) == 2:
-        dynamic_threshold = 0.75
-    else:
-        dynamic_threshold = default_threshold
 
-    if local.get("confidence", 0) >= dynamic_threshold and local.get("function_calls"):
-        local["source"] = "on-device"
-        return local
+    calls = local.get("function_calls", [])
+    response_text = local.get("response", "")
+    decode_tokens = local.get("decode_tokens", 0)
+    confidence = local.get("confidence", 0)
 
-    # Handoff
-    cloud = generate_cloud(messages, tools)
-    cloud["source"] = "cloud (fallback)"
-    cloud["local_confidence"] = local.get("confidence", 0)
-    cloud["total_time_ms"] += local.get("total_time_ms", 0)
-    return cloud
+    # -------------------------------------------------
+    # Early cloud routing rules
+    # -------------------------------------------------
 
+    # 1. No function calls predicted
+    if not calls:
+        cloud = generate_cloud(messages, tools)
+        cloud["source"] = "cloud (no-call)"
+        return cloud
+
+    # 2. Multi-call → cloud (270M unstable here)
+    if len(calls) > 1:
+        cloud = generate_cloud(messages, tools)
+        cloud["source"] = "cloud (multi-call)"
+        return cloud
+
+    # 3. Model generated free text instead of pure function output
+    if isinstance(response_text, str) and response_text.strip() != "":
+        cloud = generate_cloud(messages, tools)
+        cloud["source"] = "cloud (text-generation)"
+        return cloud
+
+    # 4. Decode too long → instability
+    if isinstance(decode_tokens, int) and decode_tokens > 25:
+        cloud = generate_cloud(messages, tools)
+        cloud["source"] = "cloud (long-decode)"
+        return cloud
+
+    # 5. Low confidence
+    if confidence < 0.60:
+        cloud = generate_cloud(messages, tools)
+        cloud["source"] = "cloud (low-confidence)"
+        return cloud
+
+    # 6. Semantic validation (critical fix)
+    if not validate_calls(local):
+        cloud = generate_cloud(messages, tools)
+        cloud["source"] = "cloud (semantic-reject)"
+        return cloud
+
+    # -------------------------------------------------
+    # Accept local result
+    # -------------------------------------------------
+    local["source"] = "on-device"
+    return local
 
 def print_result(label, result):
     """Pretty-print a generation result."""
