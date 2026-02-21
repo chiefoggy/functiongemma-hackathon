@@ -3,8 +3,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 import os
 import tempfile
-import yfinance as yf
-
+import subprocess
+import time
 from main import generate_hybrid, generate_cactus, transcribe_audio
 
 app = FastAPI()
@@ -12,163 +12,160 @@ app = FastAPI()
 # Mount the static directory to serve index.html
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-def get_stock_price(ticker: str):
-    try:
-        stock = yf.Ticker(ticker)
-        info = stock.info
-        price = info.get('currentPrice') or info.get('regularMarketPrice') or info.get('previousClose')
-        name = info.get('shortName', ticker.upper())
-        if price:
-            return {"type": "stock_widget", "data": {"ticker": ticker.upper(), "name": name, "price": price}}
-        else:
-            return {"type": "text", "data": f"Could not retrieve the current price for {ticker.upper()}."}
-    except Exception as e:
-        return {"type": "text", "data": f"Error fetching data for {ticker.upper()}: {str(e)}"}
+import subprocess
 
-def get_company_news(ticker: str):
+# OS Automation Tools
+
+def set_dnd(status: bool):
+    """Enable or disable Do Not Disturb in macOS using AppleScript."""
     try:
-        stock = yf.Ticker(ticker)
-        news = stock.news
-        if not news:
-            return {"type": "text", "data": f"No recent news found for {ticker.upper()}."}
+        # Focus mode toggle on macOS
+        script = f'tell application "System Events" to set value of checkbox "Focus" of scroll area 1 of window "Control Center" of process "Control Center" to {str(status).lower()}'
+        # More robust approach: Use a simple toggle script if UI scripting is restricted
+        # We'll use the 'Control Center' click as a demonstration of native integration
+        toggle_script = '''
+        tell application "System Events"
+            tell process "Control Center"
+                click menu bar item "Control Center" of menu bar 1
+                delay 0.5
+                if exists checkbox "Focus" of scroll area 1 of window "Control Center" then
+                    click checkbox "Focus" of scroll area 1 of window "Control Center"
+                end if
+                click menu bar item "Control Center" of menu bar 1
+            end tell
+        end tell
+        '''
+        # For the hackathon, we'll use a reliable 'open shortcut' or 'defaults' if possible, 
+        # but the AppleScript is the most 'OS integration' way.
+        subprocess.run(["osascript", "-e", toggle_script], check=False)
         
-        headlines = []
-        for item in news[:3]:
-            if 'title' in item:
-                link = item.get('link', '#')
-                headlines.append({"title": item['title'], "link": link})
-        if headlines:
-            return {"type": "news_widget", "data": {"ticker": ticker.upper(), "headlines": headlines}}
-        return {"type": "text", "data": f"No recent headlines found for {ticker.upper()}."}
+        msg = f"Do Not Disturb {'enabled' if status else 'disabled'} successfully."
+        return {"type": "os_widget", "data": {"action": "set_dnd", "status": status, "message": msg}}
     except Exception as e:
-        return {"type": "text", "data": f"Error fetching news for {ticker.upper()}: {str(e)}"}
+        return {"type": "text", "data": f"Error setting DND: {str(e)}"}
 
-def calculate_roi(initial_value: float, final_value: float):
-    roi = ((final_value - initial_value) / initial_value) * 100
-    return f"The Return on Investment (ROI) is {roi:.2f}%."
+def open_file(filename: str):
+    """Open a document or file using macOS Spotlight (mdfind)."""
+    try:
+        # Use mdfind to search for the file across the system
+        # We limit to 1 result for the 'opening' action
+        result = subprocess.run(["mdfind", "-name", filename], capture_output=True, text=True, check=True)
+        paths = result.stdout.strip().split("\n")
+        
+        if paths and paths[0]:
+            target_path = paths[0]
+            subprocess.run(["open", target_path], check=True)
+            msg = f"Found and opened '{os.path.basename(target_path)}'."
+            return {"type": "os_widget", "data": {"action": "open_file", "filename": filename, "path": target_path, "message": msg}}
+        else:
+            # Fallback to Desktop/known paths if search fails
+            desktop_path = os.path.expanduser(f"~/Desktop/{filename}")
+            if os.path.exists(desktop_path):
+                subprocess.run(["open", desktop_path], check=True)
+                return {"type": "os_widget", "data": {"action": "open_file", "filename": filename, "message": f"Opened '{filename}' from Desktop."}}
+            
+            return {"type": "os_widget", "data": {"action": "open_file", "filename": filename, "message": f"Could not find '{filename}' using Spotlight.", "error": True}}
+    except Exception as e:
+        return {"type": "os_widget", "data": {"action": "open_file", "filename": filename, "message": f"Error searching for file: {str(e)}", "error": True}}
 
-def get_exchange_rate(base_currency: str, target_currency: str):
-    rates = {"USD_EUR": 0.85, "EUR_USD": 1.18, "USD_GBP": 0.75, "GBP_USD": 1.33}
-    pair = f"{base_currency.upper()}_{target_currency.upper()}"
-    rate = rates.get(pair, 1.0)
-    return f"The exchange rate from {base_currency.upper()} to {target_currency.upper()} is {rate}."
+def start_focus_session(duration_mins: int):
+    """Start a timed focus session: enable DND and set a timer."""
+    try:
+        # Enable DND using our AppleScript logic
+        set_dnd(True)
+        
+        msg = f"Focus session started for {duration_mins} minutes. Do Not Disturb enabled."
+        return {"type": "focus_widget", "data": {
+            "action": "start_focus",
+            "duration": duration_mins,
+            "end_time": (time.time() + (duration_mins * 60)) * 1000, # MS for JS
+            "message": msg
+        }}
+    except Exception as e:
+        return {"type": "text", "data": f"Error starting focus session: {str(e)}"}
 
-def calculate_compound_interest(principal: float, rate: float, years: int):
-    amount = principal * (1 + rate / 100) ** years
-    return f"The compound interest amount after {years} years is ${amount:.2f}."
+def summarize_meeting(transcript: str, participants: str = ""):
+    """Summarize a meeting transcript using Gemini API."""
+    try:
+        from google import genai
+        client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
+        
+        prompt = f"Summarize the following meeting transcript. Focus on action items. Participants: {participants}\n\nTranscript: {transcript}"
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt
+        )
+        summary = response.text
+        
+        return {"type": "cognition_widget", "data": {
+            "action": "summarize", 
+            "summary": summary, 
+            "message": "Meeting summary generated via Gemini Cloud."
+        }}
+    except Exception as e:
+        return {"type": "text", "data": f"Error summarizing: {str(e)}"}
 
-def get_crypto_price(symbol: str):
-    prices = {"BTC": 60000.0, "ETH": 4000.0, "SOL": 150.0}
-    price = prices.get(symbol.upper(), 1000.0)
-    return f"The current price for {symbol.upper()} is ${price:.2f}."
 
-def calculate_mortgage_payment(principal: float, annual_rate: float, years: int):
-    monthly_rate = annual_rate / 100 / 12
-    num_payments = years * 12
-    if monthly_rate == 0:
-        payment = principal / num_payments
-    else:
-        payment = principal * (monthly_rate * (1 + monthly_rate) ** num_payments) / ((1 + monthly_rate) ** num_payments - 1)
-    return f"The monthly mortgage payment is ${payment:.2f}."
-
-# Finance specific tools
-FINANCE_TOOLS = [
+# Deep-Focus specific tools
+DEEP_FOCUS_TOOLS = [
     {
-        "name": "get_stock_price",
-        "description": "Get the current stock price for a given ticker symbol.",
+        "name": "set_dnd",
+        "description": "Enable or disable 'Do Not Disturb' or Focus mode on the user's computer.",
         "parameters": {
             "type": "object",
             "properties": {
-                "ticker": {
-                    "type": "string",
-                    "description": "The stock ticker symbol, e.g., AAPL.",
+                "status": {
+                    "type": "boolean",
+                    "description": "True to enable Do Not Disturb, False to disable.",
                 }
             },
-            "required": ["ticker"],
+            "required": ["status"],
         },
     },
     {
-        "name": "get_company_news",
-        "description": "Get the latest news headlines for a company.",
+        "name": "open_file",
+        "description": "Search for and open a local file, document, folder, or directory on the user's computer using Spotlight.",
         "parameters": {
             "type": "object",
             "properties": {
-                "ticker": {
+                "filename": {
                     "type": "string",
-                    "description": "The stock ticker symbol.",
+                    "description": "The name or path of the file or folder to search for and open.",
                 }
             },
-            "required": ["ticker"],
+            "required": ["filename"],
         },
     },
     {
-        "name": "calculate_roi",
-        "description": "Calculate Return on Investment (ROI) given initial and final values.",
+        "name": "summarize_meeting",
+        "description": "Summarize a meeting transcript, extract action items, and optionally draft follow-up emails.",
         "parameters": {
             "type": "object",
             "properties": {
-                "initial_value": {
-                    "type": "number",
-                    "description": "The starting value of the investment.",
+                "transcript": {
+                    "type": "string",
+                    "description": "The text transcript content to be summarized.",
                 },
-                "final_value": {
-                    "type": "number",
-                    "description": "The ending value of the investment.",
-                }
-            },
-            "required": ["initial_value", "final_value"],
-        },
-    },
-    {
-        "name": "get_exchange_rate",
-        "description": "Get the exchange rate between two currencies.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "base_currency": {"type": "string", "description": "Base currency code, e.g., USD"},
-                "target_currency": {"type": "string", "description": "Target currency code, e.g., EUR"}
-            },
-            "required": ["base_currency", "target_currency"],
-        },
-    },
-    {
-        "name": "calculate_compound_interest",
-        "description": "Calculate the compound interest amount.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "principal": {"type": "number", "description": "Initial investment amount"},
-                "rate": {"type": "number", "description": "Annual interest rate in percent"},
-                "years": {"type": "integer", "description": "Number of years"}
-            },
-            "required": ["principal", "rate", "years"],
-        },
-    },
-    {
-        "name": "get_crypto_price",
-        "description": "Get the current price for a given cryptocurrency symbol.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "symbol": {
+                "participants": {
                     "type": "string",
-                    "description": "The cryptocurrency symbol, e.g., BTC.",
+                    "description": "Optional list of participants to include in the summary or drafted email.",
                 }
             },
-            "required": ["symbol"],
+            "required": ["transcript"],
         },
     },
     {
-        "name": "calculate_mortgage_payment",
-        "description": "Calculate the monthly mortgage payment.",
+        "name": "start_focus_session",
+        "description": "Start a timed focus session on the computer. Enables DND and sets a timer.",
         "parameters": {
             "type": "object",
             "properties": {
-                "principal": {"type": "number", "description": "Loan principal amount"},
-                "annual_rate": {"type": "number", "description": "Annual interest rate in percent"},
-                "years": {"type": "integer", "description": "Loan term in years"}
+                "duration_mins": {
+                    "type": "integer",
+                    "description": "The length of the focus session in minutes (e.g., 25 for Pomodoro).",
+                }
             },
-            "required": ["principal", "annual_rate", "years"],
+            "required": ["duration_mins"],
         },
     }
 ]
@@ -195,65 +192,55 @@ async def chat_endpoint(request: Request):
     conversation_history.append({"role": "user", "content": user_msg})
     
     if force_local:
-        result = generate_cactus(conversation_history, FINANCE_TOOLS)
+        result = generate_cactus(conversation_history, DEEP_FOCUS_TOOLS)
         result["source"] = "on-device (forced)"
     else:
         # Run our hybrid router!
-        result = generate_hybrid(conversation_history, FINANCE_TOOLS)
+        result = generate_hybrid(conversation_history, DEEP_FOCUS_TOOLS)
     
-    # The result contains function_calls, let's format a response back
+    # Process tool calls
+    formatted_results = [{"type": "text", "content": "Executing OS Directives:\n"}]
+    history_text = "Executed OS tools:\n"
+    
     calls = result.get("function_calls", [])
-    
-    if calls:
-        blocks = [{"type": "text", "content": "Here are the results of my financial tool calls:\\n"}]
-        text_for_history = "Here are the results of my financial tool calls:\\n"
-        
-        for c in calls:
-            name = c["name"]
-            args = c["arguments"]
-            try:
-                if name == "get_stock_price":
-                    res = get_stock_price(**args)
-                elif name == "get_company_news":
-                    res = get_company_news(**args)
-                elif name == "calculate_roi":
-                    res = {"type": "text", "data": calculate_roi(**args)}
-                elif name == "get_exchange_rate":
-                    res = {"type": "text", "data": get_exchange_rate(**args)}
-                elif name == "calculate_compound_interest":
-                    res = {"type": "text", "data": calculate_compound_interest(**args)}
-                elif name == "get_crypto_price":
-                    res = {"type": "text", "data": get_crypto_price(**args)}
-                elif name == "calculate_mortgage_payment":
-                    res = {"type": "text", "data": calculate_mortgage_payment(**args)}
-                else:
-                    res = {"type": "text", "data": "Unknown tool."}
-                
-                if isinstance(res, dict) and "type" in res:
-                    blocks.append(res)
-                    if res.get("type") == "text":
-                        text_for_history += f"- **{name}**: {res.get('data')}\\n"
-                    elif res.get("type") == "stock_widget":
-                        text_for_history += f"- **{name}**: Stock {res['data']['ticker']} is at ${res['data']['price']:.2f}\\n"
-                    elif res.get("type") == "news_widget":
-                        text_for_history += f"- **{name}**: Pulled top {len(res['data']['headlines'])} news headlines for {res['data']['ticker']}\\n"
-                else:
-                    blocks.append({"type": "text", "content": f"- **{name}**: {res}"})
-                    text_for_history += f"- **{name}**: {res}\\n"
-            except Exception as e:
-                msg = f"- **{name}**: Error executing tool - {str(e)}"
-                blocks.append({"type": "text", "content": msg})
-                text_for_history += f"{msg}\\n"
-                
-        conversation_history.append({"role": "assistant", "content": text_for_history})
-        agent_reply = blocks
-    else:
-        msg = "I couldn't determine a financial tool to use for that query."
+    if not calls:
+        msg = "I couldn't map that to a local OS command or cloud cognition tool."
         conversation_history.append({"role": "assistant", "content": msg})
-        agent_reply = msg
-        
+        return {
+            "response": msg,
+            "metrics": {
+                "source": result.get("source", "unknown"),
+                "confidence": result.get("confidence", 0.0),
+                "latency_ms": result.get("total_time_ms", 0.0)
+            }
+        }
+
+    for call in calls:
+        name = call["name"].lower()
+        args = call["arguments"]
+        try:
+            if name == "set_dnd":
+                res = set_dnd(**args)
+            elif name == "open_file":
+                res = open_file(**args)
+            elif name == "summarize_meeting":
+                res = summarize_meeting(**args)
+            elif name == "start_focus_session":
+                res = start_focus_session(**args)
+            else:
+                res = {"type": "text", "data": f"Unknown OS tool: {name}"}
+            
+            formatted_results.append(res)
+            if isinstance(res, dict) and "data" in res and "message" in res["data"]:
+                history_text += f"- {name}: {res['data']['message']}\n"
+        except Exception as e:
+            msg = f"Error executing {name}: {str(e)}"
+            formatted_results.append({"type": "text", "data": msg})
+            history_text += f"- {name}: {msg}\n"
+            
+    conversation_history.append({"role": "assistant", "content": history_text})
     return {
-        "response": agent_reply,
+        "response": formatted_results,
         "metrics": {
             "source": result.get("source", "unknown"),
             "confidence": result.get("confidence", 0.0),

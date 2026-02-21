@@ -1,29 +1,31 @@
-# FinanceGemma: Hybrid Edge-Cloud AI
+# Deep-Focus: Privacy-First OS Executive Assistant
 
-**FinanceGemma** is a Hackathon submission that leverages the new `cactus` macOS bindings to build a real-time, privacy-first financial analyst assistant. It seamlessly weaves an edge 270M parameter FunctionGemma model and the cloud-based Gemini 2.5 Flash API together using a highly optimized, 3-tiered hybrid routing algorithm.
-
----
-
-## 🏆 Qualitative Judging Rubrics Overview
-
-### **Rubric 1: Advanced Hybrid Routing Architecture**
-The core of our Hackathon submission is the intelligent edge-cloud hybrid router located in `main.py -> generate_hybrid`. We achieved incredibly high F1 Scores and minimized Latency Penalties via a 3-tiered algorithmic approach:
-
-1. **Syntactic Complexity Routing (Latency Bypass)**:
-   Small 270M parameter edge models are bad at mapping variables in massive, multi-tool compound prompts (e.g., *"What's the weather, and what ringtone is set?"*). Before booting the local model, our string analyzer checks for compound logic (", ", "and", "then") combined with a large `len(tools)`. If the query is computationally bound to fail locally, we bypass the local model hardware completely and instantly hit Gemini 2.5—saving ~1.5s in spin-up time and preserving the benchmark **Time Score**.
-2. **Semantic Domain Routing (Functional Bypass)**:
-   We route queries requesting real-time live data (e.g., "price", "news") instantly to the cloud where the agent leverages Gemini's superior real-time grounding. Conversely, strictly analytical and core mathematical equations ("calculate", "roi", "mortgage") are prioritized for the local edge device, ensuring computational privacy for personal financial queries.
-3. **Dynamic Confidence Auditing (F1 Accuracy Saver)**:
-   Rather than using a static scalar for the `confidence` handoff, our threshold is dynamic. When a prompt relies on only 1 tool, we heavily drop the confidence threshold (`0.70`), completely trusting FunctionGemma since hallucination risk drops logarithmically. For medium/hard tasks with huge JSON structures, we audit the local model securely at an `0.85` threshold to protect our benchmark **F1 Score**.
+**Deep-Focus** is a privacy-first macOS executive assistant that leverages high-performance on-device AI and the Gemini 2.5 Flash cloud API. It uses a custom hybrid routing engine to execute OS-level automation locally for maximum security, while handing off deep cognition tasks to the cloud.
 
 ---
 
-### **Rubric 2: Real-World Functional End-to-End Product**
-We didn't just output terminal JSON strings; we built a blazing fast Vanilla JS + FastAPI web application to surface the tool outputs to end-users as **Rich Interactive UI Widgets**. 
-Whenever `generate_hybrid` fires off an executor matching data, we instantly hit the live `yfinance` python API. The response data triggers dynamic DOM element creations rendering CSS data visualization blocks to the human (Stock Tickers, Green/Red Price Deltas, and Live Live Company Headlines).
+## 🏆 Functional Architecture & Innovation
+
+### **1. Advanced Hybrid Routing (Latency & Privacy Optimized)**
+Our 3-tier hybrid routing logic in `main.py -> generate_hybrid` ensures that sensitive OS actions never leave the device, while complex reasoning is handled by Gemini:
+
+1.  **Semantic OS/Action Escaping**:
+    Queries requesting deep cognition (e.g., "summarize meeting", "draft email") are instantly routed to the cloud. The small 270M parameter edge model is preserved for deterministic OS-level triggers, preventing low-accuracy hallucinations on high-entropy text tasks.
+2.  **Syntactic Complexity Bypass**:
+    We protect system latency by bypassing the local model for compound, multi-tool queries (e.g., "Set DND and then open my report"). These queries are routed to Gemini 2.5 Flash to avoid the local model's overhead when functional accuracy is mathematically likely to drop.
+3.  **Dynamic Edge Authority Auditing**:
+    Rather than a fixed threshold, our router uses **Dynamic Confidence Scalers**. For simple 1-tool triggers, we trust local execution at a lower confidence (0.65), maximizing on-device speed. For ambiguous requests, the threshold scales to 0.85, forcing a secure cloud handoff to maintain benchmark **F1 Accuracy**.
 
 ---
 
-### **Rubric 3: Low-Latency Voice-to-Action Product**
-We completely modernized accessibility for our dashboard by converting the entire toolchain into a hands-free **Voice-to-Action** product using `cactus_transcribe`. 
-The client UI requests the user's microphone (`MediaRecorder API`), buffers down the spoken query to a `16kHz WAV` blob, and blindly POSTs to our FastAPI Python `/api/transcribe` endpoint. The backend handles lazy-loading the local `cactus/weights/whisper-small` model into memory precisely once, evaluating the WAV, and forwarding the transcribed speech directly into our F1-optimised `generate_hybrid` router.
+## **2. End-to-End OS Integration**
+Deep-Focus isn't just a chatbot; it is deeply integrated into the macOS environment:
+- **Local Automation Hook**: Uses AppleScript and subprocess hooks to natively toggle **Do Not Disturb** and **Open Documents** without external dependencies.
+- **Rich Metric Dashboard**: A Vanilla JS frontend provides real-time transparency into the AI's "brain," showing whether the command was executed on-device or in the cloud, along with latency and confidence metrics.
+
+---
+
+## **3. Low-Latency Voice-to-Action**
+We implemented a zero-config voice interface using `cactus_transcribe`. 
+- **Privacy-First Audio**: User speech is captured via the MediaRecorder API, buffered to 16kHz WAV, and POSTed to our FastAPI backend.
+- **On-Device Whisper**: The backend lazily loads the local Whisper-small model, transcribing speech locally before passing it to our hybrid router—providing a seamless, hands-free "Voice-to-Action" workflow.
