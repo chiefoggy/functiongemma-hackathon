@@ -1,38 +1,20 @@
-from fastapi import FastAPI
+"""
+FastAPI backend — run from repo root: uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
+"""
+import os
+import sys
+import tempfile
+from pathlib import Path
+
+# Ensure repo root is on path (for main.generate_hybrid, etc.)
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_REPO_ROOT))
+
+from fastapi import FastAPI, Request, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-
-app = FastAPI()
-
-# 1. Define the exact structure of the JSON we expect the user to send
-class BSRequest(BaseModel):
-    text: str
-
-# 2. Create the POST endpoint at /detect
-@app.post("/detect")
-def detect_bs(request: BSRequest):
-    # Grab the text the user sent and make it lowercase for easy checking
-    text = request.text.lower()
-    
-    # 3. A very basic mock BS-detection logic
-    corporate_buzzwords = ["synergize", "paradigm", "agile", "roi", "cross-functional"]
-    
-    # Find which buzzwords are in the user's text
-    flagged = [word for word in corporate_buzzwords if word in text]
-    
-    # 4. If we found garbage jargon, flag it as BS
-    if len(flagged) > 0:
-        return {
-            "is_bs": True,
-            "bs_score": 85,  # Arbitrary high score for the test
-            "flagged_words": flagged
-        }
-    
-    # 5. Otherwise, pass it as normal text
-    return {
-        "is_bs": False,
-        "bs_score": 0,
-        "flagged_words": []
-    }
+import yfinance as yf
 
 from main import generate_hybrid, generate_cactus, transcribe_audio
 
@@ -49,6 +31,21 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# ---- BS Detector (teammate feature) ----
+class BSRequest(BaseModel):
+    text: str
+
+
+@app.post("/detect")
+def detect_bs(request: BSRequest):
+    text = request.text.lower()
+    corporate_buzzwords = ["synergize", "paradigm", "agile", "roi", "cross-functional"]
+    flagged = [word for word in corporate_buzzwords if word in text]
+    if len(flagged) > 0:
+        return {"is_bs": True, "bs_score": 85, "flagged_words": flagged}
+    return {"is_bs": False, "bs_score": 0, "flagged_words": []}
 
 
 # ---- Tool implementations ----
@@ -383,9 +380,13 @@ async def chat(request: Request):
         agent_reply = blocks
 
         return {
-            "is_bs": True,
-            "bs_score": 85,  # Arbitrary high score for the test
-            "flagged_words": flagged
+            "response": agent_reply,
+            "metrics": {
+                "source": result.get("source", "unknown"),
+                "confidence": result.get("confidence", 0.0),
+                "latency_ms": result.get("total_time_ms", 0.0),
+            },
+            "files_touched": list(dict.fromkeys(files_touched)),
         }
 
     # No tool call — try to produce a conversational text reply
