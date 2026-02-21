@@ -160,6 +160,11 @@ def generate_hybrid(messages, tools, default_threshold=0.85):
     return cloud
 
 
+def transcribe_audio(audio_path: str) -> str:
+    """Transcribe audio file (WAV). Stub: implement with cactus_transcribe + Whisper model for real transcription."""
+    return "[Transcription not configured. Use cactus transcribe or add Whisper model to enable.]"
+
+
 def print_result(label, result):
     """Pretty-print a generation result."""
     print(f"\n=== {label} ===\n")
