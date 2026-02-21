@@ -1,12 +1,14 @@
 """
-Indexer: walk library root, parse supported files, write text to corpus/cache directory.
+Indexer: walk library root, list supported files, write path/name to corpus/cache.
+Fast: no content parsing (no PDF/DOCX extraction) so indexing does not hang or crash.
 Exposes run_index() and get_status() for the API.
 """
 from pathlib import Path
 from typing import Dict, Any, Optional
+import hashlib
 import json
 
-from .parsers import parse_file, SUPPORTED_EXTENSIONS
+from .parsers import SUPPORTED_EXTENSIONS
 
 # In-memory status (replace with file or DB later)
 _index_status: Dict[str, Any] = {
@@ -30,7 +32,9 @@ def get_cache_dir(library_root: Optional[Path] = None) -> Path:
 
 def run_index(library_root: str) -> Dict[str, Any]:
     """
-    Index all supported files under library_root. Write parsed text to cache_dir.
+    Index supported files under library_root by path/name only (no content parsing).
+    Fast: no PDF/DOCX extraction, so no hangs or crashes. Search matches on file path and name.
+    Clears existing cache before rebuilding.
     Returns status dict (last_run, files_indexed, errors).
     """
     global _index_status
@@ -41,6 +45,11 @@ def run_index(library_root: str) -> Dict[str, Any]:
 
     cache_dir = get_cache_dir(root)
     cache_dir.mkdir(parents=True, exist_ok=True)
+    for f in cache_dir.iterdir():
+        try:
+            f.unlink()
+        except OSError:
+            pass
     manifest = {}
     errors = []
     files_indexed = 0
@@ -51,17 +60,14 @@ def run_index(library_root: str) -> Dict[str, Any]:
         if path.suffix.lower() not in SUPPORTED_EXTENSIONS:
             continue
         try:
-            text = parse_file(path)
-            if text is None or not text.strip():
-                continue
-            # Store under cache with a safe name (relative path -> single file)
             rel = path.relative_to(root)
-            safe_name = str(rel).replace("/", "_").replace("\\", "_")
-            if not safe_name.endswith(".txt"):
-                safe_name += ".txt"
-            out_path = cache_dir / safe_name
-            out_path.write_text(text, encoding="utf-8", errors="replace")
-            manifest[str(rel)] = safe_name
+            rel_str = str(rel).replace("\\", "/")
+            name_hash = hashlib.sha256(rel_str.encode("utf-8")).hexdigest()[:16]
+            safe_name = f"{name_hash}.txt"
+            # Store only path and filename so search can match; no content parsing
+            content = f"path: {rel_str}\nname: {path.name}\n"
+            (cache_dir / safe_name).write_text(content, encoding="utf-8", errors="replace")
+            manifest[rel_str] = safe_name
             files_indexed += 1
         except Exception as e:
             errors.append(f"{path}: {e}")

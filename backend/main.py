@@ -12,6 +12,7 @@ sys.path.insert(0, str(_REPO_ROOT))
 
 from fastapi import FastAPI, Request, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 import yfinance as yf
 
 from main import generate_hybrid, generate_cactus, transcribe_audio
@@ -172,10 +173,18 @@ def get_library_root():
 
 @app.put("/api/library/root")
 async def put_library_root(request: Request):
-    body = await request.json()
+    try:
+        body = await request.json()
+    except Exception:
+        return {"root": library_config.get_library_root(), "ok": False, "error": "Invalid or missing JSON body"}
+    if body is None:
+        body = {}
     raw = (body.get("root") or "").strip()
-    library_config.set_library_root(_normalize_path(raw) if raw else "")
-    return {"root": library_config.get_library_root()}
+    if not raw:
+        return {"root": library_config.get_library_root(), "ok": False, "error": "No path provided"}
+    normalized = _normalize_path(raw)
+    library_config.set_library_root(normalized)
+    return {"root": library_config.get_library_root(), "ok": True}
 
 
 @app.post("/api/library/index")
@@ -266,13 +275,35 @@ async def upload_library(files: list[UploadFile] = File("files")):
 @app.post("/api/chat")
 async def chat(request: Request):
     global conversation_history
-    data = await request.json()
-    user_msg = data.get("message", "")
+    try:
+        data = await request.json()
+    except Exception:
+        return JSONResponse(
+            status_code=400,
+            content={
+                "response": "Invalid or missing request body. Send JSON: { \"message\": \"your question\", \"force_local\": false }",
+                "metrics": None,
+                "files_touched": [],
+            },
+        )
+    if data is None:
+        data = {}
+    user_msg = (data.get("message") or "").strip()
     force_local = data.get("force_local", False)
+
+    if not user_msg:
+        return JSONResponse(
+            status_code=400,
+            content={
+                "response": "Message is required. Send a question about your library, stock prices, or calculations.",
+                "metrics": None,
+                "files_touched": [],
+            },
+        )
 
     if user_msg.lower() == "clear":
         conversation_history = []
-        return {"response": "Conversation cleared!", "metrics": None}
+        return {"response": "Conversation cleared!", "metrics": None, "files_touched": []}
 
     conversation_history.append({"role": "user", "content": user_msg})
 
@@ -286,8 +317,8 @@ async def chat(request: Request):
     calls = result.get("function_calls", [])
     files_touched = []
     if calls:
-        blocks = [{"type": "text", "content": "Here are the results of my financial tool calls:\n"}]
-        text_for_history = "Here are the results of my financial tool calls:\n"
+        blocks = [{"type": "text", "content": "Here are the results:\n"}]
+        text_for_history = "Here are the results:\n"
         for c in calls:
             name, args = c["name"], c["arguments"]
             try:
@@ -301,20 +332,29 @@ async def chat(request: Request):
                 text_for_history += f"- **{name}**: Error - {e}\n"
         conversation_history.append({"role": "assistant", "content": text_for_history})
         agent_reply = blocks
-    else:
-        msg = "I couldn't determine a financial tool to use for that query."
-        conversation_history.append({"role": "assistant", "content": msg})
-        agent_reply = msg
-
-    return {
-        "response": agent_reply,
-        "metrics": {
-            "source": result.get("source", "unknown"),
-            "confidence": result.get("confidence", 0.0),
-            "latency_ms": result.get("total_time_ms", 0.0),
+        return {
+            "response": agent_reply,
+            "metrics": {
+                "source": result.get("source", "unknown"),
+                "confidence": result.get("confidence", 0.0),
+                "latency_ms": result.get("total_time_ms", 0.0),
+            },
+            "files_touched": list(dict.fromkeys(files_touched)),
+        }
+    # No tool call from model — do not fall back; rollback and return error
+    conversation_history.pop()  # remove the user message we just appended
+    return JSONResponse(
+        status_code=422,
+        content={
+            "response": "Error: The model did not return a tool call. Please try again or rephrase.",
+            "metrics": {
+                "source": result.get("source", "unknown"),
+                "confidence": result.get("confidence", 0.0),
+                "latency_ms": result.get("total_time_ms", 0.0),
+            },
+            "files_touched": [],
         },
-        "files_touched": list(dict.fromkeys(files_touched)),
-    }
+    )
 
 
 @app.post("/api/transcribe")

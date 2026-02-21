@@ -43,8 +43,13 @@ def parse_file(file_path: Path) -> Optional[str]:
 def _parse_pdf(path: Path) -> Optional[str]:
     """Extract text from PDF. Requires pypdf or PyMuPDF."""
     try:
+        import logging
+        import warnings
         import pypdf
-        reader = pypdf.PdfReader(path)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            logging.getLogger("pypdf").setLevel(logging.ERROR)
+            reader = pypdf.PdfReader(path)
         return "\n".join(page.extract_text() or "" for page in reader.pages)
     except ImportError:
         # Fallback: return placeholder until pypdf is installed

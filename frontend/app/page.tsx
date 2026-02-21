@@ -120,25 +120,30 @@ export default function App() {
   }, []);
 
   async function handleSetRootByPath(path: string) {
+    setValidateResult(null);
     try {
-      await fetch("/api/library/root", {
+      const putRes = await fetch("/api/library/root", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ root: path }),
       });
-      const res = await fetch("/api/library/root");
-      const d = await res.json();
-      const root = d.root ?? "";
+      const putData = await putRes.json().catch(() => ({}));
+      const root = putData.root ?? "";
       setLibraryRoot(root);
       setPathPickerValue(root);
+      if (!putRes.ok || putData.ok === false) {
+        setValidateResult({ ok: false, error: putData.error ?? "Set path failed" });
+        return;
+      }
+      setValidateResult({ ok: true, path: root, file_count: undefined });
       // Trigger index so backend agent uses this path immediately
       const indexRes = await fetch("/api/library/index", { method: "POST" });
       const indexData = await indexRes.json();
       if (indexData.ok && indexData.status) setIndexStatus(indexData.status);
       const statusRes = await fetch("/api/library/status");
       setIndexStatus(await statusRes.json());
-    } catch {
-      // ignore
+    } catch (e) {
+      setValidateResult({ ok: false, error: e instanceof Error ? e.message : "Request failed" });
     }
   }
 
@@ -202,6 +207,9 @@ export default function App() {
         ]);
         setMetrics(data.metrics ?? { source: "—", confidence: 0, latency_ms: 0 });
         setFilesTouchedByRequest([]);
+      } else if (!res.ok) {
+        setMessages((m) => [...m, { role: "assistant", content: data.response ?? data.error ?? "Request failed." }]);
+        setMetrics(data.metrics ?? null);
       } else {
         setMessages((m) => [...m, { role: "assistant", content: data.response }]);
         setMetrics(data.metrics ?? null);
@@ -283,8 +291,8 @@ export default function App() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-neutral-950 text-neutral-200">
-      <header className="flex items-center justify-between border-b border-neutral-800 px-6 py-4">
+    <div className="h-screen overflow-hidden flex flex-col bg-neutral-950 text-neutral-200">
+      <header className="shrink-0 flex items-center justify-between border-b border-neutral-800 px-6 py-4">
         <h1 className="text-xl font-semibold text-white">
           Deep-Focus
         </h1>
@@ -298,8 +306,8 @@ export default function App() {
         </button>
       </header>
 
-      <div className="flex flex-1 min-h-0 max-w-7xl w-full mx-auto">
-        <aside className="w-72 shrink-0 border-r border-neutral-800 bg-neutral-950 p-6 flex flex-col gap-6 overflow-y-auto">
+      <div className="flex flex-1 min-h-0 overflow-hidden max-w-7xl w-full mx-auto">
+        <aside className="w-72 shrink-0 border-r border-neutral-800 bg-neutral-950 p-6 flex flex-col gap-6 overflow-y-auto min-h-0">
           <section className="space-y-4">
             <h2 className="text-xs font-medium uppercase tracking-wide text-neutral-400">Library location</h2>
             <div>
@@ -337,6 +345,9 @@ export default function App() {
                     <>
                       <p>{validateResult.error}</p>
                       {validateResult.path && <p className="truncate mt-0.5 text-neutral-500" title={validateResult.path}>Tried: {validateResult.path}</p>}
+                      {validateResult.error?.includes("Path does not exist") && (
+                        <p className="mt-1 text-neutral-500">Tip: Run the backend on this computer (not in Docker) so it can read your folders: <code className="text-neutral-400">uvicorn backend.main:app --port 8000</code></p>
+                      )}
                     </>
                   )}
                 </div>
@@ -440,8 +451,8 @@ export default function App() {
           )}
         </aside>
 
-        <main className="flex-1 flex flex-col min-h-0 border-l border-neutral-800">
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <main className="flex-1 flex flex-col min-h-0 border-l border-neutral-800 overflow-hidden">
+          <div className="flex-1 min-h-0 overflow-y-auto p-6 space-y-6">
             {messages.map((msg, i) => (
               <div
                 key={i}
@@ -459,7 +470,7 @@ export default function App() {
             )}
             <div ref={bottomRef} />
           </div>
-          <form onSubmit={handleSubmit} className="p-6 border-t border-neutral-800 flex gap-3">
+          <form onSubmit={handleSubmit} className="shrink-0 p-6 border-t border-neutral-800 flex gap-3">
             <button
               type="button"
               onClick={toggleVoice}

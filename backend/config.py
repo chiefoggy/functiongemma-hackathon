@@ -20,4 +20,8 @@ def get_library_root() -> Optional[str]:
 def set_library_root(path: Optional[str]) -> None:
     """Set the library root path (in-memory)."""
     global _library_root
-    _library_root = path.strip() if path else None
+    if path is None:
+        _library_root = None
+        return
+    s = path.strip()
+    _library_root = s if s else None
