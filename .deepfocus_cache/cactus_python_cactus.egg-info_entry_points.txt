@@ -1,0 +1,2 @@
+[console_scripts]
+cactus = src.cli:main

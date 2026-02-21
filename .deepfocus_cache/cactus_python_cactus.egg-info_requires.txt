@@ -1,0 +1,12 @@
+torch
+transformers
+numpy
+huggingface-hub
+
+[lora]
+peft
+
+[vlm]
+Pillow
+num2words
+torchvision

@@ -65,6 +65,7 @@ export default function App() {
   const [validating, setValidating] = useState(false);
   const [filesTouchedByRequest, setFilesTouchedByRequest] = useState<RequestFiles[]>([]);
   const [recording, setRecording] = useState(false);
+  const [speechToAction, setSpeechToAction] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -162,14 +163,26 @@ export default function App() {
     if (!text || loading) return;
 
     setInput("");
-    setMessages((m) => [...m, { role: "user", content: text }]);
+    const userMessage = { role: "user" as const, content: text };
+    setMessages((m) => [...m, userMessage]);
     setLoading(true);
 
     try {
+      // Build conversation history from current messages
+      const conversationHistory = messages.map((msg) => ({
+        role: msg.role,
+        content: typeof msg.content === "string" ? msg.content : JSON.stringify(msg.content),
+      }));
+      conversationHistory.push(userMessage);
+
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, force_local: forceLocal }),
+        body: JSON.stringify({ 
+          message: text, 
+          force_local: forceLocal,
+          history: conversationHistory,
+        }),
       });
       const data = await res.json();
 
@@ -204,7 +217,7 @@ export default function App() {
       await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: "clear" }),
+        body: JSON.stringify({ message: "clear", history: [] }),
       });
       setMessages([
         { role: "assistant", content: "Conversation cleared. How can I help you?" },
@@ -228,15 +241,43 @@ export default function App() {
         stream.getTracks().forEach((t) => t.stop());
         if (chunks.length === 0) return;
         const blob = new Blob(chunks, { type: "audio/webm" });
-        const form = new FormData();
-        form.append("audio", blob, "recording.webm");
         try {
-          const res = await fetch("/api/transcribe", {
-            method: "POST",
-            body: form,
-          });
-          const data = await res.json();
-          if (data.text) setInput((prev) => (prev ? `${prev} ${data.text}` : data.text));
+          if (speechToAction) {
+            const form = new FormData();
+            form.append("audio", blob, "recording.webm");
+            // Include conversation history for speech-to-action
+            const conversationHistory = messages.map((msg) => ({
+              role: msg.role,
+              content: typeof msg.content === "string" ? msg.content : JSON.stringify(msg.content),
+            }));
+            form.append("history", JSON.stringify(conversationHistory));
+            const res = await fetch(`/api/speech-action?force_local=${forceLocal ? "true" : "false"}`, {
+              method: "POST",
+              body: form,
+            });
+            const data = await res.json();
+            if (data?.ok && data.text && data.chat?.response) {
+              setMessages((m) => [
+                ...m,
+                { role: "user", content: data.text },
+                { role: "assistant", content: data.chat.response },
+              ]);
+              setMetrics(data.chat.metrics ?? null);
+              const touched = (data.chat.files_touched as string[] | undefined) ?? [];
+              setFilesTouchedByRequest((prev) => [...prev, { requestIndex: prev.length + 1, files: touched }]);
+            } else if (data?.error) {
+              setMessages((m) => [...m, { role: "assistant", content: data.error }]);
+            }
+          } else {
+            const form = new FormData();
+            form.append("audio", blob, "recording.webm");
+            const res = await fetch("/api/transcribe", {
+              method: "POST",
+              body: form,
+            });
+            const data = await res.json();
+            if (data.text) setInput((prev) => (prev ? `${prev} ${data.text}` : data.text));
+          }
         } catch {
           setInput((prev) => (prev ? `${prev} [Transcription failed]` : "[Transcription failed]"));
         }
@@ -443,6 +484,15 @@ export default function App() {
                 className="rounded border-neutral-600 bg-neutral-900 text-blue-500 focus:ring-2 focus:ring-blue-500 transition-all duration-150"
               />
               <span className="text-sm text-neutral-400">Force local AI</span>
+            </label>
+            <label className="mt-2 flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={speechToAction}
+                onChange={(e) => setSpeechToAction(e.target.checked)}
+                className="rounded border-neutral-600 bg-neutral-900 text-blue-500 focus:ring-2 focus:ring-blue-500 transition-all duration-150"
+              />
+              <span className="text-sm text-neutral-400">Speech → action</span>
             </label>
           </section>
           {metrics && (

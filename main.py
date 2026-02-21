@@ -100,12 +100,46 @@ def generate_cactus(messages, tools):
         "cloud_handoff": raw.get("cloud_handoff", False)
     }
 
+def generate_cactus_text(messages, max_tokens=256):
+    """Generate plain text locally via Cactus (no tools)."""
+    global _cactus_model
+    if _cactus_model is None:
+        print(f"DEBUG: Initializing Cactus with {functiongemma_path}")
+        _cactus_model = cactus_init(functiongemma_path)
+        if _cactus_model is None:
+            print("ERROR: cactus_init returned None!")
+
+    raw_str = cactus_complete(
+        _cactus_model,
+        messages,
+        tools=None,
+        force_tools=False,
+        max_tokens=max_tokens,
+        stop_sequences=["<|im_end|>", "<end_of_turn>"],
+        confidence_threshold=0.0,
+    )
+
+    if not raw_str:
+        return {"response": "", "total_time_ms": 0, "confidence": 0, "cloud_handoff": True}
+
+    try:
+        raw = json.loads(raw_str)
+    except (json.JSONDecodeError, TypeError):
+        return {"response": raw_str.strip(), "total_time_ms": 0, "confidence": 0, "cloud_handoff": False}
+
+    return {
+        "response": raw.get("response") or "",
+        "total_time_ms": raw.get("total_time_ms", 0),
+        "confidence": raw.get("confidence", 0),
+        "cloud_handoff": raw.get("cloud_handoff", False),
+    }
+
 def generate_cloud(messages, tools):
     """Run function calling via Gemini Cloud API."""
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         print("ERROR: Missing GEMINI_API_KEY environment variable.")
-        return {"function_calls": [], "total_time_ms": 0}
+        return {"function_calls": [], "total_time_ms": 0, "response": ""}
 
     client = genai.Client(api_key=api_key)
 
@@ -127,17 +161,21 @@ def generate_cloud(messages, tools):
         ])
     ]
 
-    system_instruction = "You are a macOS Executive Assistant. Use tools to manage DND, open files, summarize meetings, or start focus sessions."
-    contents = " ".join([m["content"] for m in messages if m["role"] == "user"])
+    system_instruction = "You are a helpful Learning Assistant for students. Use tools to search their course materials (library) and provide synthesized answers from their notes."
+    contents = []
+    for m in messages:
+        role = "user" if m["role"] == "user" else "model"
+        content = m["content"] if isinstance(m["content"], str) else str(m["content"])
+        contents.append(types.Content(role=role, parts=[types.Part.from_text(text=content)]))
     start_time = time.time()
 
     try:
         gemini_response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-1.5-flash",
             contents=contents,
             config=types.GenerateContentConfig(
                 system_instruction=system_instruction,
-                tools=gemini_tools
+                tools=gemini_tools if tools else None
             ),
         )
 
@@ -152,10 +190,14 @@ def generate_cloud(messages, tools):
                                 "name": part.function_call.name,
                                 "arguments": dict(part.function_call.args),
                             })
-        return {"function_calls": function_calls, "total_time_ms": total_time_ms}
+        return {
+            "response": gemini_response.text if gemini_response.candidates else "",
+            "function_calls": function_calls,
+            "total_time_ms": total_time_ms
+        }
     except Exception as e:
         print(f"CLOUD ERROR: {e}")
-        return {"function_calls": [], "total_time_ms": 0}
+        return {"function_calls": [], "total_time_ms": 0, "response": ""}
 
 
 def generate_hybrid(messages, tools, default_threshold=0.85):
