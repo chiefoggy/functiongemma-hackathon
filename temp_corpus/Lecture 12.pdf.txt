@@ -1,0 +1,321 @@
+Theorem 3.4.4 
+Linear 
+dependence 
+S is a basis of V. 
+1. Linearly 
+independent 
+If |S|>n, then S are linearly 
+dependent.  
+2. span(S)=V 
+Every vector  v  in  V  can be expressed in the form  
+v = c1u1 + c2u2 + ··· + ckuk in exactly one way. 
+
+Lecture 12 
+Bases (Continued) 
+and 
+Dimensions 
+Definition 3.5.8 
+Let  S = {u1, u2, …, uk}  be a basis for a vector space  
+V  and  let  v  be a vector in  V. 
+Suppose  v = c1u1 + c2u2 + ··· + ckuk. 
+Then  c1, c2, …, ck  are called the coordinates of  v  
+relative to the basis  S. 
+By Theorem 3.5.7, the above expression is exactly 
+one way, that is, (c1, c2, …, ck)  is unique according 
+to S.  
+Definition 3.5.8 
+Let  S = {u1, u2, …, uk}  be a basis for a vector space  
+V  and  let  v  be a vector in  V. 
+Suppose  v = c1u1 + c2u2 + ··· + ckuk. 
+Then  c1, c2, …, ck  are called the coordinates of  v  
+relative to the basis  S. 
+The vector  (v)S = (c1, c2, …, ck)  in  Rk  is called the 
+coordinate vector of  v  relative to  S. 
+(We assume that the vectors in  S  are in fixed order 
+so that  u1  is the first vector,  u2  is the second 
+vector, etc.) 
+Example 3.5.9.1  Question 
+Let  S = {(–5, 2, 2), (6, 2, 0), (5, 7, 10)}. 
+S  is a basis for  R3. 
+ 
+(a)  Find the coordinate vector of  v = (–11, 9, 14)  
+relative to  S. 
+ 
+(b)  Find a vector  w  in  such that  (w)S = (2, 0, 1). 
+Example 3.5.9.1  Solution 
+(a) Solving the equation 
+(–11, 9, 14) = a(–5, 2, 2) + b(6, 2, 0) + c(5, 7, 10), 
+We obtain a unique solution  (a, b, c) = (2, –1, 1), 
+i.e.  v = 2(–5, 2, 2) – (6, 2, 0) + (5, 7, 10). 
+So  (v)S = (2, –1, 1). 
+By Theorem 3.5.7, there exist exactly one 
+solution for (a, b, c). 
+Then (v)S = (a, b, c). 
+Example 3.5.9.1  Solution 
+(b)  (w)S = (2, 0, –1) 
+       w = 2u1 + 0u2 + (–1)u3 
+           = 2(–5, 2, 2) + 0(6, 2, 0) – (5, 7, 10)  
+           = (–15, –3, –6). 
+(We assume that the vectors in  S  are in fixed order 
+so that  u1  is the first vector,  u2  is the second 
+vector, etc.) 
+Example 3.5.9.2  Question 
+Let  v = (2, 3). 
+Find the coordinate vector of  v  relative to each of 
+the following basis for  R2. 
+(a)  S1 = {(1, 0), (0, 1)} 
+(b)  S2 = {(1, –1), (1, 1)} 
+(c)  S3 = {(1, 0), (1, 1)} 
+Example 3.5.9.2(a)  Solution 
+v = (2, 3) = 2(1, 0) + 3(0, 1) 
+1 
+1 
+2 3 
+2 
+3 
+4 
+   ⇒(v)S1=(2,3)
+Example 3.5.9.2(b)  Solution 
+(1,–1) 
+(1,1) 
+  v=(2,3)=−12(1,−1)+52(1,1)   ⇒(v)S2=(−12,52)
+Example 3.5.9.2(c)  Solution 
+v = (2, 3) = –(1, 0) + 3(1, 1) 
+(1,0) 
+(1,1) 
+   ⇒(v)S3=(−1,3)
+Example 3.5.9.3  (Standard Basis for  Rn) 
+Let  e1 = (1, 0, 0, …, 0, 0),  e2 = (0, 1, 0, …, 0, 0),  
+…,  en = (0, 0, 0, …, 0, 1)  be vector in  Rn. 
+(a)  S = {e1, e2, …, en}  is linear independent. 
+(b)  S  spans  Rn. 
+(For any vector  u = (u1, u2, …, un)  in  Rn,   
+u = u1e1 + u2e2 + ··· + unen.) 
+So  S  is a basis for  Rn. 
+S  is called the standard basis for  Rn. 
+Note that  (u)S = (u1, u2, …, un). 
+Remark 3.5.10 
+The following are some useful rules in working with 
+coordinate vectors:  
+ 
+Let S be a basis for a vector space V. 
+1. For any u, v   V, u = v if and only if (u)S = (v)S.  
+2. For any v1, v2, …, vr   V and c1, c2, …, cr    R,  
+(c1v1 + c2v2 + ··· + crvr)S  
+= c1 (v1)S + c2 (v2)S + ··· + cr (vr)S.  
+∈∈∈
+Remark 3.5.10 
+1. For any u, v   V, u = v if and only if (u)S = (v)S.  ∈Assume that {u1, u2, …, uk}  is a basis of V. 
+ u = c1u1 + c2u2 + ··· + ckuk and v = d1u1 + d2u2 + ··· + dkuk 
+ 
+  
+     u=v⇔c1u1+c2u2+!+ckuk=d1u1+d2u2+!+dkuk⇔(c1−d1)u1+(c2−d2)u2+!+(ck−dk)uk=0⇔c1=d1,c2=d2,…,ck=dk⇔(u)S=(c1,c2,…,ck)=(d1,d2,…,dk)=(v)S
+Remark 3.5.10 
+2. For any v1, v2, …, vr   V and c1, c2, …, cr    R,  
+(c1v1 + c2v2 + ··· + crvr)S  
+= c1 (v1)S + c2 (v2)S + ··· + cr (vr)S.  
+∈∈Assume that {u1, u2, …, uk}  is a basis of V. 
+ vi = ai1u1 + ai2u2 + ··· + aikuk is and then 
+(vi)S =(ai1, ai2,…, aik)  
+ 
+  
+= c1(a11u1 + a12u2 + ··· + a1kuk) 
+       + c2(a21u1 + a22u2 + ··· + a2kuk) 
+           + ··· + cr(ar1u1 + ar2u2 + ··· + arkuk) 
+Let us plug into 
+c1v1 + c2v2 + … + crvr 
+= (c1a11 + c2a21 + ··· + crar1)u1  
+       + (c1a12 + c2a22 + ··· + crar2)u2  
+           + ··· + (c1a1k + c2a2k + ··· + crark)uk 
+ c1(a11u1 + a12u2 + ··· + a1kuk) 
+       + c2(a21u1 + a22u2 + ··· + a2kuk) 
+           + ··· + cr(ar1u1 + ar2u2 + ··· + arkuk) 
+  (c1v1 + c2v2 + ··· + crvr)S  
+=((c1a11 + c2a21 + ··· + crar1) , (c1a12 + c2a22 + ··· + 
+crar2), ···, (c1a1k + c2a2k + ··· + crark)) 
+   c1 (v1)S + c2 (v2)S + ··· + cr (vr)S 
+= c1(a11, a12, ··· , a1k)+ c2(a21, a22, ···, a2k)+ ··· + cr(ar1, 
+ar2, ···,ark) 
+= (c1v1 + c2v2 + ··· + crvr)S  
+ 
+Theorem 3.5.11 
+Let S be a basis for a vector space V where |S| = k. 
+Let v1, v2, …, vr be vectors in V. Then 
+1. v1, v2, …, vr are linearly dependent (respectively, 
+independent) vectors in V if and only if (v1)S, (v2)S, 
+…, (vr)S are linearly dependent (respectively, 
+independent) vectors in Rk; and  
+2. span{v1, v2, …, vr} = V if and only if span{(v1)S, 
+(v2)S, …, (vr)S } = Rk. 
+Notation: For a set S,  
+|S| = the number of elements of S  (the cardinality of S).  
+Proof of Theorem 3.5.11.1 
+By Remark 3.5.10,  
+where (0)S =(0,…,0) is the zero vector in Rk.  
+     c1v1+c2v2+!+crvr=0⇔(c1v1+c2v2+!+crvr)S=(0)S⇔c1(v1)S+c2(v2)S+!+(crvr)S=(0)SThe equation c1v1 + c2v2 + ··· + crvr = 0 has non-
+trivial solution  
+if and only if  
+the equation c1 (v1)S + c2 (v2)S + ··· + cr (vr)S = 0 has 
+non-trivial solution.  
+Proof of Theorem 3.5.11.1 
+Hence 
+v1, v2, …, vr are linearly dependent (respectively, 
+independent) vectors in V  
+if and only if 
+ (v1)S, (v2)S, …, (vr)S a linearly dependent 
+(respectively, independent) vectors in Rk.  
+Proof of Theorem 3.5.11.2 
+(      ) 
+Suppose span{v1, v2, …, vr} = V.  
+Take any vector (a1, a2, …, ak)   Rk.  
+⇒∈∈Let  S = {u1, u2, …, uk}  be a basis for V. 
+Let w = a1u1 + a2u2 + ··· + akuk    V.  
+Since v1, v2, …, vr  span V,  
+there exist real numbers c1, c2, …, cr such that  
+w = c1v1 + c2v2 + ··· + crvr.  
+Proof of Theorem 3.5.11.2 
+By Remark 3.5.10,  
+Since every vector in Rk is a linear combination of 
+(v1)S, (v2)S, …, (vr)S,  
+we have span{(v1)S, (v2)S, …, (vr)S } = Rk. 
+        c1(v1)S+c2(v2)S+!+cr(vr)S=(c1v1+c2v2+!+crvr)S=(w)S=(a1,a2,…,ak).
+Proof of Theorem 3.5.11.2 
+(      ) 
+Suppose span{(v1)S, (v2)S, …, (vr)S } = Rk.  
+Take any vector w    V.  
+Since (w)S is a vector in Rk and (v1)S, (v2)S, …, (vr)S 
+span Rk,  
+⇐∈     (w)S=c1(v1)S+c2(v2)S+!+cr(vr)S       =(c1v1+c2v2+!+crvr)Sthere exist real numbers c1, c2, …, cr such that  
+Proof of Theorem 3.5.11.2 
+and hence w = c1v1 + c2v2 + ··· + crvr.  
+ 
+Since every vector in V is a linear combination of v1, 
+v2, …, vr,  
+ 
+we have span{v1, v2, …, vr} = V.  
+Theorem 3.6.1 
+Let  V  be a vector space which has a basis 
+S = {u1, u2, …, uk}  with  k  vectors. 
+1. Any subset of  V  with more than  k  vectors is 
+always linearly dependent. 
+2. Any subset of  V  with less than  k  vectors cannot 
+span  V. 
+Proof of Theorem 3.6.1.1 
+Let  T = {v1, v2, …, vr}  be a subset of  V  with  r > k. 
+Suppose  (v1)S = (a11, a12, …, a1k) 
+                (v2)S = (a21, a22, …, a2k)                         .                         : 
+                (vr)S = (ar1, ar2, …, ark). 
+         c1v1 + c2v2 + ··· + crvr = 0 
+           c1(v1)S + c2(v2)S + ··· + cr(vr)S = (0)S = 0 
+The equation  c1(v1)S + c2(v2)S + ··· + cr(vr)S = 0  
+gives us a homogeneous linear system with  k  
+equations and  r  unknowns. 
+⇒
+Proof of Theorem 3.6.1.1 
+        c1(v1)S + c2(v2)S + ··· + cr(vr)S = 0 
+ 
+⎪⎪⎩⎪⎪⎨⎧=+++=+++=+++⇒000221122221121221111rrkkkrrrrcacacacacacacacaca!"!!Since  r > k,  we have nontrivial solutions for  c1, c2, 
+…, cr. 
+Hence  T  is linearly dependent. 
+Proof of Theorem 3.6.1.2 
+Let  T’ = {v1, v2, …, vt}  be a subset of  V  with  t < k. 
+Recall Theorem 3.2.7: Let S = {v1, v2 , … , vt} be a 
+set of vectors in Rk. If t<k, then S can not span Rk.  
+By Theorem 3.2.7, (v1)S, (v2)S, …, (vt)S can not span 
+Rk.  
+Recall Theorem 3.5.11.2: span{u1, u2, …, ur} = V if 
+and only if span{(u1)S, (u2)S, …, (ur)S } = Rk. 
+ 
+By Theorem 3.5.11.2, T’ can not span V. 
+Remark 3.6.2 
+By Theorem 3.6.1, all bases for a vector space have 
+the same number of vectors, i.e., the cardinality of a 
+basis. 
+  
+This number gives us a way to measure the “size” of 
+a vector space.  
+ 
+ 
+Definition 3.6.3 
+The dimension of a vector space  V,  denoted by  
+dim(V),  is defined to be the number of vectors in a 
+basis for  V, i.e., the cardinality of a basis. 
+We define the dimension of the zero space to be  0. 
+Example 3.6.4.1 
+The dimension of  Rn  is  n, 
+i.e.  dim(Rn) = n. 
+Example 3.6.4.2 
+Except  {0}  and  R2,  all subspace of  R2  are lines 
+through the origin and they are of dimension  1. 
+Example 3.6.4.3 
+Except  {0}  and  R3,  all subspace of  R3  are either 
+lines through the origin, which are of dimension  1, 
+or planes containing the origin, which are of 
+dimension  2. 
+Example 3.6.4.4  Question 
+Find a basis for and determine the dimension of the 
+subspace 
+W = { (x, y, z) | x, y, z  in  R  and  x = z }. 
+Example 3.6.4.4  Solution 
+Every vector in  W  is of the form 
+(x, y, x) = x(1, 0, 1) + y(0, 1, 0) 
+and every vector of this form are contained in  W. 
+So  W = span{(1, 0, 1), (0, 1, 0)}. 
+ 
+(1, 0, 1), (0, 1, 0)  are linearly independent. 
+ 
+Hence  {(1, 0, 1), (0, 1, 0)}  is a basis for  W  and 
+dim(W) = 2. 
+Example 3.6.6  Question 
+Find a basis for and determine the dimension of the 
+solution space of the homogeneous system 
+  −2v−3w+2x+5y+7z=03v+8w−5x+2y+6z=0−v−8w+x−4y+10z=0−v+x+4y+2z=0⎧⎨⎪⎪⎩⎪⎪
+ −2−3257038−5260−1−81−4100−101420⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟ 100−7−1200101−10001−3−100000000⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟
+Gaussian-Jordan 
+Elimination 
+
+Example 3.6.6  Solution 
+The general solution of the system is 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+where  s  and  t  are arbitrary parameters. 
+  vwxyz⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟=7s+12t−s+t3s+10tst⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟=s7−1310⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟+t1211001⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟
+Example 3.6.6  Solution 
+Let  u1 = (7, –1, 3, 1, 0)  and  u2 = (12, 1, 10, 0, 1). 
+{u1, u2}  spans the solution space of the system. 
+ 
+u1, u2  are linearly independent. 
+ 
+Hence  {u1, u2}  is a basis for the solution space 
+and the dimension of the solution space is  2. 
+Remark on Example 3.6.6 (Remark 3.6.5) 
+Given a homogeneous linear system Ax = 0, we want 
+to find a basis for and determine the dimension of 
+the solution space.  
+If we solve a homogeneous system by Gaussian 
+Elimination or Gauss-Jordan Elimination and write 
+the general solution in the form of 
+s1u1 + s2u2 + ··· + skuk 
+where  s1, s2, …, sk  are arbitrary parameters and  u1, 
+u2, …, uk  are fixed vectors (as in Example 3.6.6), 
+then the vectors  u1, u2, …, uk  are always linearly 
+independent and 
+{u1, u2, …, uk}  is a basis for the solution space. 
+Learning outcomes (Section 3.5) 
+(6)  Two useful rules in working with coordinate vectors.  
+(5) Definition of the coordinate vector of v relative to a 
+basis S (arising from Theorem 3.5.7).    
+(7) (Theorem 3.5.11) Correspondence in terms of linear 
+independence and linear span between a set of vectors and 
+their coordinate vector counterparts (relative to a fixed 
+basis).     
+Learning outcomes (Section 3.6) 
+(2)  Definition of the dimension of a vector space.   
+(1) All bases for a vector space V have the same number 
+of vectors.  
+(3) How to find a basis for the solution space of a HLS.  

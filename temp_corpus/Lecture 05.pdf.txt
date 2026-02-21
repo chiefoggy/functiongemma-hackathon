@@ -1,0 +1,345 @@
+Lecture 5 
+Invertible Matrices 
+Definition 2.2.19 
+The transpose of a matrix  A,  denoted by  AT  (or  At ),  
+is the matrix obtained by interchanging the rows and 
+columns of  A. 
+Example 2.2.20 
+  A=13572468⎛⎝⎜⎞⎠⎟   AT=12345678⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟
+Remark 2.2.21 
+1. Let  A = (aij)  be an  m x n  matrix.  Then  AT  is 
+an  n x m  matrix whose  (i, j)-entry is  aj 
+i. 
+2. A square matrix is symmetric if and only if 
+A = AT. 
+  A=123456789⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟   AT=147258369⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+
+Theorem 2.2.22 
+Let  A  be an  m x n  matrix. 
+1.  (AT)T = A   
+2.  If  B  is an  m x n  matrix, then  (A + B)T = AT + BT. 
+3.  If  a  is a scalar, then  (aA)T = aAT. 
+4.  If  B  is an  n x p  matrix, then  (AB)T = BTAT. 
+
+Proof Strategy of Theorem 2.2.22 
+To prove  (AB)T = BTAT: 
+1. The size of  (AB)T = the size of  BTAT 
+2. For any  i, j,  
+the  (i, j)-entry of  (AB)T = the  (i, j)-entry of  BT AT . 
+Proof of Theorem 2.2.22 
+Since the size of  AB  is  m x p,  the size of (AB)T  is  
+p x m. 
+ 
+On the other hand, since the sizes of  BT  is  p x n  
+and the sizes of  AT  is  n x m,  the size of  BTAT  is    
+p x m. 
+ 
+Thus the size of  (AB)T  is equal to the size of  BTAT. 
+1. What are the sizes of (AB)T and BTAT ?  
+Let  A = (aij)  and  B = (bij). 
+Let AT = (aij’ )  and  BT = (bij’ ), 
+    i.e.  aij’ = aj 
+i   and  bij’ = bj 
+i. 
+For any  i, j, 
+the  (i, j)-entry of  BT AT = bi1’a1j’ + bi2’a2j’ + ··· + 
+bin’anj’ 
+2. What are the (i, j)-entries of (AB)T and BTAT ?  
+= aj1b1i + aj2b2i + ··· + ajnbni. 
+For any  i, j, 
+the  (i, j)-entry of  (AB)T = the  (j, i)-entry of AB. 
+ = the  (i, j)-entry of  (AB)T.  
+the  (i, j)-entry of  BT AT = b1iaj1 + b2iaj2 + ··· + bniajn 
+                      = aj1b1i + aj2b2i + ··· + ajnbni 
+For any  i, j,  
+the  (i, j)-entry of  (AB)T = the  (i, j)-entry of  BT AT . 
+Therefore, (AB)T = BTAT. 
+Exercise 2.2.23 
+Complete the proof of Theorem 2.2.22. 
+Discussion 2.3.1 
+Let  a, b  be two real number such that  a    0.  Then 
+the solution of the equation 
+ax = b 
+is  x = b/a = (1/a) x b. 
+Let  A, B  be two matrices.  It is much harder to solve 
+the matrix equation 
+AX = B 
+because we do not have “division” for matrices. 
+However, for some square matrices, we can find their 
+“inverses” which have the similar property as  1/a  in 
+the computation of the solution of  ax = b  above. 
+≠
+How do we define the inverse of real numbers? 
+1st way: the inverse a–1 of a = 1/a.  
+2nd way: the inverse a–1 of a is the number satisfying:  
+  a−1×a=a×a−1=1Let us follow the 2nd way to define the inverse of a 
+matrix. 
+  A−1A=AA−1=1
+How do we define the inverse of matrices? 
+Definition 2.3.2 
+Let  A  be a square matrix of order  n. 
+Then  A  is said to be invertible if there exists a 
+square matrix  B  of order  n  such that 
+AB = In   and   BA = In. 
+The matrix  B  here is called an inverse of  A. 
+A square matrix is called singular if it has no inverse. 
+Example 2.3.3 (1) 
+  A=2174⎛⎝⎜⎞⎠⎟B=4−1−72⎛⎝⎜⎞⎠⎟  AB=2174⎛⎝⎜⎞⎠⎟4−1−72⎛⎝⎜⎞⎠⎟=2×4+1×(−7)2×(−1)+1×27×4+4×(−7)7×(−1)+4×2⎛⎝⎜⎞⎠⎟  =1001⎛⎝⎜⎞⎠⎟=I2So  A  is invertible and  B  is an inverse of  A. 
+  BA=4−1−72⎛⎝⎜⎞⎠⎟2174⎛⎝⎜⎞⎠⎟=4×2+(−1)×74×1+(−1)×4(−7)×2+2×7(−7)×1+2×4⎛⎝⎜⎞⎠⎟=1001⎛⎝⎜⎞⎠⎟=I
+Example 2.3.3 (2) Solve for X 
+  2174⎛⎝⎜⎞⎠⎟X=1−1⎛⎝⎜⎞⎠⎟  ⇒4−1−72⎛⎝⎜⎞⎠⎟2174⎛⎝⎜⎞⎠⎟X=4−1−72⎛⎝⎜⎞⎠⎟1−1⎛⎝⎜⎞⎠⎟  ⇒1001⎛⎝⎜⎞⎠⎟X=5−9⎛⎝⎜⎞⎠⎟  ⇒X=5−9⎛⎝⎜⎞⎠⎟
+Use the inverse of the 
+matrix to solve the 
+linear system. 
+IX=X 
+Example 2.3.3 (3)  Question 
+Show that 
+ 
+ 
+ 
+is singular. 
+  A=1200⎛⎝⎜⎞⎠⎟That is, for all square matrices  B  of order  2, 
+AB     I2   or   BA     I2. 
+  
+≠≠
+Example 2.3.3(3) Solution  (Proof by Contradiction) 
+Suppose on the contrary  A  has an inverse: 
+⎟⎠⎞⎜⎝⎛=dcbaBBy the definition of inverses, we have 
+⎟⎠⎞⎜⎝⎛==1001IBAOn the other hand, 
+   BA=abcd⎛⎝⎜⎞⎠⎟1200⎛⎝⎜⎞⎠⎟=a2ac2c⎛⎝⎜⎞⎠⎟
+The two results for  BA  contradict with each other. 
+  BA=I=1001⎛⎝⎜⎞⎠⎟   ⇔BA=abcd⎛⎝⎜⎞⎠⎟1200⎛⎝⎜⎞⎠⎟=a2ac2c⎛⎝⎜⎞⎠⎟=1001⎛⎝⎜⎞⎠⎟  ⇔a=12a=0c=02c=1⎧⎨⎪⎪⎩⎪⎪No solution! 
+Then A has no inverse, i.e., A is singular.  
+That is, there does not exist B such BA=I2.  
+Remark 2.3.4  (Cancellation Law for Matrices) 
+Let  A  be an invertible  m x m  matrix. 
+(a)   If  B  and  B’  are  m x n  matrices such that 
+AB = AB’ 
+       then  B = B’. 
+(b)  If  C  and  C’  are  n x m  matrices such that 
+CA = C’A 
+       then  C = C’. 
+Proof 
+Let  D  be an inverse of  A,  i.e.  DA = AD = Im. 
+To prove  B = B’  
+⇔⇔⇔Im B = Im B‘ 
+B = B’ 
+AB = AB’      DAB = DAB’   
+Remark 2.3.4 
+If  A  in Part 1 is not invertible, then the Cancellation 
+Law may not hold. 
+  A=1000⎛⎝⎜⎞⎠⎟B=π02−5⎛⎝⎜⎞⎠⎟B,=π043⎛⎝⎜⎞⎠⎟e.g. 
+  AB=π000⎛⎝⎜⎞⎠⎟=AB,but  B     B’. ≠
+Exercise 2.3.4 
+Find an example of three  2 x 2  matrices  A, C, C’  
+such that 
+CA = C’A 
+but  C   C’. ≠
+Theorem 2.3.5  (Uniqueness of Inverses) 
+If  B  and  C  are inverses of a square matrix  A,  then  
+B = C. 
+Proof of Theorem 2.3.5 
+Since  B  is an inverse of  A,  we have 
+BA = I   and   AB = I. 
+Also  C  is an inverse of  A,  we have 
+CA = I   and   AC = I. 
+ AB = I 
+CAB = CI 
+B = C. 
+IB = C 
+⇔⇔⇔
+Notation 2.3.6 
+Let  A  be an invertible matrix.  By Theorem 2.3.5, 
+we know that there is only one inverse of  A. 
+We use  A–1  to denote this unique inverse of  A. 
+Remark 2.3.7 
+If we are asked to show that  A–1 = B  where  A  and  
+B  are square matrices of the same size, what we 
+need to do is to check the two conditions 
+AB = I   and   BA = I. 
+Actually, later by Theorem 2.4.12, we shall learn that 
+we only need to check any one of the two conditions. 
+Example 2.3.8  Question 
+Show that if  ad – bc    0,  then 
+⎟⎟⎠⎞⎜⎜⎝⎛=⎟⎠⎞⎜⎝⎛−−−−−−−bcadabcadcbcadbbcadddcba1≠
+Example 2.3.8  Solution 
+ dad−bc−bad−bc−cad−bcaad−bc⎛⎝⎜⎜⎞⎠⎟⎟abcd⎛⎝⎜⎞⎠⎟So 
+⎟⎟⎠⎞⎜⎜⎝⎛=⎟⎠⎞⎜⎝⎛−−−−−−−bcadabcadcbcadbbcadddcba1 abcd⎛⎝⎜⎞⎠⎟dad−bc−bad−bc−cad−bcaad−bc⎛⎝⎜⎜⎞⎠⎟⎟ =da−bcad−bcdb−bdad−bc−ca+acad−bc−cb+adad−bc⎛⎝⎜⎜⎞⎠⎟⎟ =1001⎛⎝⎜⎞⎠⎟ =1001⎛⎝⎜⎞⎠⎟ =da−bcad−bcab−baad−bc−cd+dcad−bc−cb+adad−bc⎛⎝⎜⎜⎞⎠⎟⎟
+  A=7−4−53⎛⎝⎜⎞⎠⎟  ad−bc=7×3−(−4)×(−5)=1  abcd⎛⎝⎜⎞⎠⎟=7−4−53⎛⎝⎜⎞⎠⎟Substitute 
+  A−1=dad−bc−bad−bc−cad−bcaad−bc⎛⎝⎜⎜⎞⎠⎟⎟=31−(−4)1−(−5)171⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟  A−1=3457⎛⎝⎜⎞⎠⎟
+Example 
+Theorem 2.3.9 
+Let  A, B  be two invertible matrices of the same size 
+and  a  a non-zero scalar. 
+1.  aA  is invertible and  (aA)–1 = (1/a)A–1. 
+2.  AT  is invertible and  (AT )–1 = (A–1)T.  
+3.  A–1 is invertible and  (A–1 )–1 = A. 
+4.  AB  is invertible and  (AB)–1 = B –1A–1. 
+Remark. B –1A–1       A–1B –1 vs. (ab)–1=a–1b–1=b–1a–1 ≠
+Proof of Theorem 2.3.9 2 
+To prove  AT  is invertible and  (AT )–1 = (A–1)T: 
+AT(A–1)T = (A–1A)T = I T = I 
+(A–1)TAT = (AA–1)T = I T = I 
+ 
+By definition, AT  is invertible and (A–1)T is its inverse. 
+By Theorem 2.3.5, (AT )–1 = (A–1)T. 
+Exercise 2.3.9 
+Complete the proof of Theorem 2.3.9. 
+Remark 2.3.10 
+By Theorem 2.3.9 4, if  A1, A2, …, Ak  are invertible 
+matrices of the same size, then  A1A2···Ak  is 
+invertible and 
+(A1A2···Ak)–1 = Ak
+–1···A2
+–1A1
+–1. 
+Definition 2.3.11 (Power of Matrices) 
+Let  A  be a square matrix and  n  a nonnegative 
+integer. 
+We define  An  as follows: 
+⎪⎩⎪⎨⎧≥==0 if0 if  timesnnnn!"!#$%AAAIAIf  A  is invertible, then for  n    1,  we define 
+!!"!!#$%  times1111)(nnn−−−−−==AAAAA≥
+Example 2.3.12 
+  A=7−4−53⎛⎝⎜⎞⎠⎟  A−1=3457⎛⎝⎜⎞⎠⎟  A−3=(A−1)3=3457⎛⎝⎜⎞⎠⎟3457⎛⎝⎜⎞⎠⎟3457⎛⎝⎜⎞⎠⎟=287495396685⎛⎝⎜⎞⎠⎟  A−1=3457⎛⎝⎜⎞⎠⎟
+Remark 2.3.13 
+1. Let  A  be a square matrix and  r, s  be integers.  
+Then 
+ArAs = Ar 
++ 
+s. 
+2. If  A  is an invertible matrix, then 
+(An)–1 = A–n. 
+Discussion 2.4.1  
+Consider elementary row operations of the first type: 
+Multiply a row by a constant 
+  A=−2−14−36−27−551−90⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟B=−2−14−318−621−1551−90⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟B  can be obtained from  A  by multiplying the 
+second row of  A  by  3. 
+  EA=100030001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟−2−14−36−27−551−90⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=−2−14−318−621−1551−90⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=B  E=100030001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Discussion 2.4.2 
+Let  A  be an  m x n matrix. 
+Let  E  be a square matrix of order  m  as shown below: 
+    E=1!01c10!1⎛⎝⎜⎜⎜⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟⎟⎟⎟←ith row  ↑ith columnThen the matrix  EA  can be obtained from  A  by 
+multiplying the ith row by  c. 
+Discussion 2.4.2 
+Suppose  c    0.
+    E−1=1!011c10!1⎛⎝⎜⎜⎜⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟⎟⎟⎟←ith row  ↑ith column
+Then  E  is invertible and 
+E–1  corresponds to the row operation of multiplying 
+the ith row of a matrix by  1/c. 
+≠
+Discussion 2.4.2  
+Consider elementary row operations of the second type: 
+Interchange two rows 
+B  can be obtained from  A  by interchanging the 
+second and third rows of  A. 
+  A=−2−14−36−27−551−90⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟B=−2−14−318−621−1551−90⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  EA=100001010⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟−2−14−36−27−551−90⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=−2−14−351−906−27−5⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=B⎟⎟⎟⎠⎞⎜⎜⎜⎝⎛=010100001E
+Discussion 2.4.2 
+Let  A  be an  m x n matrix. 
+Let  E  be a square matrix of order  m  as shown below: 
+   E=1!01011!11010!1⎛⎝⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟  ←ith row  ↑ith columnThen the matrix  EA  can be obtained from  A  by 
+interchanging the ith and jth rows of  A. 
+  ←jth row  ↑jth column
+Discussion 2.4.2 
+The matrix  E  is invertible and  E–1 = E. 
+Discussion 2.4.2   
+Consider elementary row operations of the third type: 
+Adding a multiple of a row to another row 
+B  can be obtained from  A  by adding  3  times of 
+the 1st row of  A  to the 2nd row. 
+  A=−2−14−36−27−551−90⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟B=−2−14−30−519−1451−90⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  EA=−2−14−36+3×(−2)−2+3×(−1)7+3×4−5+3×(−3)51−90⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=B  E=100310001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Discussion 2.4.2 
+Let  A  be an  m x n matrix. 
+Then the matrix  EA  can be obtained from  A  by 
+adding  c  times of the ith row to the jth row. 
+    E=1!0111!1c110!1⎛⎝⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟if  i < j 
+  ↑jth column  ↑ith column  ←jth row  ←ith row
+Discussion 2.4.2 
+Let  A  be an  m x n matrix. 
+Then the matrix  EA  can be obtained from  A  by 
+adding  c  times of the ith row to the jth row. 
+    E=1!011c1!1110!1⎛⎝⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟if  j < i 
+  ↑ith column  ↑jth column  ←ith row  ←jth row
+Discussion 2.4.2 
+E  is invertible and 
+ 
+ 
+ 
+ 
+                                                                     if  i < j ⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎝⎛−=−111111001!!!cErowth j←columnth i↑columnth j↑    E−1=1!011!−c110!1⎛⎝⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟  ←ith row  ↑ith column  ↑jth columnif  i < j. 
+E–1  corresponds to the row operation of adding  –c  
+times of the ith row of a matrix to the jth row. 
+Discussion 2.4.2 
+E  is invertible and 
+ 
+ 
+ 
+ 
+                                                                     if  i < j ⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎝⎛−=−111111001!!!cErowth j←columnth i↑columnth j↑    E−1=1!011−c!110!1⎛⎝⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟⎟rowth j←columnth j↑columnth i↑if  i > j. 
+E–1  corresponds to the row operation of adding  –c  
+times of the ith row of a matrix to the jth row. 
+Definition 2.4.3 
+A square matrix is called an elementary matrix if it 
+can be obtained from an identity matrix by 
+performing a single elementary row operation. 
+Remark 2.4.4 
+1. The matrices  E  described in Discussion 2.4.2 
+are elementary matrices. 
+      Every elementary matrix is of one of the three 
+types in Discussion 2.4.2. 
+2. All elementary matrices are invertible and their 
+inverse are also elementary matrices. 
+Example 2.4.5 
+  A=033−44−1425⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟Here A and B are row equivalent. In the other words, we will 
+show how B is obtain from A by elementary row operations. 
+Furthermore, we will write down the corresponding 
+elementary matrices.  
+  A=033−44−1425⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ 425−44−1033⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  E1=001010100⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  R1↔R3E1⎯→⎯⎯  B=11/25/4012/3001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+ 425−44−1033⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  E2=100110001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  R2+1×R1E2⎯→⎯⎯ 425064033⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  E3=1000100−121⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟  R3−12×R2E3⎯→⎯⎯⎯ 425064001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ 425064033⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ 425064001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  R1/4,R2/6E4⎯→⎯⎯⎯  11/25/4012/3001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=B  E4=1/40001/60001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Also  A = (E4E3E2E1)–1B  
+              = E1
+–1E2
+–1E3
+–1E4
+–1B. 
+So  E4E3E2E1A = B. 
+By Discussion 2.4.2, 
+  E1−1=001010100⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=E1  E2−1=100−110001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  E3−1=1000100+121⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟  E4−1=400060001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Learning outcomes (Section 2.2) 
+(11)  The transpose of a matrix and properties of transposes 
+(Theorem 2.2.22).  
+Learning outcomes (Section 2.3) 
+(1)  Definition of an invertible matrix. What is an inverse of a 
+matrix? What is a singular matrix?  
+(2)  (Theorem 2.3.5) If a matrix is invertible it has one and 
+only one inverse.  
+(3)  How to check whether a given matrix B is the inverse of 
+matrix A? (Testing method).  
+(4)  Properties of inverses (Theorem 2.3.9).  
+(5) What are negative powers of a matrix?  
+Learning outcomes (Section 2.4) 
+(1)  Each ERO that is performed on a matrix A can be 
+represented by pre-multiplying a suitably chosen matrix E to 
+A.  
+(2) What is an elementary matrix?  
+(3)  All elementary matrices are invertible and their inverses 
+are also elementary matrices.  
+ 
+Matrix 
+Elementary 
+matrices 
+ Transpose 
+Basic Properties 
+Thm 2.2.22 
+Basic Properties 
+Thm 2.3.9 
+Inverse 
+Cancellation 
+law 
+Solve Linear 
+Systems 
+Uniqueness 
+of Inverse 
+Power of 
+matrices  
+Row 
+Equivalent 

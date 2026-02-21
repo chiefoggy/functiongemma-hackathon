@@ -1,0 +1,88 @@
+Lecture 17Orthogonal and Orthonormal BasesandBest Approximations
+Definition 5.2.13Let  Vbe a subspace of  Rnand  ua vector in  Rn.
+uVthe origin
+Suppose  ucan be written asu=n+ psuch that  nis a vector orthogonal to  Vand  pis a vector in  V.nppis called the (orthogonal) projectionof  uonto  V.
+Exercise 5.18Let  Vbe a subspace of  Rnand  ua vector in  Rn.Show that the projection of  uonto  Vis unique.Hint:  Assume that  u= n1+ p1and  u= n2+ p2where  n1, n2are vectors orthogonal to  Vand  p1, p2are vectors in  V.  Show that  p1= p2.
+Example 5.2.14.1The projection u = (x, y)of onto x-axis is p= (x, 0). In here, n= (0, y). 
+y
+x
+u= (x, y)
+p= (x, 0)n= (0, y)
+Then u = p + n.
+Example 5.2.14.2The projection u = (x, y, z)of onto x-axis is p= (x, y, 0). In here, n= (0, 0, z)and u = p + n. zu= (x, y, z)n= (0, 0, z)(0, 0, 0)y
+xp= (x, y, 0)
+Theorem 5.2.15Let  Vbe a subspace of  Rnand  wa vector in  Rn.
+kkkuuuwuuuwuuuw222||||||||||||222111×++×+×!1.If  S= {u1, u2, …, uk}is an orthogonal basisof a vector space  V,  then the projection of  wonto  Vis
+2.If  T= {v1, v2, …, vk}is an orthonormal basisof a vector space  V,  then the projection of  wonto  Vis(w· v1)v1+ (w· v2)v2+ ··· + (w· vk)vk
+Proof of Theorem 5.2.15We only prove the first part of the theorem. The second part is a simple consequence of the first part:Letand n = w –p. Then for i= 1, 2, …, k, For  i= 1, 2, …, k,n· ui= w· ui–p· ui
+   p=w⋅u1u1⋅u1u1+w⋅u2u2⋅u2u2+!+w⋅ukuk⋅ukuk    =w⋅ui−w⋅u1u1⋅u1(u1⋅ui)−w⋅u2u2⋅u2(u2⋅ui)−!−w⋅ukuk⋅uk(uk⋅ui)  =w⋅ui−w⋅uiui⋅ui(ui⋅ui)=0
+By Remark 5.2.12, nis orthogonal to V. Since w = n + p where nis orthogonal to Vand pis a vector in V, pis the projection of wonto V.
+Remark 5.2.12: if V= span{u1, u2, …, uk}is a subspace of Rn, then a vector v ∈Rnis orthogonal toVif and only if v· ui= 0for i=1, 2 ,..., k. 
+Example 5.2.16Let  Vbe a subspace of  R3spanned by the orthogonal vectors u1= (1, 1, 0)and u2= (1, –1, 2).The projection of  w= (2, 2, –3)onto  Vis
+  w⋅u1||u1||2u1+w⋅u2||u2||2u2=42(1,1,0)+−66(1,−1,2)=(1,3,−2)
+Remark 5.2.17Theorem 5.2.8 can be regarded as a particular case of Theorem 5.2.15when wis contained in V, i.e. w = n + p and n = 0in formulae kkkuuuwuuuwuuuww222||||||||||||222111×++×+×=!
+Example 5.2.18.1Let  uand  vbe vectors in  R2(or  R3).Let  Vbe the subspace spanned by  {v}.(Vis a line through the origin.)Define                        andpunvvvup-=×=2||||u Vthe origin                         vvpvvu2||||×=vupunvvu2||||×-=-=
+Example 5.2.18.1u           nVp            vvvvvuuvn×÷÷øöççèæ×-=×2||||vvvvuvu××-×=2||||0=×-×=vuvuSo  nis orthogonal to  Vand  pis the projection of  uonto  V.
+Example 5.2.18.2Let  u1and  u2be linearly independent vectors in  R3.Let  Vbe the subspace spanned by  {u1, u2}.(Vis a plane containing the origin.)Defineand11122211||vvvuuvuv2||×-==By Part 1,  {v1, v2}  is an orthogonal basis for  V.
+Example 5.2.18.2
+v2V
+v1
+wTake another vector  win  R3.Define                                              andpwnvvvwvvvwp-=×+×=222111||||22||||1113vvvu2||||×2223vvvu2||||×21223113vvpvvuvvu22||||||||××+=pwn-=the origin
+Example 5.2.18.212221111||||vvvvwvvvwwvn×÷÷øöççèæ×-×-=×22||||122211111||||vvvvwvvvvwvw××-××-×=22||||00=-×-×=11vwvw0
+22222112||||vvvvwvvvwwvn×÷÷øöççèæ×-×-=×22||||222221112||||vvvvwvvvvwvw××-××-×=22||||00=×--×=22vwvw0
+Example 5.2.18.2
+v2V
+v1
+wpnSo  nis orthogonal to  Vand  pis the projection of  wonto  V.
+Theorem 5.2.19  (Gram-Schmidt Process)Let  {u1, u2, …, uk} be a basis for a vector space  V.
+1–1–1–222111222311133311122211||||||||||||kkkkkkkkvvvuvvvuvvvuuvvvvuvvvuuvvvvuuvuv222222||||||||||||×--×-×-=×-×-=×-==!"Define
+{v1, v2, …, vk} is an orthogonal basisfor  V.
+Projection to span{v1}Projection to span{v1,v2}Projection to span{v1,v2,…,vk–1}
+Theorem 5.2.19  (Gram-Schmidt Process)Define kkkvvwvvwvvw||||1||||1||||1===!222111{w1, w2, …, wk} is an orthonormalbasis for  V.
+Example 5.2.20  Question
+{u1, u2 , u3}  is a basis for  R3. Apply the Gram-Schmidt Processto transform this basis into an orthonormal basis.
+   u1=(6,−2,−3)u2=(0,1,−3)u3=(3,−9,−2)
+Example 5.2.20 Solution  v1=u1=(6,−2,−3)  v2=u2−u2⋅v1||v1||2v1=(0,1,−3)−749(6,−2,−3)=(−67,97,−187)  v3=u3−u3⋅v1||v1||2v1−u3⋅v2||v2||2v2=(3,−9,−2)−4249(6,−2,−3)−−99(−67,97,−187)=(−3,−6,−2)
+Example 5.2.20 Solution
+{w1, w2, w3} is an orthonormal basisfor  R3.
+  w1=1||v1||v1=17(6,−2,−3)=(67,−27,−37)  w2=1||v2||v2=13(−67,97,−187)=(−27,37,−67)  w3=1||v3||v3=17(−3,−6,−2)=(−37,−67,−27)
+Discussion 5.3.1One of the most important applications of the concept of orthogonality is in the study of approximations.For example, in the more advance theory of linear algebra, functions are regarded as vectors and orthogonal functions are used to compute the approximate values of other functions.
+Theorem 5.3.2Let  Vbe a subspace in  Rnand  ua vector in  Rn.
+the originu
+If  pis the projection of  uonto  V,  thend(u, p)   d(u, v)for any vector  vin  V,
+p                  Vv
+i.e.  pis the best approximationof  uin  V.≤
+Proof of Theorem 5.3.2Take any vector  vin  V.
+up                  VvnDefine  n= u–p, 
+ww= p–v
+xand  x= u–v.Observe that(a)x= n+ w;  and(b)Since  nis orthogonal to  Vand  wis in  V, the vectors  nand  ware orthogonal,i.e.  n· w= 0.
+Proof of Theorem 5.3.2||x||2= x· x
+up                  Vvnwx= (n+ w) · (n+ w)= n· n+ n· w+ w· n+ w· w= n· n+ w· w    (because  n· w= w· n= 0)= ||n||2+ ||w||2||n||2Since  d(u, p) = ||u–p|| = ||n||and     d(u, v) = ||u–v|| = ||x||,we have  d(u, p) d(u, v).≤≥
+Example 5.3.3Let V= span{(2, –5, 4), (2, 5, –6)}which is a plane in R3containing the origin. Find the (shortest) distance from u= (7, –3, 4)to V. 
+Strategy:By Theorem 5.3.2, the shortest distance is d(u, p)where pis the projection of uonto V. 
+Solution of Example 5.3.3
+form an orthogonal basisfor V. Thus by Theorem 5.2.15,
+Applying the Gram-Schmidt Process, the vectors (2, –5, 4) and 
+ (2,5,−6)−(2,−5,4)⋅(2,5,−6)(2,−5,4)⋅(2,−5,4)(2,−5,4)=(4,0,−2)  p=(7,−3,4)⋅(2,−5,4)(2,−5,4)⋅(2,−5,4)(2,−5,4)+(7,−3,4)⋅(4,0,−2)(4,0,−2)⋅(4,0,−2)(4,0,−2)=4545(2,−5,4)+2020(4,0,−2)=(6,−5,2)
+Solution of Example 5.3.3Hence the distance from uto Vis d(u, p) = ||u–p|| = ||(1, 2, 2)|| = 3.
+Discussion 5.3.4Using Theorem 5.3.2, we shall derive a useful mathematical tool for experimental scientists called the “least squares method”. In analyzing experimental results, scientists always face a problem of fitting experimental data to an equation. We illustrate the situation using the following example. 
+Example 5.3.5  (Least Squares)Suppose  r, s, tare physical quantities that satisfy the rulet= cr2+ ds+efor some constants  c, d, e.An experiment was conducted in order to find the constants  c, d, e.  In the experiment, measurements of  twere taken with various settings for values of  rand  s.
+9.51.38.08.26.15.0210210221100654321iiitsri
+Example 5.3.5  (Least Squares)Due to experimental errors, we do not expect to get the exact values of  r, s, tand hence cannot obtain the true values of  c, d, e.
+[]å=++-6122)(iiiiedscrtThe usual scheme is to get the approximate values of  c, d, ethat minimizethe squares of the errors:
+The solution of this scheme is known as the least square solution.
+Example 5.3.5  (Least Squares)Let
+÷÷÷÷÷÷÷÷øöççççççççèæ=÷÷÷øöçççèæ=÷÷÷÷÷÷÷÷øöççççççççèæ=654321626525424323222121111111ttttttedcsrsrsrsrsrsrbxAThen[]26122||||)(Axb-=++-å=iiiiedscrt2||)(||321uuubedc++-=where  u1= (r12, r22, …, r62)T,  u2= (s1, s2, …, s6)Tandu3= (1, 1, …, 1)T.
+Example 5.3.5  (Least Squares)To find the least square solution, we need to find  xthatminimize||b –Ax||= ||b –(c1u1+ c2u2+ c3u3)||.bb –AxAxspan{u1, u2, u3}It is equivalent to find the projection of  bonto  span{u1, u2, u3}.
+Definition 5.3.6Let A x= bbe a linear system where Ais an mn matrix. A vector u∈Rnis called a least squares solutionto the linear system if ||b–Au|| ≤ ||b–Av|| for all v∈Rn.
+Discussion 5.3.7By Theorem 4.1.16, V= {Av | v∈Rn} is the column space of A. Thus to find a least squares solution to Ax= b, we first need to find the best approximation of bin the column space of A. bpAv b-p b-Av b-p
+Theorem 5.3.8Let Ax= bbe a linear system where Ais an mn matrix, and let pbe the projection of bonto the column space of A. Then ||b–p|| ≤ ||b–Av|| for all v∈Rn,i.e.,  uis a least squares solutionto Ax= bif and only ifAu= p.
+Proof of Theorem 5.3.8Let Vbe the column space of A. By Theorem 5.3.2, ||b–p|| = d(b, p) ≤ d(b, w) = ||b–w|| for all w∈V.Since V= {Av | v∈Rn}, ||b–p|| ≤ ||b–Av|| for all v∈Rn.
+Example 5.3.9Let
+  A=22−554−6⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟b=7−34⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  V=span2−54⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟,25−6⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎧⎨⎪⎩⎪⎫⎬⎪⎭⎪and the column space of A
+By Example 5.3.3, the projection of bonto V p = (6, –5, 2)T.
+Example 5.3.9
+ByTheorem 5.3.8, x = (x, y)Tis a least squares solutionto Ax = b if and only if 
+  22−554−6⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟xy⎛⎝⎜⎞⎠⎟=6−52⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⇔xy⎛⎝⎜⎞⎠⎟=21⎛⎝⎜⎞⎠⎟
+Learning outcomes (Section 5.2)(6) What is orthogonal projection of a vector uonto a vector space V? (7) (Theorem 5.2.15) If we have an orthogonal (resp. orthonormal) basis for a vector space V, how can we project a vector wonto V? Why is Theorem 5.2.8a special case of Theorem 5.2.15? (8) (Theorem 5.2.19) What happens if we do not have an orthogonal basis for V? How can we convert a (non-orthogonal) basis for Vinto an orthogonal basis? (Gram-Schmidt Process). 
+Learning outcomes (Section 5.3)(1)(Theorem 5.3.2) Let Vbe a subspace in Rnand uis a vector in Rn. Which vector in Vis the best approximation of u(in V)? In other words, if you need to choose a vector in Vthat is the closest to u, which vector would you choose? (2)How we can use Theorem 5.3.2 to derive the method of least squares? The experimental data fitting example. (3)What is a least squares solution to a linear system Ax = b? (4)(Theorem 5.3.8) How we can use Theorem 5.3.2 to find a least squares solution to Ax = b? (the method in this theorem uses orthogonal projection onto the column space of A.) 

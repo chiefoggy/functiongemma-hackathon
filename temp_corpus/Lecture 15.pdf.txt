@@ -1,0 +1,92 @@
+Row Space
+Column Space
+Theorem 4.1.11
+How do we find a basis for the row space (resp. column space) of a matrix? 
+Theorem 4.1.7Given a linearly independent subset Sof Rn, extend  Sto a basis for  Rn.
+Theorem 4.1.16
+
+Lecture 15RanksandNull Spaces
+Theorem 4.2.1The row space and column space of a matrix have the same dimension.
+Proof of Theorem 4.2.1Let  Abe a matrix and  Ra row-echelon form of  A.
+÷÷÷÷÷÷øöççççççèæ*Ä*Ä*Ä=0!RSince the row space of  Acoincides with that of  Rby Remark 4.1.9, the dimension of the row space of  Ais equal to the number of leading entries in  R.
+the number of nonzero rows=the number of leading entries
+Remark 4.1.9: Let  Abe a matrix and  Ra row-echelon form of  A. Then the set of nonzero rows of  Ris a basis for the row space of  A.
+Proof of Theorem 4.2.1
+÷÷÷÷÷÷øöççççççèæ*Ä*Ä*Ä=0!ROn the other hand, by Remark 4.1.13, the columns of  Athat correspond to the columns with leading entries in  Rform a basis for the column space of  A.Thus the dimension of the column space of  Ais also equal to the number of leading entries in  R.
+Remark 4.1.13: Let  Abe a matrix and  Ra row-echelon form of  A. Then a basis for the column space of  Acan be obtained by taking the columns of  Athat correspond to the columns with leading entries in  R.
+Proof of Theorem 4.2.1So the row space and column space of  Ahave the same dimension.
+Example 4.2.2GaussianElimination  A=13−52126−84126−25−2−3−925−5−8⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟  ⎯→⎯R=13−5210020−10001000000⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟By Remark 4.1.9,{(1, 3, –5, 2, 1), (0, 0, 2, 0, –1), (0, 0, 0, 1, 0)}  is a basis for the row space of  A.By Remark 4.1.13,{(1, 2, 2, –3), (–5, –8, –2, 25), (2, 4, 5, –5)}  is a basis for the column space of  A.Both the row space and the column space of  Aare  3.
+Definition 4.2.3The rankof a matrix is the dimension of its row space or column space.We denote the rank of a matrix  Aby  rank(A).If  Ris a row-echelon form of  A,  thenrank(A)=the number of nonzero rows of  R=the number of leading entries in  R.=the number of pivot columns of  R
+Example 4.2.4.1Ranks of zero matrices are zero,i.e.  rank(0) = 0.The rank of the  nxnidentity matrix is  n,i.e.  rank(In) = n
+Example 4.2.4.2
+So  rank(A) = 3.
+GaussianElimination
+  A=1−2142156216153−33113−191312262464012⎛⎝⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟ ⎯→⎯1−214053−20013000000000000⎛⎝⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟
+Example 4.2.4.2
+So  rank(B) = 3.Note that  BT= Aand  rank(A) = rank(B).
+  B=122−312−2116313461515131240463−192612⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟ ⎯→⎯100−747300101−31−22001188000000⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟Gaussian-JordanElimination
+Example 4.2.4.3What is the largest possible rank of a  6 x3matrix ?SolutionWhat we need to do is to find out the largest possible number of leading entries in a row-echelon form of a  6 x3matrix.The answer is  3.÷÷÷÷øöççççèæÄ*Ä*Ä0
+Remark 4.2.51.For an  m xnmatrix  A,  rank(A) £ min{m, n}.2.An  m xnmatrix  Awith  rank(A) = min{m, n}is said to be of full rank.3.rank(A) = rank(AT )for any matrix  Abecause the row space of  Ais the column space of  AT.
+Exercise 4.2.5Show that a square matrix  Ais of full rank if and only if  det(A) 0.≠
+Remark 4.2.6A linear system  Ax= bis consistent if and only if  Aand the augmented matrix  ( A| b)have the same rank.
+Example 4.2.7
+  x+2y=−32x+6y+8z=−54x+18y+43z=−6−3x+8y+53z=16⎧⎨⎪⎪⎩⎪⎪  A=12026841843−3853⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟(A|b)=120−3268−541843−6−385316⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟Consider the following linear system: 
+Example 4.2.7GaussianElimination
+The system is inconsistent. 120−3268−541843−6−385316⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟ ⎯→⎯120−3028100310001⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟and  rank(( A|  b)) = 4.Also,  rank(A) = 3
+Let Aand Bbe mxnand nxpmatrices respectively. Then rank(AB) ≤min{rank(A) , rank(B) }.
+Theorem 4.2.8
+Goal:rank(AB) =dim (the column space of AB) ≤dim (the column space of A) = rank(A).And rank(AB) ≤ rank(B).
+Let A= (a1a2···  an) and B= (b1b2···  bp) where aiand biare i-th  columns of Aand Brespectively. Following Notation 2.2.15, AB=(Ab1Ab2···  Abp) where Abiare i-th  columns of AB.
+By Theorem 4.1.16,Abi∈the column space of A= span{a1, a2, ..., an} and hence by Theorem 3.2.10, the column space of AB=span{Ab1, Ab2, . . . , Abp}⊆span{a1, a2, ..., an} =the column space of A. 
+Proof of Theorem 4.2.8
+Theorem 4.1.16: Let  Abe an  mxnmatrix. Then the column space of A = {Au | u    Rn}.∈
+Sorank(AB) =dim (the column space of AB) ≤dim (the column space of A) = rank(A).
+Proof of Theorem 4.2.8
+On the other hand, by applying the above equation to BTAT, we have rank(BTAT) ≤ rank(BT) and hence rank(AB) = rank((AB)T) = rank(BTAT) ≤ rank(BT) = rank(B). Thus we have shown rank(AB) ≤min{rank(A) , rank(B) }.
+Definition 4.3.1Let  Abe an  mxnmatrix.The solution space of the homogeneous system of linear equations  Ax= 0is known as the nullspaceof  A.The dimension of the nullspace of  Ais called the nullityof  Aand is denoted by  nullity(A).Since  Ais an  mxnmatrix, the nullspace is a subspace of  Rn.So  nullity(A) ≤n.
+Example 4.3.3  QuestionFind a basis for the nullspaceof the matrix
+  A=2−2−6−122−1−42−1−32710−2382−5⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟
+Example 4.3.3.1  Solution
+Gauss-JordanElimination
+  (A|0)=2−2−6−1202−1−42−10−327100−2382−50⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟ ⎯→⎯10−10−200120−30000100000000⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟
+Example 4.3.3.1  Solution
+Thus{(1, –2, 1, 0, 0)T, (2, 3, 0, 0, 1)T}is a basis for the nullspace of  A.nullity(A) = 2.
+The general solution of  Ax= 0is
+where  sand  tare arbitrary parameters.   x=s1−2100⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟+t23001⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟
+Example 4.3.3.2  QuestionDetermine the nullity of the matrix
+  B=331130202−432⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Example 4.3.3.2  Solution
+Gauss-JordanElimination
+The general solution of  Bx= 0is
+where  tis an arbitrary parameter.
+  (B|0)=33110302002−4320⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ ⎯→⎯100−20300101130001100⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟   x=t203−113−101⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟
+Example 4.3.3.2  SolutionThus{(20, –11, –30, 3)T}is a basis for the nullspace of  B.nullity(B) = 1.
+Remark on Example 4.3.3.2
+Gauss-JordanElimination
+rank(B) = 3.Note that      rank(B) + nullity(B) = 3 + 1 = 4=the number of columns of  B.
+ ⎯→⎯100−20301011300110⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  B=331130202−432⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Theorem 4.3.4  (Dimension Theorem for Matrices)If  Ais a matrix with  ncolumns, thenrank(A) + nullity(A) = n.
+Proof of Theorem 4.3.4Let  Rbe a row-echelon form of  A.
+The column of  Rcan be classified into twotypes:those have leading entriesthose have no leading entries.
+÷÷÷÷÷÷øöççççççèæ*Ä*Ä*Ä=0!R
+Proof of Theorem 4.3.4The rank of  Ais equal to the number of leading entries in  R.Since each column in  Rthat has no leading entry gives us an arbitrary parameter in the general solution of  Ax= 0(if we follow the method discussed in Lecture 1and Lecture 2),the nullity of  Ais equal to the number of such columns.So     rank(A) + nullity(A)=the number of columns of  A.
+Example 4.3.5In each of the following cases, find  rank(A),  nullity(A)and  nullity(AT).(rank(A), nullity(A), nullity(AT))1.Ais a  3 x5matrix and  rank(A) = 3.(3, 2, 0)2.Ais a  7 x6matrix and  nullity(A) = 3.(3, 3, 4)3.Ais a  4 x2matrix and  nullity(AT) = 3.(1, 1, 3)
+Theorem 4.3.6Suppose the system of linear equations  Ax= bhas a solution  v.Then the solution set of the system is given byS= { u + v| uis an element of the null space ofA}.The general solution of  Ax= bcan be written asx=(the general solution of  Ax= 0)+ (one particular solution of  Ax=b)
+Proof of Theorem 4.3.6vis a solution of the system    Av= bTo show(the solution set ofAx= b) ⊆S:Let  wbe any solution of the system, i.e.  Aw= b.A(w–v) = Aw–Av= b–b= 0So  w–vis a solution of  Ax= 0.Write  w= u+ vwhere  u= w–vis an element of the nullspace of  A.So  wis an element of  S.Hence  (the solution set ofAx= b) ⊆S.
+⇒
+Proof of Theorem 4.3.6To show S⊆(the solution set ofAx= b) :Take any element  wof  S,  i.e.  w= u+ vwhere  uis an element of the nullspace of  A.Aw= Au+Av= 0+b= bSo  wis a solution of  Ax= b.Hence  S⊆(the solution set ofAx= b).We have shown that  (the solution set ofAx= b) = S.
+Example 4.3.8Consider the linear system  Ax= bwhere
+By Example 4.3.3.1, 
+the nullspace of  A=
+  A=2−2−6−122−1−42−1−32710−2382−5⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟b=79−10−7⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟   s1−2100⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟+t23001⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟s,t  in  R⎧⎨⎪⎪⎪⎩⎪⎪⎪⎫⎬⎪⎪⎪⎭⎪⎪⎪
+Example 4.3.8(2, 1, –1, 1, 0)Tis a solution of  Ax= b.The general solution of  Ax= bcan be written as
+where  sand  tare arbitrary parameters.   x=s1−2100⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟+t23001⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟+21−110⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟
+Remark 4.3.9Consider the ordinary differential equation
+where  a, b, care real constants.)(22xfcydxdybdxyda=++÷÷øöççèæ=+++÷÷øöççèæ=++=)(  ofsolution  particular one0  ofsolution  general the2222xfcydxdybdxydacydxdybdxydayThe general solution can be written as
+Remark 4.3.9The form of the general solution looks very similar to the solution of  Ax = bdiscussion in Theorem 4.3.6.To explain the relation between these two different types of equations, we need the concept of general vector spacethat will not be studied in this module.
+Learning outcomes (Section 4.2)(1) (Theorem 4.2.1)  The row space and column space of a matrix has the same dimension. Definition of rank. 
+(3) What can we say about rank(AB) in relation to rank(A) and rank(B)? 
+(2) A square matrix Ais invertible if and only if Ais of full rank. 
+Learning outcomes (Section 4.3)(4) What is the nullspace and the nullity of a matrix? 
+(6) (Theorem 4.3.6) The construction of the solution set of Ax = b using the nullspace of Aand a particular solution of Ax = b. 
+(5) The dimension theorem for matrices. 

@@ -3,14 +3,12 @@
 import { useState, useRef, useEffect } from "react";
 
 type TextBlock = { type: "text"; content?: string; data?: string };
-type StockBlock = { type: "stock_widget"; data: { ticker: string; name: string; price: number } };
-type NewsBlock = { type: "news_widget"; data: { ticker: string; headlines: { title: string; link: string }[] } };
-type Block = TextBlock | StockBlock | NewsBlock;
+type Block = TextBlock;
 type ResponseContent = string | Block[];
 
 type Message = { role: "user" | "assistant"; content: ResponseContent };
 type Metrics = { source: string; confidence: number; latency_ms: number } | null;
-type IndexStatus = { library_root: string | null; last_run: number | null; files_indexed: number; errors: string[] };
+type IndexStatus = { library_root: string | null; last_run: number | null; files_indexed: number; indexed_files?: string[]; errors: string[] };
 type SuggestedRoot = { label: string; path: string };
 type RequestFiles = { requestIndex: number; files: string[] };
 
@@ -40,32 +38,6 @@ function MessageBubble({ role, content }: { role: "user" | "assistant"; content:
             <div key={i} dangerouslySetInnerHTML={{ __html: formatText(t) }} />
           );
         }
-        if (block.type === "stock_widget") {
-          const b = block as StockBlock;
-          return (
-            <div key={i} className="rounded-xl border border-neutral-800 bg-neutral-900/80 p-3 transition-all duration-150 hover:shadow-md">
-              <div className="text-xs font-medium uppercase tracking-wide text-neutral-500">{b.data.ticker} – {b.data.name}</div>
-              <div className="text-xl font-semibold text-emerald-400 mt-1">${b.data.price.toFixed(2)}</div>
-            </div>
-          );
-        }
-        if (block.type === "news_widget") {
-          const b = block as NewsBlock;
-          return (
-            <div key={i} className="rounded-xl border border-neutral-800 bg-neutral-900/80 p-3 transition-all duration-150 hover:shadow-md">
-              <div className="text-xs font-medium uppercase tracking-wide text-neutral-500 mb-2">Latest news for {b.data.ticker}</div>
-              <ul className="list-disc list-inside space-y-1 text-sm text-neutral-200">
-                {b.data.headlines.map((h, j) => (
-                  <li key={j}>
-                    <a href={h.link} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline transition-colors duration-150">
-                      {h.title}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          );
-        }
         return null;
       })}
     </div>
@@ -77,7 +49,7 @@ export default function App() {
     {
       role: "assistant",
       content:
-        "Hi! I’m Deep-Focus. Set your library root and index to ask about your files (e.g. syllabus, quiz timeline). You can also ask for stock prices, news, or calculations.",
+        "Hi! I’m Deep-Focus. Set your library root and index to ask about your files (e.g. syllabus, quiz timeline, lecture notes).",
     },
   ]);
   const [input, setInput] = useState("");
@@ -304,31 +276,71 @@ export default function App() {
             <h2 className="text-xs font-medium uppercase tracking-wide text-neutral-400">Library location</h2>
             <div>
               <label className="text-xs font-medium uppercase tracking-wide text-neutral-500 block mb-2">Path picker (path sent to backend)</label>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={pathPickerValue}
-                  onChange={(e) => { setPathPickerValue(e.target.value); setValidateResult(null); }}
-                  placeholder="/path/to/folder"
-                  className="flex-1 min-w-0 rounded-lg bg-neutral-900 border border-neutral-800 px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-150"
-                />
-                <button
-                  type="button"
-                  onClick={() => pathPickerValue.trim() && handleSetRootByPath(pathPickerValue.trim())}
-                  disabled={indexing || !pathPickerValue.trim()}
-                  className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-500 disabled:opacity-50 shrink-0 transition-all duration-150 ease-out active:scale-[0.98]"
-                >
-                  Set
-                </button>
-                <button
-                  type="button"
-                  onClick={handleValidate}
-                  disabled={validating}
-                  className="rounded-lg bg-neutral-800 px-3 py-2 text-sm font-medium text-neutral-200 hover:bg-neutral-700 disabled:opacity-50 shrink-0 transition-all duration-150 ease-out active:scale-[0.98]"
-                >
-                  {validating ? "…" : "Validate"}
-                </button>
-              </div>
+                <div className="flex flex-col gap-2 flex-1 min-w-0">
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={pathPickerValue}
+                      onChange={(e) => { setPathPickerValue(e.target.value); setValidateResult(null); }}
+                      placeholder="/path/to/folder"
+                      className="flex-1 min-w-0 rounded-lg bg-neutral-900 border border-neutral-800 px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-150"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => pathPickerValue.trim() && handleSetRootByPath(pathPickerValue.trim())}
+                      disabled={indexing || !pathPickerValue.trim()}
+                      className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-500 disabled:opacity-50 shrink-0 transition-all duration-150 ease-out active:scale-[0.98]"
+                    >
+                      Set
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleValidate}
+                      disabled={validating}
+                      className="rounded-lg bg-neutral-800 px-3 py-2 text-sm font-medium text-neutral-200 hover:bg-neutral-700 disabled:opacity-50 shrink-0 transition-all duration-150 ease-out active:scale-[0.98]"
+                    >
+                      {validating ? "…" : "Validate"}
+                    </button>
+                  </div>
+                  <label className="flex items-center justify-center gap-2 rounded-lg border border-dashed border-neutral-700 p-2 text-xs text-neutral-500 hover:border-neutral-500 hover:text-neutral-400 cursor-pointer transition-all">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
+                    <span>Choose folder from machine...</span>
+                    <input
+                      type="file"
+                      // @ts-ignore
+                      webkitdirectory=""
+                      directory=""
+                      className="hidden"
+                      onChange={async (e) => {
+                        const files = e.target.files;
+                        if (!files || files.length === 0) return;
+                        
+                        setIndexing(true);
+                        const formData = new FormData();
+                        for (let i = 0; i < files.length; i++) {
+                          formData.append("files", files[i]);
+                        }
+                        
+                        try {
+                          const res = await fetch("/api/library/upload", {
+                            method: "POST",
+                            body: formData
+                          });
+                          const data = await res.json();
+                          if (data.ok) {
+                            setLibraryRoot(data.root);
+                            setPathPickerValue(data.root);
+                            if (data.status) setIndexStatus(data.status);
+                          }
+                        } catch (err) {
+                          console.error("Upload failed", err);
+                        } finally {
+                          setIndexing(false);
+                        }
+                      }}
+                    />
+                  </label>
+                </div>
               {validateResult && (
                 <div className={`mt-2 text-xs ${validateResult.ok ? "text-green-500" : "text-amber-500"}`}>
                   {validateResult.ok ? (
@@ -374,15 +386,39 @@ export default function App() {
               {indexing ? "Indexing…" : "Re-index"}
             </button>
             {indexStatus && (
-              <div className="space-y-1 text-xs text-neutral-500">
-                {indexStatus.files_indexed != null && (
-                  <div>Files indexed: {indexStatus.files_indexed}</div>
-                )}
-                {indexStatus.last_run != null && (
-                  <div>Last run: {new Date(indexStatus.last_run * 1000).toLocaleString()}</div>
-                )}
-                {indexStatus.errors?.length > 0 && (
-                  <div className="text-amber-500">{indexStatus.errors.length} error(s)</div>
+              <div className="space-y-3">
+                <div className="space-y-1 text-xs text-neutral-500">
+                  {indexStatus.files_indexed != null && (
+                    <div className="flex justify-between">
+                      <span>Files indexed:</span>
+                      <span className="font-semibold text-neutral-400">{indexStatus.files_indexed}</span>
+                    </div>
+                  )}
+                  {indexStatus.last_run != null && (
+                    <div className="flex justify-between">
+                      <span>Last run:</span>
+                      <span className="font-semibold text-neutral-400">{new Date(indexStatus.last_run * 1000).toLocaleString()}</span>
+                    </div>
+                  )}
+                  {indexStatus.errors?.length > 0 && (
+                    <div className="text-amber-500">{indexStatus.errors.length} error(s)</div>
+                  )}
+                </div>
+
+                {indexStatus.indexed_files && indexStatus.indexed_files.length > 0 && (
+                  <div className="space-y-2 border-t border-neutral-800 pt-3">
+                    <h2 className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Library Content</h2>
+                    <ul className="max-h-48 overflow-y-auto space-y-1 pr-1 custom-scrollbar">
+                      {indexStatus.indexed_files.map((file, i) => (
+                        <li key={i} className="group flex items-center gap-2 rounded-md px-2 py-1.5 text-[11px] text-neutral-400 hover:bg-neutral-800/50 hover:text-neutral-200 transition-colors">
+                          <svg className="w-3 h-3 text-neutral-600 group-hover:text-neutral-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                          <span className="truncate" title={file}>{file.split('/').pop()}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 )}
               </div>
             )}
@@ -478,7 +514,7 @@ export default function App() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="e.g. Summarize the syllabus · What's the quiz timeline? · Stock price of AAPL"
+              placeholder="e.g. Summarize the syllabus · What's the quiz timeline? · When is the next assignment due?"
               className="flex-1 rounded-lg bg-neutral-900 border border-neutral-800 px-4 py-3 text-sm text-neutral-200 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-150"
               disabled={loading}
             />

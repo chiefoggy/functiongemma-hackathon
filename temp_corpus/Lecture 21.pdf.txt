@@ -1,0 +1,62 @@
+Lecture 21Linear Transformations
+Definition 7.1.1A linear transformationT : Rn®Rmis a mapping from  Rnto  Rmof the form
+where a11, a12, …, amnare real numbers.    Tx1x2!xn⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟=a11x1+a12x2+"+a1nxna21x1+a22x2+"+a2nxn!am1x1+am2x2+"+amnxn⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟ for  x1x2!xn⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟∈RnIn particular, if n = m, Tis also called a linear operatoron Rn.
+We can rewrite the formula of Tas
+   Tx1x2!xn⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟=a11a12"a1na21a22"a2n!!!am1am2"amn⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟x1x2!xn⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟The matrix             above is called the standardmatrixfor T.  (aij)m×n
+Example 7.1.2.1Let I: Rn®Rnbe the identity transformationdefined by  I(u) = ufor all  uin  Rn.It is a linear operator on  Rnand the standard matrix is the identity matrixIn.
+Example 7.1.2.2Let O : Rn®Rmbe the zero transformationdefined by  O(u) = 0mfor all  uin  Rn.It is a linear transformation and the standard matrix is the zero matrix0nm.
+Example 7.1.2.3Let  T : R2®R3be defined by 
+   Txy⎛⎝⎜⎞⎠⎟⎛⎝⎜⎞⎠⎟=2x+yx+yx⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟   for  xy⎛⎝⎜⎞⎠⎟∈R2It is a linear transformation and the standard matrix
+ 211110⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Discussion 7.1.3For abstract vector spaces, linear transformations have a different definition: Let Vand Wbe vector spaces. A mapping T: V→ Wis called a linear transformation ifT(cu+ dv) = cT(u) + dT(v)for all vectorsu, vin  Rnand  all scalarsc,d.It can be shown that the two definitions are the same if V=Rnand W=Rm. (See Tutorial 11.) 
+Theorem 7.1.4If  T : Rn®Rmis a linear transformation, then1.T(0) = 0;2.If u1, u2, …, ukare in Rn and c1, c2, …, ckare in scalar, then T(c1u1+ c2u2+ ··· + ckuk) = c1T(u1) + c2T(u2) + ··· + ckT(uk).
+Proof of Theorem 7.1.4Let Abe the standard matrix for T, i.e., T(u) = Aufor all uin Rn.    T(0)=A0=0    T(c1u1+c2u2+!+ckuk)=A(c1u1+c2u2+!+ckuk)    =c1Au1+c2Au2+!+ckAuk    =c1T(u1)+c2T(u2)+!+ckT(uk)
+Example 7.1.5.1 Let  T1: R2®Rbe defined by  
+It is nota linear transformation.   T1xy⎛⎝⎜⎞⎠⎟⎛⎝⎜⎞⎠⎟=x−12y+1⎛⎝⎜⎞⎠⎟     for xy⎛⎝⎜⎞⎠⎟∈R2Note that     which violates Theorem 7.1.4.1.   T100⎛⎝⎜⎞⎠⎟⎛⎝⎜⎞⎠⎟=−1+1⎛⎝⎜⎞⎠⎟
+Example 7.1.5.1 Let  T2: R3®R2be defined by  
+It is nota linear transformation.   T2xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=xyz⎛⎝⎜⎞⎠⎟     for xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟∈R3
+Note that T2violates Theorem 7.1.4.2. 
+  T2100⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟+010⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=T2110⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=10⎛⎝⎜⎞⎠⎟  T2100⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟+T2010⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=00⎛⎝⎜⎞⎠⎟+00⎛⎝⎜⎞⎠⎟=00⎛⎝⎜⎞⎠⎟
+Discussion 7.1.6Let  {u1, u2, …, un}be a basis for  Rn.Any vector  vin  Rncan be written asv= c1u1+ c2u2+ ··· + cnunfor some scalar  c1, c2, …, cn.Suppose  T : Rn®Rmis a linear transformation.By Theorem 7.1.4.2,T(v) = c1T(u1) + c2T(u2) + ··· + cnT(un).The image  T(v)of  vis completely determined by the images  T(u1), T(u2), …, T(un)of the basis vectors  u1,u2,…,un.
+Example 7.1.7  QuestionLet  T : R3®R2be the linear transformation such that
+(a)Find the image of  (–1, 5, 7)Tunder  T.(b)Find the formula of   T.
+  T111⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=33⎛⎝⎜⎞⎠⎟T011⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=22⎛⎝⎜⎞⎠⎟T20−1⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=03⎛⎝⎜⎞⎠⎟
+Example 7.1.7 (a)  Solution{(1, 1, 1)T,  (0, 1, 1)T,  (2, 0, –1)T}is a basis for  R3.
+ −157⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=3111⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟+2011⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟−220−1⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  T−157⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=T3111⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟+2011⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟−220−1⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+  =3T111⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟+2T011⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟−2T20−1⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ =333⎛⎝⎜⎞⎠⎟+222⎛⎝⎜⎞⎠⎟−203⎛⎝⎜⎞⎠⎟=137⎛⎝⎜⎞⎠⎟Hence
+  T−157⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=137⎛⎝⎜⎞⎠⎟
+Example 7.1.7 (b)  Solution
+  xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=(x−2y+2z)111⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟+(−x+3y−2z)011⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟+(y−z)20−1⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  Txyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=T(x−2y+2z)111⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟+(−x+3y−2z)011⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟+(y−z)20−1⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟Let (x, y, z)Tbe any vector in R3. Following the procedure of Part (a), by solving the equation 
+  xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=c1111⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟+c2011⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟+c320−1⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Example 7.1.7(b)  Solution
+  =(x−2y+2z)T111⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟+(−x+3y−2z)T011⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟−(y−z)T20−1⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  =(x−2y+2z)33⎛⎝⎜⎞⎠⎟+(−x+3y−2z)22⎛⎝⎜⎞⎠⎟+(y−z)03⎛⎝⎜⎞⎠⎟=x+2zx+3y−z⎛⎝⎜⎞⎠⎟So the general formula of Tis 
+  Txyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=x+2zx+3y−z⎛⎝⎜⎞⎠⎟
+Discussion 7.1.8
+By Discussion 7.1.6, we know that the images T(e1) , T(e2), …, T(en)completely define T. Furthermore for each ei,T(ei) = Aei= the i-th column of A.
+Let  T : Rn®Rmbe any linear transformation andlet  {e1, e2, …, en}be the standard basis for  Rn.
+Then   A= (T(e1)  T(e2)  ···  T(en)).The standard matrix for T
+Example 7.1.9We use the linear transformation defined in Example 7.1.7. Instead of finding the formula of Tdirectly as in Example 7.1.7.2, we compute the standard matrix following Discussion 7.1.8. 
+  10210011001011−1001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟G−J⎯→⎯⎯1001−22010−13−200101−1⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+ 100⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=111⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟−011⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ 010⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=−2111⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟+3011⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟+20−1⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ 001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=2111⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟−2011⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟−20−1⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  T100⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=T111⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟−T011⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=11⎛⎝⎜⎞⎠⎟Then, we have 
+Similarly,
+  T010⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=03⎛⎝⎜⎞⎠⎟  T001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=2−1⎛⎝⎜⎞⎠⎟So the standard matrix for Tis 
+  T100⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟T010⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟T001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟=10213−1⎛⎝⎜⎞⎠⎟
+Definition 7.1.10Let  S : Rn®Rmand  T : Rm®Rkbe linear transformations.The compositionof  Twith  S,  denoted by  T!Sis a mapping from  Rnto  Rksuch that(T!S)(u) = T(S(u))for all  uin  Rn.RnuRmS(u)RkT(S(u))ST
+T!S
+Theorem 7.1.11If  S : Rn®Rmand  T : Rm®Rkare linear transformations, then  T!S: Rn®Rkis again a linear transformation. 
+If  Aand  Bare the standard matrices for the linear transformations  S : Rn®Rmand  T : Rm®Rkrespectively, then the standard matrixfor the composition  T!S: Rn®Rkis given by  BA.
+Proof of Theorem 7.1.11For all  uin  Rn,(T!S)(u)= T(S(u))= T(Au)= BAuSo the standard matrix for the composition  T !Sis  BAand T !Sis a linear transformation.
+Example 7.1.12Let  S : R3®R2be the linear transformation defined byfor all           in  R3.÷÷÷øöçççèæzyx÷øöçèæyx Sxyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=x+yy−z⎛⎝⎜⎞⎠⎟ Txy⎛⎝⎜⎞⎠⎟⎛⎝⎜⎞⎠⎟=xx+yx−y⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟and let  T : R2®R3be the linear transformation defined byfor all           in  R2.
+Example 7.1.12Then  T!Sis a linear transformation from  R3to  R3.For all  (x, y, z)Tin  R3
+   (T!S)xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=TSxyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ =Tx+yy−z⎛⎝⎜⎞⎠⎟⎛⎝⎜⎜⎞⎠⎟⎟ Txy⎛⎝⎜⎞⎠⎟⎛⎝⎜⎞⎠⎟=xx+yx−y⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟Recall
+   (T!S)xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=x+yx+y+y−zx+y−(y−z)⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=x+yx+2y−zx+z⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  =x+yx+2y−zx+z⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  =11012−1101⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟the general formula for T.
+the standard matrix for T.
+Example 7.1.12
+The standard matrix of  T!Sis
+ 10111−1⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟11001−1⎛⎝⎜⎞⎠⎟=11012−1101⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟The standard matrix of  Sis 11001−1⎛⎝⎜⎞⎠⎟The standard matrix of  Tis 10111−1⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Learning outcomes (Section 7.1)(1) What is a linear transformation Tfrom Rnto Rm? What is the standard matrix for T? What is the formula for T? 
+(3) (Theorem 7.1.4) Two properties of linear transformations. 
+(2) (Remark 7.1.3) Definition of linear transformation for abstract vector spaces. 
+Learning outcomes (Section 7.1)(4) Why is it that we can completely determine a linear transformation Tonce we know the images T(u1), T(u2), …, T(un)for a basis {u1, u2, …, un}of Rn. 
+(5) What do the columns of the standard matrix Atell us? 
+(6) How we can compose two linear transformations to get another linear transformation. What is the standard matrix of the resulting linear transformation? 

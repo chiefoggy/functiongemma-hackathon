@@ -1,0 +1,418 @@
+Lecture	6	
+Invertible	Matrices	(Continued)	
+and	
+Determinants	
+
+Theorem	2.4.7	
+If  A  is a square matrix, then the following 
+statements are equivalent: 
+1.  A  is invertible. 
+2. The linear system  Ax = 0  has only the trivial 
+solution. 
+3. The reduced row-echelon form of  A  is an 
+identity matrix 
+4.  A  can be expressed as a product of elementary 
+matrices. 
+ 1⇒2⇑⇓4⇐3 1⇔2⇔3⇔4Goal: 
+It is enough to show that  
+Why? 	
+For example,  
+ 1⇒2⇑⇓4⇐3
+ 1⇒22⇒1⎫⎬⎭⎪⇒1⇔2
+Proof	of	Theorem	2.4.7		(1				2)	
+Suppose  A  is invertible. 
+             Ax = 0 
+Hence the linear system  Ax = 0  has only the trivial 
+solution. 
+⇒⇒⇒⇒(Solve linear systems)  A–1Ax = A–10 
+Ix = 0 
+x = 0 
+Proof	of	Theorem	2.4.7		(2				3)	
+Suppose  Ax = 0  has only the trivial solution. 
+The augmented matrix of  Ax = 0  is  ( A | 0 ).  
+By Remark 1.4.8.2,  ( A | 0 )  has a row-echelon form 
+ 
+ 
+ 
+ 
+ 
+(Since  A  is a square matrix,  there are no zero rows 
+in the row-echelon form.) 
+⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎝⎛⊗∗⊗∗∗⊗0000000!"#""!!⇒
+Proof	of	Theorem	2.4.7		(2				3)	
+By Remark 2.9.2,  ( A | 0 )  has a row-echelon form 
+ 
+ 
+ 
+ 
+ 
+(Since  A  is a square matrix,  there are no zero rows 
+in the row-echelon form.) 
+⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎝⎛⊗∗⊗∗∗⊗0000000!"#""!!⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎝⎛⊗∗⊗∗∗⊗⎯→⎯0000000)|(!"#""!!0AGaussian 
+Elimination 
+⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎝⎛⎯→⎯0100000100001!"#""!!Gauss-Jordan 
+Elimination 
+i.e. the reduced row-echelon form of  ( A | 0 )  is  ( I | 0 ). 
+ 
+Hence the reduced row-echelon form of  A  is  I. 
+⇒
+Proof	of	Theorem	2.4.7		(3	   	4)	
+Suppose the reduced row-echelon form of  A  is  I. 
+There exists elementary matrices  E1, E2, …, Ek  
+such that  Ek···E2E1 A = I. 
+ 
+Hence  A = E1
+–1E2
+–1···Ek
+–1I = E1
+–1E2
+–1···Ek
+–1. 
+ 
+Since  E1
+–1, E2
+–1, …, Ek
+–1  are elementary matrices,  
+A  is a product of elementary matrices. 
+⇒
+Proof	of	Theorem	2.4.7		(4	   	1)	
+Suppose  A  is a product of elementary matrices. 
+Since all elementary matrices are invertible, by 
+Remark 2.3.10,  A  is invertible. 
+⇒
+Discussion 2.4.8  (A Method to find Inverses) 
+Let  A  be an invertible matrix of order  n   and let  
+E1, E2, …, Ek  be elementary matrices such that  
+Ek···E2E1A = I  (as in the proof of Theorem 2.4.7). 
+Then  Ek···E2E1A = I       Ek···E2E1 = A–1. 
+)|(IAEEEk12!)|(1IAA−=)|(11IAAA−−=)|(1−=AI⇒Put  A  and  I  together to form an  n x 2n  matrix  
+( A | I ). 
+Discussion 2.4.8  (A Method to find Inverses) 
+Pre-multiplications of  ( A | I )  by elementary 
+matrices correspond to do elementary row operations 
+on  ( A | I ).  
+We can use elementary row operations to transform  
+( A | I )  to  ( I | A–1 ).  
+This provides us a method to find the inverse of  A. 
+Example	2.4.9		Question	
+Find the inverse of 
+ 
+ 
+ 
+ 
+if it exists. 
+Goal:	if	the	inverse	exists,	we	expect	
+Gauss-Jordan 
+ 
+Elimination 
+⎯→⎯ 21−3100−230010−14−2001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  A=21−3−230−14−2⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ 100???010???001???⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+ 100610−9010−47−600159−8⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟So 
+  A−1=610−9−47−659−8⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Gauss-Jordan 
+ 
+Elimination 
+⎯→⎯ 21−3100−230010−14−2001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Remark: The details of Gauss-Jordan Elimination can be 
+found at the end of this lecture note. 
+Remark	2.4.10	
+Theorem 2.4.7 tells us that a square matrix is 
+invertible if and only if its reduced row-echelon form 
+is an identity matrix. 
+This can be used to check whether a square matrix is 
+invertible. 
+Actually, to check whether a matrix is invertible, we 
+only need to reduce the matrix to a row-echelon 
+form. 
+If the row-echelon form of a square matrix has no 
+zero row, the matrix is invertible; otherwise, it is not 
+invertible. 
+Example	2.4.11.1	
+A  is not invertible. 
+  A=5−4−53−10125⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  A=5−4−53−10125⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟Gauss 
+Elimination 
+⎯→⎯ 1250−7−15000⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Why? 	
+Example	2.4.11.2		Question	
+Show that  A  is invertible if and only if  ad – bc   0. 
+⎟⎠⎞⎜⎝⎛=dcbaA≠
+Example	2.4.11.2		Solution	
+By Example 2.3.8, we already know that  A  is 
+invertible if  ad – bc   0. 
+So we only need to show that if  A  is invertible, then  
+ad – bc   0.  (How?) 
+≠≠Recall from Theorem 2.4.7: If A  is invertible, then the 
+reduced row-echelon form of  A  is an identity matrix. 
+ abcd⎛⎝⎜⎞⎠⎟→ ⊗∗0⊗⎛⎝⎜⎞⎠⎟Gauss 
+→ 1∗01⎛⎝⎜⎞⎠⎟The entries depend on a, b, c, d, and are expected to be nonzero. 
+Will two nonzero      imply ad – bc    0? ≠⊗Elimination Elimination 
+Gauss-J 
+Since  a, b, c, d  are unknown constants, in order to 
+avoid adding  1/0  of a row to another row (see 
+Example 1.4.10 (3) Lecture 03), we need to study  A  
+under three different situations: 
+Case 1:  a = 0  and  c = 0. 
+Case 2:  a    0. 
+Case 3:  a = 0  and  c   0. 
+≠≠ abcd⎛⎝⎜⎞⎠⎟Case  a   0 ≠Case  a = 0 
+Case  c = 0 
+Case  c   0 ≠
+Start Step 2 of GE 
+Possible? 
+  R1↔R2
+Example	2.4.11.2		Solution		Case	1:		a	=	0		and		c	=	0	
+Gaussian 
+ 
+Elimination 
+Under the assumption that  a = 0  and  c = 0,  A  is 
+not invertible. 
+ 
+(Note that for this case,  ad – bc = 0.) 
+   A=0b0d⎛⎝⎜⎞⎠⎟⎯→⎯⎯0∗00⎛⎝⎜⎞⎠⎟
+Example	2.4.11.2		Solution		Case	2:		a	    0	
+⎟⎟⎠⎞⎜⎜⎝⎛⎯→⎯⎟⎠⎞⎜⎝⎛=−abcadbadcba0AGaussian 
+ 
+Elimination 
+Under the assumption that  a   0,  if  A  is invertible, 
+then  ad – bc   0. 
+≠≠≠
+
+Example	2.4.11.2		Solution		Case	3:		a	=	0		and		c			0	
+⎟⎠⎞⎜⎝⎛⎯→⎯⎟⎠⎞⎜⎝⎛=bdcdcb00AGaussian 
+ 
+Elimination 
+Under the assumption that  a = 0  and  c   0,  if  A  is 
+invertible, then  b   0. 
+ 
+For this case,  b    0     ad – bc = – bc    0.  
+≠≠≠≠⇒≠
+
+Theorem	2.4.12	
+Let  A, B  be square matrices of the same size. 
+If  AB = I,  then 
+A, B  are invertible, 
+A–1 = B,  B –1 = A,  and  BA = I. 
+Remark that by definition A–1 means AA–1 =A–1A = I. 
+Proof	of	Theorem	2.4.12	
+Consider the homogeneous system of linear 
+equations  Bx = 0. 
+Suppose  u  is a solution of the system, i.e.  Bu = 0. 
+ 
+Then  ABu = A0     Iu = 0     u= 0. 
+ 
+ 
+⇒⇒First, we show that B  is invertible.  
+By Theorem 2.4.7,  B  is invertible. 
+The system Bx = 0 has only the trivial solution. 
+Proof	of	Theorem	2.4.12	
+Since  B  is invertible, we post-multiply  B –1  to both 
+sides of  AB = I: 
+By Theorem 2.3.9.3 ((B –1)–1 = B),   A  is invertible, 
+A–1 = (B –1)–1 = B  and  BA = BB –1 = I. 
+⇒⇒To prove: A–1 = B,  B –1 = A,  and  BA = I. 
+AI = B –1 ABB –1 = IB –1 A = B –1. 
+Example	2.4.13		Question	
+Let  A  be a square matrix such that 
+A2 – 3A – 6I = 0. 
+Show that  A  is invertible. 
+Solution	
+0=−−IAA632IAA632=−⇒IIAA6)3(=−⇒[]IIAA=−⇒)3(61By Theorem 2.4.12,  A  is invertible. 
+Theorem	2.4.14		(Exercise)	
+Let  A  and  B  be two square matrices of the same 
+order. 
+Prove that if  A  is singular (not invertible), then  AB  
+and  BA  are singular. 
+Discussion	2.5.1	
+By Example 2.4.11.2, we know that a  2 x 2  matrix 
+ 
+ 
+ 
+is invertible if and only if  ad – bc      0. 
+⎟⎠⎞⎜⎝⎛dcbaWe have a similar formula to determine whether a 
+square matrix of higher order is invertible. 
+ 
+The formula involves a quantity called “determinant”. 
+≠
+Definition	2.5.2	Determinant	
+Let  A = (aij)  be an  n x n  matrix. 
+Let  Mi 
+j  be an  (n – 1) x (n – 1)  matrix obtained from  
+A  by deleting the ith row  and the jth column. 
+Then the determinant of  A  is defined to be 
+ 
+ 
+ 
+where  Aij = (–1)i+j det(Mi 
+j). 
+⎩⎨⎧>+++==1 if1 if)det(111212111111nAaAaAanann!AThe number  Aij  is called the  (i, j)-cofactor of  A. 
+Notation	2.5.3	
+For an  n x n  matrix  A = (aij),  det(A)  is usually 
+written as 
+   a11a12!a1na21a22!a2n"""an1an2!ann
+Matrix Mij  
+   a11!a1j!a1n"""ai1!aij!ain"""an1!anj!ann⎛⎝⎜⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟⎟   Mij=a11!a1(j−1)a1(j+1)!a1n""""a(i−1)1!a(i−1)(j−1)a(i−1)(j+1)!a(i−1)na(i+1)1!a(i+1)(j−1)a(i+1)(j+1)!a(i+1)n""""an1!an(j−1)an(j+1)!ann⎛⎝⎜⎜⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟⎟⎟
+  ↑jth column  ←ith row
+
+Example	2.5.4.1	
+  A=abcd⎛⎝⎜⎞⎠⎟
+–          + 
+  A=abcd⎛⎝⎜⎞⎠⎟  A=abcd⎛⎝⎜⎞⎠⎟   M11=(d)   M12=(c)   A11=(−1)1+1det(M11)=dA12=(−1)1+2det(M12)=−c   det(A)=aA11+bA12=ad−bc  A=abcd⎛⎝⎜⎞⎠⎟
+
+Example	2.5.4.2	
+  B=1−5320−22−45⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  det(B)=1×(−1)1+1det(M11)+(−5)×(−1)1+2det(M12)+3×(−1)1+3det(M13)          =det(M11)+5det(M12)+3det(M13) 1−5320−22−45⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ 1−5320−22−45⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ 1−5320−22−45⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+  M11=0−2−45⎛⎝⎜⎞⎠⎟  M12=2−225⎛⎝⎜⎞⎠⎟  M13=202−4⎛⎝⎜⎞⎠⎟
+
+  M11=0−2−45⎛⎝⎜⎞⎠⎟  M12=2−225⎛⎝⎜⎞⎠⎟  M13=202−4⎛⎝⎜⎞⎠⎟  det(M11)=0×5−(−2)×(−4)=−8  det(M12)=2×5−2×(−2)=14  det(M13)=2×(−4)−0×2=−8–          + 
+–          + 
+–          + 
+  det(B)=1×(−8)+5×14+3×(−8)=38
+Exercise	2.5.5	
+⎟⎟⎟⎠⎞⎜⎜⎜⎝⎛=ihgfedcbaAShow that 
+det(A) = aei + bfg + cdh – ceg – afh – bdi. 
+Remark	2.5.5	
+The formula in Exercise 2.5.5 can be easily 
+remembered by using the following diagram: 
+a b c a b 
+d e f d e 
+g h i g h 
+–    –    –          +    +    + 
+The method shown here cannot be generalized to 
+higher order. 
+Theorem	2.5.6	(Cofactor	Expansion)	
+For an  n x n  matrix  A = (aij),  det(A) can be 
+expressed as a cofactor expansion using any row or 
+column of  A. 
+njnjjjjjininiiiiAaAaAaAaAaAaA+++=+++=!!22112211)det(i.e. 
+ 
+ 
+for any  i = 1, 2, …, n  and  j = 1, 2, …, n. 
+Example	2.5.7	
+  C=041−2103−132010−3−12⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟Remark: We use the 1st column 
+since it contains more zero entries, 
+which will simply our calculation. 
+  det(C)=0×(−1)1+1det(M11)+1×(−1)2+1det(M21)             +3×(−1)3+1det(M31)+0×(−1)4+1det(M41)          =−det(M21)+3det(M31)  M21=041−2103−132010−3−12⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟  M31=041−2103−132010−3−12⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟
+
+  M21=41−2201−3−12⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟4120−3−1–    –    –          +    +    + 
+  det(M21)=4×0×2+1×1×(−3)+(−2)×2×(−1)                 −(−2)×0×(−3)−4×1×(−1)−1×2×2  det(M21)=1  det(M31)=5  det(C)=−det(M21)+3det(M31)          =−1+3×5=14  M21=41−2201−3−12⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟Similarly, we have 
+Theorem	2.5.8	
+If  A  is a triangular matrix, then the determinant of  
+A  is equal to the product of the diagonal entries of  
+A. 
+Prove Theorem 2.5. 8. 
+Hint: Use Mathematical Induction. 
+Example	2.5.9	
+ 2π0.6803200−1=2×3×(−1)=−6  5000a100bc−10def2=5×1×(−1)×2=−10
+
+Theorem	2.5.10	
+If  A  is a square matrix, then  det(A) = det(AT ). 
+Proof	of	Theorem	2.5.10	
+We prove the theorem by using mathematical 
+induction on the order of  A: 
+If  A  is a  1 x 1  matrix, then  A = AT  and hence  
+det(A) = det(AT ). 
+ 
+Assume  det(A) = det(AT )  for any  k x k  matrix  A. 
+ 
+Now, let  A  be a  (k + 1) x (k + 1)  matrix.  We need 
+to show  det(A) = det(AT )  by using the induction 
+assumption. 
+Proof	of	Theorem	2.5.10	
+Expand  A  along the first row: 
+)det()1()det()det()det(1,1)1(1121111,1211++++−++−=kMMMAkkaaa!where  Mi 
+j  is the  k x k  matrix obtained from  A  by 
+deleting the ith row  and the jth column. 
+)det()1()det()det()det(1,1)1(11211TkkTTTaaa11,1211++++−++−=kMMMA!Expand  AT  along the first column:   
+By the inductive assumption,  det(Mi 
+j) = det(Mi 
+j
+T )  
+for all  i, j.  So  det(A) = det(AT ). 
+Example	2.5.11	
+By Example 2.5.4.7,  det(C) = 14. 
+  C=041−2103−132010−3−12⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟   det(CT)=0130402−3130−1−2−112=14
+Theorem	2.5.12	
+1. The determinant of a square matrix with two 
+identical rows is zero. 
+2. The determinant of a square matrix with two 
+identical columns is zero. 
+Example	2.5.13	
+The following matrices have zero determinants: 
+ 2121⎛⎝⎜⎞⎠⎟ 323−15−1414⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ −2−1522341106−12341⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟
+Learning outcomes (Section 2.4) 
+(4)  Use the concept of elementary matrices to prove Theorem 1.2.7.  
+(5) Three equivalent statements to ‘A is an invertible square matrix 
+of order n’.  
+(6)  How to find determine whether a matrix is invertible (and if so, 
+find its inverse) using ERO.  
+(7)  Necessary and sufficient condition for a 2 × 2 matrix to be 
+invertible.  
+(8)  (Theorem 2.4.12) If A and B are two square matrices of the 
+same size and AB = I, then we can conclude that BA = I and they 
+are inverses of each other.  
+(9)  Understand the notion of post-multiplication of an elementary 
+matrix and its correspondence to elementary column operation.  
+Learning outcomes (Section 2.5) 
+(1)  What is the determinant of a square matrix? The (i,j)-cofactor of 
+A. To define the determinant of A by cofactor expansion.  
+(2)  ‘Easy’ way to compute the determinant of a 3 × 3 matrix.  
+(3)  The determinant of a square matrix can be computed by cofactor  
+expansion along any row or column.  
+(4)  Some results on determinants involving (a) triangular matrices; 
+(b) transposes; (c) matrices with identical rows or columns.  
+Ax=0 has only 
+trivial solution 
+RREF(A)=I 
+A=E1E2…Er 
+A is invertible 
+RREF(A | I)=(I | A–1) 
+Determinant 
+det(A)=det(AT) 
+If two columns/rows 
+are the same, then 
+det(A)=0 
+
+
+Example	2.4.9		Question	
+Find the inverse of 
+ 
+ 
+ 
+ 
+if it exists. 
+Goal:	if	the	inverse	exists,	we	expect	
+Gauss-Jordan 
+ 
+Elimination 
+⎯→⎯ 21−3100−230010−14−2001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  A=21−3−230−14−2⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ 100???010???001???⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Example	2.4.9		Solution	
+ 21−3100−230010−14−2001⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ −14−2001−23001021−3100⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  R3↔R1⎯→⎯⎯  R2−2R1R3+2R1⎯→⎯⎯ −14−20010−5401−209−7102⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  R3+95R1⎯→⎯⎯ −14−20010−5401−20015195−85⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟ 1−4200−101−450−152500159−8⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟  R1/(−1),R2/(−5)5R3⎯→⎯⎯⎯⎯⎯
+  R2+4R3/5R1−2R3⎯→⎯⎯⎯ 1−40−10−181501047−600159−8⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ 1−4200−101−450−152500159−8⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟  R1+4R2⎯→⎯⎯ 100610−9010−47−600159−8⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟So 
+  A−1=610−9−47−659−8⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Example	2.4.11.1	
+A  is not invertible. 
+  A=5−4−53−10125⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  A=5−4−53−10125⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  R1↔R3⎯→⎯⎯ 1253−105−4−5⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ 1250−7−150−14−30⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  R2−3R1R3−5R1⎯→⎯⎯  R3−2R2⎯→⎯⎯ 1250−7−15000⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Remark	2.5.5	
+Give an example to show that the method in Remark 
+2.5.5 cannot be applied to  4 x 4  matrices. 
+Example	2.5.7	
+  C=041−2103−132010−3−12⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟Remark: We use the 1st column 
+since it contains more zero entries, 
+which will simply our calculation. 
+  det(C)=0×(−1)1+1det(M11)+1×(−1)2+1det(M21)             +3×(−1)3+1det(M31)+0×(−1)4+1det(M41)          =−det(M21)+3det(M31)  M21=041−2103−132010−3−12⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟  M31=041−2103−132010−3−12⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟
+
+  M21=41−2201−3−12⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟4120−3−1  M31=41−203−1−3−12⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟4103−3−1–    –    –          +    +    + –    –    –          +    +    + 
+  det(M21)=4×0×2+1×1×(−3)+(−2)×2×(−1)                 −(−2)×0×(−3)−4×1×(−1)−1×2×2  det(M21)=1  det(M31)=4×3×2+1×(−1)×(−3)+(−2)×0×(−1)                 −(−2)×3×(−3)−4×(−1)×(−1)−1×0×2  det(M31)=5  det(C)=−det(M21)+3det(M31)          =−1+3×5=14
+Theorem	2.5.12	
+1. The determinant of a square matrix with two 
+identical rows is zero. 
+2. The determinant of a square matrix with two 
+identical columns is zero. 
+Exercise	2.5.12	
+Prove Theorem 2.5.12 by using mathematical induction. 
+Hint: 
+First prove that the statement is true for all  2 x 2  
+matrices. 
+Then assume the statement is true for all  k x k  matrices. 
+Let  A  be a  (k + 1) x (k + 1)   matrix such that the ith 
+and jth rows of  A  are the same. 
+Take any  m = 1, 2, …, k + 1  and  m ¹ i, j. 
+Compute  det(A)  by expanding along the mth row of  A. 

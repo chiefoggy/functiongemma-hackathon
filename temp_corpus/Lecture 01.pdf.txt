@@ -1,0 +1,801 @@
+Lecture	1	
+Systems	of	Linear	Equation	
+and	
+their	Solutions	
+Outline 
+Reduced 
+row-echelon  
+Linear 
+systems  
+Augmented 
+matrices  
+Elementary 
+row operations  
+
+Written around 400AD 
+The	Chickens-and-Rabbits	Problem	
+Now there are pheasants 
+and rabbits in the same 
+cage.  
+The top [of the cage] has 
+35 heads and the bottom 
+has 94 legs. 
+ 
+Find the number of 
+pheasants and rabbits. 
+Linear	equations	
+Unknown variables:  
+• x : the number of pheasants; 
+• y : the number of  rabbits.   
+ 
+35 heads:     x + y = 35 
+94 legs:     2x + 4y = 94 
+ 
+In general, these two equations are of the same kind                
+ax + by = c 
+where  a  and  b  are not both zero. 
+Discussion	1.1.1	
+A line in the  xy-plane can be represented 
+algebraically by an equation of the form 
+ax + by = c 
+where  a  and  b  are not both zero. 
+An Equation of this kind is known as a linear 
+equation in the variable of  x  and  y. 
+Definition	1.1.2	Linear	Equation	
+A linear equation in  n  variables  x1, x2, …, xn  has 
+the form 
+a1x1 + a2x2 + ··· + anxn = b 
+where  a1, a2, …, an  and  b  are real constants. 
+The variables in a linear equation are also called the 
+unknowns.  
+The constants a1, a2, …, an are also called the 
+coefficients.  
+Example	1.1.3		Linear	Equations	
+In each part, determine whether the following 
+equations are linear or not.  
+  xy=1  2x+y=πYes 
+  y=−7x+3z−1No 
+Yes 
+Yes 
+No 
+   x1+x2+!+xn=1  y=tanx+lnz+1
+Example	1.1.3	
+The linear equation  ax + by + cz = d,  where  a, b, c, 
+d  are constants and not all  a, b, c  are zero, 
+represents a plane in the three dimensional space. 
+For example  z = 0  (i.e.  0x + 0y + z = 0)  is the  xy-
+plane contained inside the three dimensional space. 
+          z 
+ 
+ 
+                                x 
+                        z = 0 
+y 
+Definition	1.1.4	(Solution)	
+Given  n  real numbers  s1, s2, …, sn,  we say that 
+x1 = s1,  x2 = s2,  …,  xn = sn  is a solution of a linear 
+equation  a1x1 + a2x2 + ··· + anxn = b  if the equation 
+is satisfied when we substitute the values into the 
+equation accordingly. 
+ 
+That is, 
+a1s1+a2s2!+ansn=b
+Definition	1.1.4	(Solution	set	and	general	solution)	
+The set of all solutions of the equation is called the 
+solution set of the equation. 
+An expression that give us all these solutions is 
+called the general solution of the equation. 
+Example 1.1.5 (1) General solution 
+Consider the linear equation  2x + 4y = 94. 
+The general solution is 
+where  t  is an arbitrary parameter.   x=ty=472−t2⎧⎨⎪⎩⎪We can also write the general solution as 
+ 
+where  s  is an arbitrary parameter.   x=47−2sy=s⎧⎨⎪⎩⎪These include all solutions such as 
+ 
+and infinitely many solutions.   x=1y=23⎧⎨⎪⎩⎪x=2y=22.5⎧⎨⎪⎩⎪x=−1.6y=24.3⎧⎨⎪⎩⎪
+Example	1.1.5	3(a)	Geometric	interpretation	
+In the  xy-plane, the solutions of the equation 
+x + y = 35  are  (x, y) = (35 – s, s)  for  s  in  R. 
+ y                                       x                    x + y = 35  
+  (35−s,s)
+Example	1.1.5	3(b)	
+In the three dimensional space, the solutions of  
+x + y = 1  (i.e.  x + y + 0z = 1)  are  
+(x, y, z) = (1 – s, s, t)  for  s, t  in  R. 
+                 z  x + y = 1                                                      y       x 
+)0,,1( ss−
+),,1( tss−
+Definition	1.1.6	Linear	system	
+A finite set of linear equations in the variables  x1, x2, 
+…, xn  is called a system of linear equations (or a 
+linear system): 
+ 
+ 
+ 
+ 
+ 
+where  a11, a12, …, amn  and  b1, b2, …, bm  are real 
+constants. 
+⎪
+⎪
+⎩
+⎪⎪
+⎨
+⎧
+=+++
+=+++
+=+++
+mnmnmm
+nn
+nn
+bxaxaxa
+bxaxaxa
+bxaxaxa
+!
+"
+!
+!
+2211
+22212121
+11212111
+Definition	1.1.6	Solution	set	
+Given  n  real numbers  s1, s2, …, sn,  we say that  
+x1 = s1,  x2 = s2,  …,  xn = sn  is a solution of the 
+system if  x1 = s1,  x2 = s2,  …,  xn = sn  is a solution 
+of every equation in the system. 
+The set of all solutions of the system is called the 
+solution set of the system and an expression that give 
+us all these solutions is called the general solution of 
+the system. 
+Example		
+Consider the system of linear equation 
+  x+y=352x+4y=94⎧⎨⎪⎩⎪ 
+x = 23,  y = 12  is the unique solution of the system. 
+Example	1.1.7		
+Consider the system of linear equation 
+  4x1−x2+3x3=13x1+x2−2x3=−4⎧⎨⎪⎩⎪Which one is a solution of the system? 
+A. x1 = –1,  x2 = 7,  x3 = 4    
+B. x1 = 1,  x2 = 0,  x3 = –1 
+✓
+✘ 
+Remark	1.1.8	
+Not all systems of linear equations have solutions. 
+⎩⎨⎧
+=+
+=+
+622
+4
+yx
+yx
+Example. Why? 
+Definition	1.1.9	
+A system of linear equations that has no solution is 
+said to be inconsistent. 
+A system that has at least one solution is called 
+consistent. 
+Remark	1.1.10	
+Every system of linear equations has either 
+no solution, 
+exactly one solution  or 
+infinitely many solutions. 
+Linear	
+system	
+Consistent	
+Infinite	
+many	
+ Unique	
+Inconsistent	
+No	
+Solutions	
+Discussion	1.1.11	
+In the  xy-plane, the two equations in the system 
+ 
+ 
+ 
+represent two straight lines. 
+⎩
+⎨
+⎧
+=+
+=+
+)(
+)(
+2222
+1111
+lcybxa
+lcybxa
+No solution 
+Consistent 
+Infinite solutions One solution 
+Discussion	1.1.11	
+In the  xy-plane, the two equations in the system 
+ 
+ 
+ 
+represent two straight lines. 
+⎩
+⎨
+⎧
+=+
+=+
+)(
+)(
+2222
+1111
+lcybxa
+lcybxa
+1. The system has no solution if and only if  l1  and  
+l2  are different but parallel lines. 
+  
+                         l1 
+                                     l2 
+Discussion	1.1.11	
+In the  xy-plane, the two equations in the system 
+ 
+ 
+ 
+represent two straight lines. 
+⎩
+⎨
+⎧
+=+
+=+
+)(
+)(
+2222
+1111
+lcybxa
+lcybxa
+  
+                          
+                                      
+2. The system has exactly one solution if and only if  
+l1  and  l2  are are not parallel lines.  
+                   l1                   l2   
+Discussion	1.1.11	
+In the  xy-plane, the two equations in the system 
+ 
+ 
+ 
+represent two straight lines. 
+⎩
+⎨
+⎧
+=+
+=+
+)(
+)(
+2222
+1111
+lcybxa
+lcybxa
+3. The system has infinitely many solutions if and 
+only if  l1  and  l2  are the same lines. 
+  
+                          l1       l2 
+Exercise	1.8	
+In the three dimensional space, the three equations in 
+the system 
+ 
+ 
+ 
+ 
+represents three planes. 
+⎪⎩
+⎪⎨
+⎧
+=++
+=++
+=++
+)(
+)(
+)(
+33333
+22222
+11111
+pdzcybxa
+pdzcybxa
+pdzcybxa
+Discuss geometrically when the system has no 
+solution, one solution and infinitely many solutions. 
+No Solutions 
+A 
+C D 
+B 
+Consistent 
+Which one has exactly one solution? 
+A B 
+✔ 
+Infinite Solutions 
+A B 
+Definition	1.2.1		Augmented	matrix	
+Consider the system of linear equations: 
+   a11x1+a12x2+!+a1nxn=b1a21x1+a22x2+!+a2nxn=b2"am1x1+am2x2+!+amnxn=bm⎧⎨⎪⎪⎩⎪⎪⎟⎟⎟⎟⎟
+⎠
+⎞
+⎜⎜⎜⎜⎜
+⎝
+⎛
+mmnmm
+n
+n
+baaa
+baaa
+baaa
+!
+""""
+!
+!
+21
+222221
+111211
+We can represent the system by a rectangular array 
+of numbers: 
+This array is called the augmented matrix of the 
+system. 
+
+Example	1.2.2	
+Consider the system of linear equations: 
+  x1+2x2=33x1−x2−3x3=−12x1+3x2+x3=4⎧⎨⎪⎪⎩⎪⎪ 12033−1−3−12314⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟The augmented matrix of the system is: 
+
+Discussion	1.2.3	
+The following are the basic techniques for solving a 
+system of linear equations: 
+1. Multiply an equation by a nonzero constant. 
+   ai1x1+ai2x2+!+ainxn=bi   c⋅ai1x1+c⋅ai2x2+!+c⋅ainxn=c⋅bii-th equation 
+Multi. by 
+nonzero c 
+
+In terms of the augmented matrix, it corresponds to 
+ 1.  Multiply a row by a nonzero constant. 
+   !!!!!c⋅ai1c⋅ai2"c⋅ainc⋅bi!!!!am1am2"amnbm⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟   !!!!!ai1ai2"ainbi!!!!am1am2"amnbm⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟
+
+ 2.  Interchange two equations. 
+   !ai1x1+ai2x2+"+ainxn=bi!aj1x1+aj2x2+"+ajnxn=bj!⎧⎨⎪⎪⎪⎩⎪⎪⎪   !aj1x1+aj2x2+"+ajnxn=bj!ai1x1+ai2x2+"+ainxn=bi!⎧⎨⎪⎪⎪⎩⎪⎪⎪
+
+In terms of the augmented matrix, it corresponds to 
+ 2. Interchange two rows. 
+   !!!!ai1ai2"ainbi!!!!aj1aj2"ajnbj!!!!⎛⎝⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟   !!!!aj1aj2"ajnbj!!!!ai1ai2"ainbi!!!!⎛⎝⎜⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟⎟
+
+3.  Add a multiple of one equation to another equation. 
+   ai1x1+ai2x2+!+ainxn=bi
+   ai1x1+ai2x2+!+ainxn+d⋅aj1x1+d⋅aj2x2+!+d⋅ajnxn=bi+d⋅bj
+   (ai1+d⋅aj1)x1+(ai2+d⋅aj2)x2+!+(ain+d⋅ajn)xn=bi+d⋅bj
+
+In terms of the augmented matrix, it corresponds to 
+ 3. Add a multiple of one row to another row. 
+   !!!!ai1ai2"ainbi!!!!aj1aj2"ajnbj!!!!⎛⎝⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟   !!!!ai1+d⋅aj1ai2+d⋅aj2"ain+d⋅ajnbi+d⋅bj!!!!aj1aj2"ajnbj!!!!⎛⎝⎜⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟⎟
+
+For example, we can combine Operation 1 and Operation 3: 
+   !!!!ai1ai2"ainbi!!!!aj1aj2"ajnbj!!!!⎛⎝⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟   !!!!c⋅ai1+d⋅aj1c⋅ai2+d⋅aj2"c⋅ain+d⋅ajnc⋅bi+d⋅bj!!!!aj1aj2"ajnbj!!!!⎛⎝⎜⎜⎜⎜⎜⎜⎜ ⎞⎠⎟⎟⎟⎟⎟⎟⎟
+
+Discussion	1.2.3	
+The following are the basic techniques for solving a 
+system of linear equations: 
+1. Multiply an equation by a nonzero constant. 
+2.  Interchange two equations. 
+3.  Add a multiple of one equation to another equation. 
+In terms of the augmented matrix, these correspond 
+to 
+1. Multiply a row by a nonzero constant. 
+2. Interchange two rows. 
+3. Add a multiple of one row to another row. 
+Definition	1.2.4	
+The three operations of the augmented matrix in 
+Discussion 1.15 are known as elementary row 
+operations. 
+Breakfast break (10 mins) 
+
+Example	1.2.5	
+  x+y−z=2(1)−2x+2y−3z=4(2)3x+z=1(3)⎧⎨⎪⎪⎩⎪⎪ 11−12−22−343011⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟Add  2  times of Equation (1) to Equation (2) to 
+obtain Equation (4). 
+  −2x+2y−3z+2x+2y−2z=4+2×2 (−22−34)+(22−24)
+  0x+4y−5z=8
+ (04−58)
+Example	1.2.5	
+  x+y−z=2(1)4y−5z=8(4)3x+z=1(3)⎧⎨⎪⎪⎩⎪⎪ 11−1204−583011⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟Add  –3  times of Equation (1) to Equation (3) to 
+obtain Equation (5). 
+  3x+z−3x−3y+3z=1−3×2 (3011)+(−3−33−6)
+  0x−3y+4z=−5 (0−34−5)
+
+Example	1.2.5	
+  x+y−z=2(1)4y−5z=8(4)−3y+4z=−5(5)⎧⎨⎪⎪⎩⎪⎪ 11−1204−580−34−5⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟Multiply Equation (4) by ¼ to obtain Equation (6). 
+  y−54z=2 (01−542)
+  4y−5z=8
+ (04−58)
+
+Example	1.2.5	
+  x+y−z=2(1)y−54z=2(6)−3y+4z=−5(5)⎧⎨⎪⎪⎩⎪⎪ 11−1201−5420−34−5⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟  −3y+4z+3y−3×54z=−5+3×2 (0−34−5)+(03−3×543×2)Add  3  times of Equation (6) to Equation (5) to 
+obtain Equation (7). 
+  14z=1 (00141)
+
+Example	1.2.5	
+  x+y−z=2(1)y−54z=2(6)14z=1(7)⎧⎨⎪⎪⎪⎩⎪⎪⎪ 11−1201−54200141⎛⎝⎜⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟⎟By Equation (7), z = 4.  
+  y−54×4=2Substituting z = 4 into Equation (7),  
+  y=7
+
+So x =–1, y = 7 and z = 4 is the unique solution of the 
+linear system. 
+Substituting z = 4 and y = 7 into Equation (1), 
+  x+7−4=2⇔x=−1Example	1.2.5	
+  x+y−z=2
+Definition	1.2.6	
+Two augmented matrices are said to be row 
+equivalent if one can be obtained from the other by a 
+series of elementary row operations. 
+Theorem	1.2.7	
+If augmented matrices of two systems of linear 
+equations are row equivalent, then the two systems 
+have the same set of solutions. 
+Linear System 
+ A 
+Linear System 
+ B 
+Augmented  
+Matrix of 
+System  B 
+Augmented  
+Matrix of 
+System  A 
+row 
+equivalent 
+same 
+solutions 
+Example	1.2.5	
+All augmented matrices in Example 1.2.5 are row 
+equivalent. 
+All systems of linear equations in Example 1.2.5 
+have the same solution. 
+Exercise			
+To see why Theorem 1.2.7 is true, we only need to 
+check that every elementary row operation applied to 
+an augmented matrix will not change the solution set 
+of the corresponding linear system. 
+It is obvious that the solution set will not be changed 
+by operations 1 and 2 in Discussion 1.2.3. 
+Show that the solution set of a linear system will not 
+be changed by operation 3 in Discussion 1.2.3. 
+Definition	1.3.1		Row-echelon	
+An augmented matrix is said to be in row-echelon 
+form if it has the following properties: 
+1. If there are any rows that consist entirely of zeros, 
+then they are grouped together at the bottom of 
+the matrix. 
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+∗∗∗
+∗∗∗
+000
+000
+!!
+!!
+!!
+"""
+!!
+nonzero rows 
+zero rows (if any) 
+Definition	1.3.1		Leading	entry	
+2. In any two successive rows that do not consist 
+entirely of zeros, the first nonzero number in the 
+lower row occurs further to the right than the first 
+nonzero number in the higher row. (The first 
+nonzero number in a row is called the leading 
+entry of the row.) 
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+∗∗⊗
+∗∗⊗
+00
+00
+!!
+!! two successive 
+rows 
+leading entries 
+Definition 1.3.1  Row-echelon 
+⎟⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+∗∗⊗
+∗
+∗∗⊗
+∗∗⊗
+000
+0
+!!
+" nonzero rows 
+zero rows (if any) 
+leading entries 
+Definition	1.3.1		Reduced	row-echelon	
+An augmented matrix is said to be in reduced row-
+echelon form if it is in row-echelon form and has the 
+following properties: 
+3. The leading entry of every nonzero row is  1. 
+⎟⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+∗∗
+∗
+∗∗
+∗∗
+000
+1
+1
+1
+0
+!!
+" nonzero rows 
+zero rows (if any) 
+Definition	1.3.1	
+4. Each column that contains a leading entry has 
+zeros everywhere else. 
+nonzero rows 
+zero rows (if any) ⎟⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+∗∗
+∗∗
+∗∗∗
+∗∗∗∗
+000
+1
+0
+1
+001
+0
+!!
+"
+#
+Remark	1.3.2	
+1. In some textbooks, the row-echelon form is 
+required to have the additional Property 3 in 
+Definition 1.3.1. 
+2. The concepts of elementary row operations, row 
+equivalent matrices, row-echelon forms and 
+reduced row-echelon forms will also be used for 
+the matrices defined in Lecture 3. 
+Example	1.3.3	1	
+The following augmented matrices are in reduced 
+row-echelon form. 
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎝
+⎛
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎝
+⎛
+⎟
+⎠
+⎞⎜
+⎝
+⎛
+00000
+00000
+31000
+10210
+100
+010
+001
+3100
+2010
+1001
+000
+000
+
+Example	1.3.3	2	
+The following augmented matrices are in row-
+echelon form but not in reduced row-echelon form. 
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎝
+⎛
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎝
+⎛−
+⎟
+⎠
+⎞⎜
+⎝
+⎛ −
+00000
+00000
+34000
+18210
+100
+010
+012
+3200
+2110
+4321
+010
+011
+
+Example	1.3.3	3	
+The following augmented matrices are neither in 
+row-echelon form nor in reduced row-echelon form. 
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎝
+⎛
+−
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎝
+⎛
+⎟
+⎠
+⎞⎜
+⎝
+⎛
+00000
+31000
+10210
+00000
+100
+011
+101
+3110
+2010
+1201
+001
+010
+
+Summary	
+Linear 
+Systems  
+Augmented 
+Matrices  
+Solutions set  
+Infinite  
+Unique  
+Inconsistent  
+Lines  
+Planes  
+Example 1.2.5  
+Row-echelon  
+Reduced row-
+echelon  
+Elementary 
+row operation  

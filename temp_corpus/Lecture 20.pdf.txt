@@ -1,0 +1,466 @@
+Lecture 20 
+Diagonalization 
+Theorem 6.2.3 
+Let  A  be a square matrix of order  n. 
+Then  A  is diagonalizable if and only if  A  has  n  
+linearly independent eigenvectors. 
+Proof of Theorem 6.2.3  (       ) 
+Suppose  A  is diagonalizable. 
+⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎝⎛=nλλλ0021!DLet  P  be an invertible matrix such that  P 
+–1AP = D  
+where 
+ 
+ 
+  
+   ,       , …,      are scalars. 
+Let  P = (u1  u2  ···  un)  where  u1, u2, …, un  are 
+columns of  P. 
+ λ1 λ2 λn⇒
+Proof of Theorem 6.2.3  (       ) 
+        P 
+–1AP = D 
+        AP = PD 
+⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎝⎛nλλλ0021!       A(u1  u2  ···  un) = (u1  u2  ···  un) 
+()12121uuuuuuunn1110000λλλ=+++=⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎝⎛!"!⇒⇒⇒
+Proof of Theorem 6.2.3  (      ) 
+()221uuuun22000λλ=⎟⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎜⎝⎛!"Similarly,                                                 ,  etc. 
+         (Au1  Au2  ···  Aun) = (      u1       u2  ···      un) 
+ 
+So  Aui =      ui  for all  i, 
+i.e.  u1, u2, …, un  are eigenvectors of  A.  
+Since  P  is invertible, by Theorem 3.6.7,  u1, u2, …, un  
+are linearly independent. 
+⇒⇒ λ1 λ2 λn λi
+Proof of Theorem 6.2.3  (         ) 
+Suppose  A  has  n  linearly independent eigenvectors. 
+Let  u1, u2, …, un  be linearly independent eigenvectors 
+of  A  associated with eigenvalues      ,       , …,       . 
+Define  P = (u1  u2  ···  un).  
+AP = (Au1  Au2  ···  Aun) 
+      = (      u1       u2  ···      un) 
+⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎝⎛nλλλ0021!= (u1  u2  ···  un) 
+⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎝⎛nλλλ0021!= P 
+ λ1 λ2 λn λ1 λ2 λn⇐
+Proof of Theorem 6.2.3  (        ) 
+By Theorem 3.6.11,  P  is invertible. 
+⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎝⎛nλλλ0021!So  P 
+–1AP  = 
+i.e.  A  is diagonalizable. 
+⇐
+Algorithm 6.2.4 
+Given a square matrix  A  of order  n,  we want to 
+determine whether  A  is diagonalizable. 
+Also, if  A  is diagonalizable, find an invertible 
+matrix  P  such that  P 
+–1AP  is a diagonal matrix. 
+Algorithm 6.2.4 
+Step 1:  Solve the characteristic equation  
+det(     I – A) = 0  
+     to find all distinct eigenvalues      ,      , …,      . 
+iSλiEλStep 2:  For each      ,  find a basis        for the 
+eigenspace       . 
+kSSSSλλλ∪∪∪=!21Step 3:  Let                                            . 
+(a)  If  | S | < n,  then  A  is not diagonalizable. 
+(b)  If  | S | = n,  say,  S = {u1, u2, …, un},  then the 
+square matrix  P = (u1  u2  ···  un)  
+diagonalizes  A. 
+λ λ1 λ2 λk λi
+Remark 6.2.5.1  (Step 1 of Algorithm 6.2.4) 
+When we solve the characteristic equation   
+det(     I – A) = 0,   
+sometimes, we may end up with complex solutions, 
+i.e. the matrix has eigenvalues that are not real 
+numbers but complex numbers. 
+We can still use the algorithm to diagonalize the 
+matrix.   
+However, to discuss the theory, we need the concept 
+of vector space over complex numbers. 
+λ
+Remark 6.2.5.2  (Step 2 of Algorithm 6.2.4) 
+Suppose 
+  
+where      ,       , …,       are distinct eigenvalues of  A. 
+krkrr)()()()det(2121λλλλλλλ−−−=−!AIFor each     ,                         . irEi≤)dim(λFurthermore,  A  is diagonalizable if and only if for 
+each        ,                        , irEi=)dim(λirSi=||λi.e.                . 
+ λ1 λ2 λk λi λi
+Remark 6.2.5.3  (Step 3 of Algorithm 6.2.4) 
+The set  S  is always linearly independent. 
+Example 6.2.6.1 
+⎟⎟⎟⎠⎞⎜⎜⎜⎝⎛=111111111BStep 1:  By Example 6.1.4.2, the eigenvalues are  3  
+and  0. 
+Example 6.2.6.1 
+Step 2:  By Example 6.1.12.2, 
+is a basis for  E3 
+is a basis for  E0 
+ 111⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎧⎨⎪⎩⎪⎫⎬⎪⎭⎪ −110⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟,−101⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎧⎨⎪⎩⎪⎫⎬⎪⎭⎪
+Example 6.2.6.1 
+Step 3:  Let 
+Then 
+  P=1−1−1110101⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  P−1BP=300000000⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Example 6.2.6.2 
+Step 1:  By Example 6.1.7.3, the eigenvalues of  C  are  
+1,   2 and  3. 
+  C=401−210−201⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Example 6.2.6.2 
+Step 2:  By Example 6.1.12.3, 
+is a basis for  E1 
+is a basis for  E2 
+is a basis for E3 
+ 010⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎧⎨⎪⎩⎪⎫⎬⎪⎭⎪ −122⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎧⎨⎪⎩⎪⎫⎬⎪⎭⎪ −111⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎧⎨⎪⎩⎪⎫⎬⎪⎭⎪
+Example 6.2.6.2 
+Step 3:  Let 
+Then 
+  P=0−1−1121021⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  P−1CP=100020003⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Example 6.2.6.3 
+  A=100120−352⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟Step 1:  The eigenvalues are  2  and  3. 
+  A=2−16031003⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Example 6.2.6.3 
+Step 2:  For     = 2, 
+(    I – A) x = 0 
+  ⇔000−1−103−5−1⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=000⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟where  t  is an arbitrary parameter 
+is a basis for  E2 
+λλ  ⇔01−60−1−100−1⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=000⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  ⇔xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=t100⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ 100⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎧⎨⎪⎩⎪⎫⎬⎪⎭⎪
+Example 6.2.6.3 
+Step 2:  For      = 3, 
+(    I – A) x = 0 
+where  t  is an arbitrary parameter 
+is a basis for  E2 
+λλ  ⇔11−600−1000⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=000⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  ⇔xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=t−110⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ −110⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎧⎨⎪⎩⎪⎫⎬⎪⎭⎪
+Example 6.2.6.3 
+Step 3:  Since we only have two linearly independent 
+eigenvectors,  A  is not diagonalizable. 
+Theorem 6.2.7 
+Let  A  be a square matrix of order  n. 
+If  A  has  n  distinct eigenvalues, then  A  is 
+diagonalizable. 
+Proof of Theorem 6.2.7 
+Suppose  A  has  n  distinct eigenvectors. 
+In Step 2 of Algorithm 6.2.4, we can find one 
+eigenvector for each eigenvalue. 
+Hence we have  n  eigenvectors. 
+By Remark 6.2.5.3, these eigenvectors are linearly 
+independent. 
+By Theorem 6.2.3,  A  is diagonalizable. 
+Example 6.2.8 
+By Theorem 6.1.9, has the eigenvalues 1, 3, 5, 7, 
+which are distinct.  
+  A=1240032400520007⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟By Theorem 6.2.7, A  is diagonalizable. 
+Remark 6.2.9 
+The	converse	of	Theorem	6.2.7	is	not	true,		
+i.e.	a	diagonalizable	matrix	of	order	n	may	not	need	
+to	have	n	distinct	eigenvalues.		
+	
+For	example,	the	matrix	B	in	Example	6.2.6.1	is	a	
+3×3	diagonalizable	matrix	but	has	only	two	
+eigenvalues	3	and	0.	See	also	Remark	6.2.5.2.		
+ 
+⎟⎟⎟⎠⎞⎜⎜⎜⎝⎛=111111111B
+Discussion 6.2.10.1 
+Let 
+⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎝⎛nλλλ0021!Let  A  be a square matrix of order  n  and  P  an 
+invertible matrix such that  
+ 
+          P 
+–1AP  = 
+⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎝⎛mnmmλλλ0021!Then  Am = P                             P 
+–1 
+Discussion 6.2.10.2 
+Let 
+⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎝⎛nλλλ0021!Let  A  be an invertible matrix of order  n  and  P  an 
+invertible matrix such that  
+ 
+                  P 
+–1AP  = 
+⎟⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎜⎝⎛nλλλ1110021!Show that  A–1 = P                      P 
+–1 
+Example 6.2.11.1 
+⎟⎟⎟⎠⎞⎜⎜⎜⎝⎛−−=503212604A⎟⎟⎟⎠⎞⎜⎜⎜⎝⎛−=−2000100011APP⎟⎟⎟⎠⎞⎜⎜⎜⎝⎛−−=101011102PFollowing the procedure of Algorithm 18.4, we find  
+  
+an invertible matrix                              such that 
+Example 6.2.11.1 
+So 120001000)1(−⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎝⎛−=PPAmmmm110101011102102400010001101011102503212604−⎟⎟⎟⎠⎞⎜⎜⎜⎝⎛−−⎟⎟⎟⎠⎞⎜⎜⎜⎝⎛⎟⎟⎟⎠⎞⎜⎜⎜⎝⎛−−=⎟⎟⎟⎠⎞⎜⎜⎜⎝⎛−−In particular, 
+⎟⎟⎟⎠⎞⎜⎜⎜⎝⎛−−=204701023010204601022
+Example 6.2.11.2 
+Let  a0, a1, a2, …  be a sequence of numbers such that  
+a0 = 1,  a1 = 1  and  an = an–1 + an–2  for  n    2. 
+These numbers are known as the Fibonacci numbers. 
+⎟⎟⎠⎞⎜⎜⎝⎛=+1nnaanx⎟⎠⎞⎜⎝⎛=1110ALet                         for  n     0  and  let                    . 
+nnxAx=⎟⎟⎠⎞⎜⎜⎝⎛=⎟⎟⎠⎞⎜⎜⎝⎛+=⎟⎟⎠⎞⎜⎜⎝⎛⎟⎠⎞⎜⎝⎛=+−−−1111110nnnnnnnaaaaaaa1≠≥
+Example 6.2.11.2 
+xn = Axn–1 = A2xn–2 = ··· = Anx0 
+()()25125121111)det(−+−−=−−=−−−=−λλλλλλλAIA  has two distinct eigenvalues and hence is 
+diagonalizable. 
+⎟⎟⎠⎞⎜⎜⎝⎛=−+−251251100APPLet  P  be an invertible matrix such that 
+Example 6.2.11.2 
+()()00xPPxAxn1251251100−−++⎟⎟⎟⎠⎞⎜⎜⎜⎝⎛===⎟⎟⎠⎞⎜⎜⎝⎛nnnnnaa()()()()⎟⎟⎟⎠⎞⎜⎜⎜⎝⎛++=−+−+nnnnedcb251251251251for some constants  b, c, d, e 
+In particular, ()()nnncba251251−++=
+Example 6.2.11.2 
+Since  a0 = 1  and  a1 = 1, 
+()()⎪⎩⎪⎨⎧+==+==−+2512511011cbacba52515251−+−==cbThe solution of the linear system is 
+So ()()125151125151+−++−=nnna
+Discussion 6.3.1 
+⎟⎟⎟⎠⎞⎜⎜⎜⎝⎛=111111111BBy Example 6.2.6.1, the eigenvalues are  3  and  0. 
+Discussion 6.3.1 
+For     = 3: 
+⎪⎭
+⎪⎬
+⎫
+⎪⎩
+⎪⎨
+⎧
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎝
+⎛
+1
+1
+1
+By Example 6.2.6.1,               is a basis for  E3 
+⎪
+⎪
+⎭
+⎪⎪
+⎬
+⎫
+⎪
+⎪
+⎩
+⎪⎪
+⎨
+⎧
+⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+3
+1
+3
+1
+3
+1
+Hence,               is an orthonormal basis for  E3 
+λ
+Discussion 6.3.1 
+For     = 0: 
+By Example 6.2.6.1,                          is a basis for  E0 
+⎪⎭
+⎪⎬
+⎫
+⎪⎩
+⎪⎨
+⎧
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎝
+⎛−
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎝
+⎛−
+1
+0
+1
+,
+0
+1
+1
+⎪
+⎪
+⎭
+⎪⎪
+⎬
+⎫
+⎪
+⎪
+⎩
+⎪⎪
+⎨
+⎧
+⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+−
+−
+⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎜
+⎝
+⎛−
+6
+2
+6
+1
+6
+1
+2
+1
+2
+1
+,
+0
+By the Gram-Schmidt Process, we obtain an 
+ 
+ 
+orthonormal basis                               for  E0 
+λ
+Discussion 6.3.1 
+Let 
+  R=13−12−161312−1613026⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟Then 
+   RTAR=R−1AR=300000000⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Definition 6.3.2 
+A square matrix  A  is called orthogonally 
+diagonalizable if there exists an orthogonal matrix  P  
+such that  P 
+TAP  is a diagonal matrix. 
+In here, the matrix  P  is said to orthogonally 
+diagonalize  A. 
+Theorem 6.3.4 
+A square matrix is orthogonally diagonalizable if and 
+only if it is symmetric. 
+Proof of Theorem 6.3.4 
+Suppose	A	is	orthogonally	diagonalizable,	i.e.	there	
+exists	an orthogonal matrix  P  such that   
+P 
+TAP = D 
+where D is a diagonal matrix. 
+We	only	prove	that	if	a	square	matrix	is	
+orthogonally	diagonalizable,	then	it	is	symmetric.		
+The	proof	of	the	converse	requires	some	advanced	
+knowledge	of	linear	algebra	which	is	beyond	the	
+scope	of	this	book.		
+Proof of Theorem 6.3.4 
+Since	PT = P 
+–1,  
+A= (P 
+T)–1D–1P–1 = PDPT. 
+Observe	DT = D,  
+AT = (PDPT) T = (PT)TDTP  = PDPT = A. 
+Hence	A is	symmetric.	 
+Algorithm 6.3.5 
+Given a symmetric matrix  A  of order  n,  we want 
+to find an orthogonal matrix  P  such that  P 
+TAP  is a 
+diagonal matrix. 
+Algorithm 6.3.5 
+Step 1:  Solve the characteristic equation  
+det(    I – A) = 0  
+     to find all distinct eigenvalues        ,     , …,      . 
+Step 2:  For each     , 
+    Step 2a:  find a basis        for the eigenspace       ; 
+ iSλiEλStep 2b:  use the Gram-Schmidt Process to transform  
+to an orthonormal basis       . iSλi
+Tλ
+Step 3:  Let                                          = {u1, u2, …, un}.  k
+TTTT λλλ ∪∪∪= !21
+Then the square matrix  P = (u1  u2  ···  un)  is an 
+orthogonal matrix that diagonalizes  A. 
+λ λ1 λ2 λk λi
+Remark 6.3.6  (Remarks on Algorithm 6.3.5) 
+1. In Step 1, solutions of the characteristic equation  
+det(      I – A) = 0  are always real numbers. 
+2. Suppose 
+ 
+     where      ,        , …,        are distinct eigenvalues of  A. 
+krkrr)()()()det(2121λλλλλλλ−−−=−!AIIn Step 2, for each      ,                         ,   dim(Eλi)=riirTS ii
+== |||| λλi.e.                .  
+λ λ1 λ2 λk λi
+Remark 6.3.6 
+3. In Step 3, the set  T  is always orthonormal. 
+4. Since  T  is always orthonormal, by Theorem 
+5.4.6, the square matrix  P  in Step 3 is always 
+orthogonal. 
+Example 6.3.7.1 
+  A=122−2⎛⎝⎜⎞⎠⎟Step 1:  Since  det(     I – A) = (      + 3) (     – 2),  the 
+eigenvalues are  –3  and  2. 
+λλλ
+Example 6.3.7.1 
+Step 2:  For      = –3: 
+  −3−1−2−2−3+2⎛⎝⎜⎞⎠⎟xy⎛⎝⎜⎞⎠⎟=00⎛⎝⎜⎞⎠⎟⇔xy⎛⎝⎜⎞⎠⎟=t−12⎛⎝⎜⎞⎠⎟ −12⎛⎝⎜⎞⎠⎟⎧⎨⎪⎩⎪⎫⎬⎪⎭⎪So                is a basis for  E–3 
+ −12⎛⎝⎜⎞⎠⎟By normalizing             ,  we obtain a unit vector            
+ −1525⎛⎝⎜⎜⎞⎠⎟⎟ −1525⎛⎝⎜⎜⎞⎠⎟⎟⎧⎨⎪⎩⎪⎫⎬⎪⎭⎪Hence               is an orthonormal basis for  E–3 
+λfor  t  in  R 
+Example 6.3.7.1 
+Step 2:  For      = 2: 
+  2−1−2−22+2⎛⎝⎜⎞⎠⎟xy⎛⎝⎜⎞⎠⎟=00⎛⎝⎜⎞⎠⎟⇔xy⎛⎝⎜⎞⎠⎟=t21⎛⎝⎜⎞⎠⎟for  t  in  R 
+ 21⎛⎝⎜⎞⎠⎟⎧⎨⎪⎩⎪⎫⎬⎪⎭⎪So                 is a basis for  E2 
+ 21⎛⎝⎜⎞⎠⎟By normalizing            ,  we obtain a unit vector              
+ 2515⎛⎝⎜⎜⎞⎠⎟⎟ 2515⎛⎝⎜⎜⎞⎠⎟⎟⎧⎨⎪⎩⎪⎫⎬⎪⎭⎪Hence                   is an orthonormal basis for  E2 
+λ
+Example 6.3.7.1 
+Step 3:   
+ 
+   Let 
+  P=−15252515⎛⎝⎜⎜⎞⎠⎟⎟Then 
+   PTAP=−3002⎛⎝⎜⎞⎠⎟Let 
+  Q=25−151525⎛⎝⎜⎜⎞⎠⎟⎟Then 
+   QTAQ=200−3⎛⎝⎜⎞⎠⎟
+Learning outcomes (Section 6.2) 
+(1) (Theorem 6.2.3) A necessary and sufficient condition 
+for a square matrix to be diagonalizable.  
+(3) If the characteristic polynomial of A is factorised and 
+we know the multiplicity for each of the factors (λ − λi) in 
+the factorisation, what is the relation with the dimension 
+of the eigenspace Eλi ?  
+(2) (Algorithm 6.2.4) An algorithm to determine if a 
+square matrix A is diagonalizable, and if it is, find an 
+invertible matrix P that diagonalizes A.  
+Learning outcomes (Section 6.2) 
+(4) (Theorem 6.2.7) A sufficient condition for A to be 
+diagonalizable.  
+(5) How diagonalization can be used to help us solve a 
+recurrence relation (like the Fibonacci sequence).  
+Learning outcomes (Section 6.3) 
+(1) What is meant by a matrix is orthogonally 
+diagonalizable?   
+(2) (Theorem 6.3.4) A necessary and sufficient condition 
+for a square matrix to be orthogonally diagonalizable.  
+(4) A corresponding remark (for orthogonal 
+diagonalization) regarding the multiplicity of the factor  
+           in relation with the dimension of the eigenspace     
+       .  
+(3) (Algorithm 6.3.5) How Algorithm 6.2.4 is modified to 
+find an orthogonal matrix P that orthogonally diagonalizes 
+A.  
+ λ−λi Eλi

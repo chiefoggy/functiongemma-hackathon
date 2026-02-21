@@ -1,0 +1,1142 @@
+Row-echelon 
+Is the last 
+column pivot? 
+ Inconsistent 
+Consistent 
+# of nonzero rows  
+= # of variables 
+# of nonzero rows  
+< # of variables 
+Unique 
+Infinite 
+# of parameters 
+= # of variables 
+minus # of non-
+zero rows 
+Yes	
+No	
+HLS 
+Lecture	4	
+Matrices	
+and	
+Matrix	Operations	
+
+Homogenous	Linear	System	
+  x+y+z=0x+z=0⎧⎨⎪⎩⎪  x=−ty=0z=t⎧⎨⎪⎩⎪
+  x=0y=0z=0⎧⎨⎪⎩⎪These include all solutions such as 
+ 
+ 
+ 
+and infinitely many solutions. 
+  x=−1y=0z=1⎧⎨⎪⎩⎪  x=2y=0z=−2⎧⎨⎪⎩⎪Trivial solution Non-trivial solutions 
+
+What you see What they are 
+Matrix Cat 
+Definition	2.1.1	
+A matrix (plural matrices) is a rectangular array of 
+numbers. 
+The numbers in the array are called entries in the 
+matrix. 
+The size of a matrix is given by  m x n  where  m  is 
+the number of rows and  n  is the number of 
+columns. 
+The  (i, j)-entry of a matrix is the number which is in 
+the ith row and jth column of a matrix. 
+Example	2.1.2	
+The matrix above is a   3 x 2  matrix. 
+ 
+The  (1, 2)-entry of the matrix is  3. 
+ 
+The  (3, 1)-entry of the matrix is  8. 
+2nd row 
+1st row 
+3rd row 
+1st col 2nd col 
+ 132−684⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Example	2.1.2	
+ 1320()is a  1 x 4  matrix. 
+ 21−22.35sin473π12⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟is a  3 x 3  matrix. 
+ e()is a  1 x 1  matrix. 
+ 502⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟is a  3 x 1  matrix. 
+e: natural number. 
+is a  583 x 549 matrix. 
+Definition	2.1.3	
+A column matrix (or a column vector) is a matrix 
+with only one column. 
+A row matrix (or a row vector) is a matrix with only 
+one row. 
+Example	2.1.4	
+is a row matrix. 
+ 502⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟is a column matrix. 
+ e()is a row matrix as well as a column matrix. 
+ 1320()
+Notation	2.1.5	
+In general, an  m x n  matrix can be written as 
+ 
+ 
+ 
+ 
+ 
+or simply  A = (aij)mxn  where  aij  is the  (i, j)-entry of  
+A. 
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+=
+mnmm
+n
+n
+aaa
+aaa
+aaa
+!
+"""
+!
+!
+21
+22221
+11211
+A
+Sometimes, if the size of the matrix is already 
+known, we may just write  A = (aij).  
+Example	2.1.6	
+ 1.   A = (aij)2x3  where  aij = i +2 j 
+  A=1+2×11+2×21+2×32+2×12+2×22+2×3⎛⎝⎜⎞⎠⎟2nd row 
+1st row 
+1st col 2nd col 
+  A=357468⎛⎝⎜⎞⎠⎟3rd col j= 
+i= 
+Example	2.1.6	
+⎩⎨⎧
++−
++= odd is    if1
+even is    if1
+ji
+jibij2.   B = (bij)3x2  where 
+ 
+  B=1−1−111−1⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟ 1+11+22+12+23+13+2⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=233445⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟1st col 2nd col j= 
+2nd row 
+1st row 
+i= 
+3rd row 
+
+Definition	2.1.7	(1)		and		Example	2.1.8	
+A matrix is called a square matrix if it has the same 
+number of rows and columns. 
+In particular, an  n x n  matrix is called a square 
+matrix of order  n. 
+ −π()320−1⎛⎝⎜⎞⎠⎟321−142153⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟2162032−11410−2351⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟e.g. 
+3 x 3 4 x 4 2 x 2 1 x 1 
+Definition	2.1.7	(2)	
+Given a square matrix  A = (aij)  of order  n,  the 
+diagonal of  A  is the sequence of entries 
+a11,  a22,  …,  ann. 
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+nnnn
+n
+n
+aaa
+aaa
+aaa
+!
+"#""
+!
+!
+21
+22221
+11211
+The entries  aii  are called the diagonal entries while  
+aij,  i ¹ j,  are called the non-diagonal entries. 
+Definition	2.1.7	(2)		and		Example	2.1.8	
+A square matrix is called a diagonal matrix if all its 
+non-diagonal entries  are zero, i.e. 
+A = (aij)nxn  is diagonal      aij = 0  whenever       . 
+()
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎝
+⎛
+⎟
+⎠
+⎞⎜
+⎝
+⎛
+1000
+0000
+0030
+0002
+200
+030
+001
+20
+014e.g. 
+⇔ i≠j
+Definition	2.1.7	(3)		and		Example	2.1.8	
+A diagonal matrix is called a scalar matrix if all its 
+diagonal entries are the same, i.e. 
+    A = (aij)nxn  is scalar   
+for a constant  c. 
+⎩⎨⎧
+=
+≠= jic
+jiaij   if
+  if0
+()
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎝
+⎛
+⎟
+⎠
+⎞⎜
+⎝
+⎛
+3000
+0300
+0030
+0003
+100
+010
+001
+20
+024e.g. 
+⇔
+Definition	2.1.7	(4)		and		Example	2.1.8	
+A diagonal matrix is called an identity matrix if all 
+its diagonal entries are  1. 
+We use  In  to denote the identity matrix of order  n. 
+Sometimes we write  I  instead of  In  when there is 
+no danger of confusion. 
+()
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+=
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎝
+⎛
+=⎟
+⎠
+⎞⎜
+⎝
+⎛==
+1000
+0100
+0010
+0001
+100
+010
+001
+10
+011 4321 IIII
+e.g. 
+Definition	2.1.7	(5)		and		Example	2.1.8	
+A matrix with all entries equal to zero is called a zero 
+matrix. 
+We use  0m x n  to denote the zero matrix of size  m x n. 
+Sometimes we write   0  instead of  0m x n  when there 
+is no danger of confusion. 
+()
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+=⎟
+⎠
+⎞⎜
+⎝
+⎛== ×××
+000
+000
+000
+000
+0000
+00000 34421 0001e.g. 
+Definition	2.1.7	(6)		and		Example	2.1.8	
+A square matrix  (aij)  is called a symmetric matrix if  
+aij = aj i  for all  i, j. 
+e.g. ()
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+−−
+−
+−
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎝
+⎛
+−
+−
+⎟
+⎠
+⎞⎜
+⎝
+⎛
+1012
+0006
+1031
+2612
+220
+231
+011
+24
+404
+ 1−10−132022⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+
+Definition	2.1.7	(7)		and		Example	2.1.8	
+A square matrix  (aij)  is called upper triangular if  
+aij = 0  for all  i > j. 
+A square matrix  (aij)  is called lower triangular if  
+aij = 0  for all  i < j. 
+Both upper and lower triangular matrices are called 
+triangular matrices. 
+()
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+−
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎝
+⎛
+⎟
+⎠
+⎞⎜
+⎝
+⎛
+1032
+0001
+0030
+0002
+200
+230
+321
+20
+404e.g. 
+Learning	outcomes	(Section	2.1)	
+(1) What is a matrix? Rows, columns, size of a matrix and (i,j)-entry of a matrix. The 
+notation aij.  
+  
+ 
+(2) Special types of matrices like square matrix, 
+diagonal matrix, scalar matrix, identity matrix, zero 
+matrix, symmetric matrix, triangular matrix (both 
+upper and lower).  
+ 
+Definition	2.2.1	
+Two matrices are said to be equal if they have the 
+same size and their corresponding entries are equal. 
+Let  A = (aij)m x n  and  B = (bij)p x q.   
+Then  A  is equal to  B  if 
+m = p,  n = q  and  aij = bij  for all  i, j. 
+Example	2.2.2	
+where  x  is a constant. 
+   A=1x24⎛⎝⎜⎞⎠⎟B=1−124⎛⎝⎜⎞⎠⎟C=1−1024−1⎛⎝⎜⎞⎠⎟1.  A = B  if and only if  x = –1. 
+≠2.  A    C  for all value of  x. 
+Definition	2.2.3	
+Let  A = (aij)m x n,  B = (bij)m x n  and  c  a real constant. 
+1. Matrix Addition:  A + B = (aij + bij)m x n 
+2. Matrix Subtraction:  A – B = (aij –  bij)m x n 
+3. Scalar Multiplication:  cA = (caij)m x n  where the 
+constant  c  is usually called scalar. 
+Example	2.2.4	
+  A=−23−43−52⎛⎝⎜⎞⎠⎟B=132−24−2⎛⎝⎜⎞⎠⎟  A+B=−2+13+3−4+23+(−2)−5+42+(−2)⎛⎝⎜⎞⎠⎟=−16−21−10⎛⎝⎜⎞⎠⎟  A−B=−2−13−3−4−23−(−2)−5−42−(−2)⎛⎝⎜⎞⎠⎟=−30−65−94⎛⎝⎜⎞⎠⎟  4A=4×(−2)4×34×(−4)4×34×(−5)4×2⎛⎝⎜⎞⎠⎟=−812−1612−208⎛⎝⎜⎞⎠⎟
+  A=132−684⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  B=1−1024−1⎛⎝⎜⎞⎠⎟A+B or A–B is not defined. 
+Remark	2.2.5	
+1. Given a matrix  A,  we normally use  –A  to 
+denote the matrix  (–1)A. 
+2. The matrix subtraction can be defined using the 
+matrix addition:  given two matrices  A  and  B  
+of the same size,  A – B  is defined to be the 
+matrix  A + (–1)B. 
+Theorem	2.2.6	
+Let  A, B, C  be matrices of the same size and  a, b 
+scalars. 
+1.  A + B = B + A  (the Commutative Law of Matrix 
+Addition) 
+2.  A + (B + C) = (A + B) + C  (the Associative Law 
+of Matrix Addition) 
+3.  a(A + B) = aA + aB 
+4.  (a + b)A = aA + bA 
+5.  a(bA) = (ab)A = b(aA) 
+Proof	of	Theorem	4.6.2	
+To prove  A + (B + C) = (A + B) + C: 
+Since  A, B, C  are matrices of the same size,   
+A + (B + C)  and  (A + B) + C   
+must be of the same size. 
+So it remains to show that for all  i, j,  
+the  (i, j)-entry of  A + (B + C)  is equal to  
+the  (i, j)-entry of  (A + B) + C . 
+Proof	of	Theorem	2.2.6	
+Let  A = (aij),  B = (bij)  and  C = (cij). 
+For any  i, j, 
+   the  (i, j)-entry of  A + (B + C) 
+= aij + [the (i, j)-entry of  B + C] 
+= aij + [bij + cij] 
+= [ aij + bij ] + cij   (Associative Law for real number addition) 
+= [the (i, j)-entry of  A + B] + cij 
+= the  (i, j)-entry of  (A + B) + C. 
+Exercise	2.2.7	
+Complete the proof of Theorem 4.6. 
+Remark	2.2.8	
+Let  A1, A2, …, Ak  be matrices of the same size. 
+By the Associative Law for Matrix Addition, we can 
+write  A1 + A2 + ··· + Ak  to represent the sum of the 
+matrices without using any parentheses to indicate 
+the order of the matrix addition. 
+Theorem	2.2.6	
+Let  A  be a matrix. 
+1.  A + 0 = 0 + A = A   
+2.  A – A = 0  
+3.  0A = 0   (0  on the LHS is the number zero and  0  
+on the RHS is a zero matrix). 
+Definition	2.2.8		(Matrix	Multiplication)	
+Let  A = (aij)m x p  and  B = (bij)p x n  be two matrices. 
+ 
+The product   AB  is defined to be an  m x n  matrix 
+such that its  (i, j)-entry is 
+ 
+ 
+ 
+for  i = 1, 2, …, m  and  j = 1, 2, …, n. 
+   ai1b1j+ai2b2j+!+aipbpj=aikbkjk=1p∑Remark 2.2.10 (1): # of columns of A = # of rows of B. 
+   a11a12!a1p""!"ai1ai2!aip""!"am1am2!amp
+⎛⎝⎜⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟⎟   b11!b1j!b1nb21!b2j!b2n"""""bp1!bpj!bpn
+⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟The (i, j)-entry of AB is 
+   ai1b1j+ai2b2j+!+aipbpj=aikbkjk=1p∑
+   ai1ai2!aip()b1jb2j"b1j
+⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟
+(i, j)-entry of AB 
+Example	2.2.9	
+  A=1−1024−1⎛⎝⎜⎞⎠⎟  B=132−684⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  AB=1−1024−1⎛⎝⎜⎞⎠⎟132−684⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟2-by-3 3-by-2 
+2-by-2 
+ =1×1+(−1)×2+0×81×3+(−1)×(−6)+0×42×1+4×2+(−1)×82×3+4×(−6)+(−1)×4⎛⎝⎜⎞⎠⎟ =−192−22⎛⎝⎜⎞⎠⎟
+Example	2.2.9	
+  A=1−1024−1⎛⎝⎜⎞⎠⎟  B=132−684⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  BA=132−684⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟1−1024−1⎛⎝⎜⎞⎠⎟3-by-2 2-by-3 
+3-by-3 
+  BA=1×1+3×21×(−1)+3×41×0+3×(−1)2×1+(−6)×22×(−1)+(−6)×42×0+(−6)×(−1)8×1+4×28×(−1)+4×48×0+4×(−1)⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  BA=711−1−10−266168−4⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Remark	2.2.10	(1)	
+We can only multiply two matrices  A  and  B  (in 
+the manner  AB)  when the number of columns of  A  
+is equal to the number of rows of  B. 
+Remark	2.2.10	(2)	
+The matrix multiplication is not commutative, i.e. in 
+general,  AB  and  BA  are two different matrices 
+even if the product exist. 
+  A=1000⎛⎝⎜⎞⎠⎟B=1234⎛⎝⎜⎞⎠⎟e.g. 
+  AB=1200⎛⎝⎜⎞⎠⎟BA=1030⎛⎝⎜⎞⎠⎟So  AB≠BA. 
+Remark	2.2.10	(3)	
+By Remark 4.12.2, it would be ambiguous to say “the 
+multiplication of a matrix  A  to another matrix  B” 
+since it could mean  AB  or  BA. 
+To distinguish the two, we refer to 
+AB as the pre-multiplication of  A  to  B  and 
+BA as the post-multiplication of  A  to  B. 
+Remark	2.2.10	(4)	
+AB = 0  does not imply  A = 0  or  B = 0. 
+  A=1000⎛⎝⎜⎞⎠⎟B=0001⎛⎝⎜⎞⎠⎟e.g. 
+  AB=1000⎛⎝⎜⎞⎠⎟0001⎛⎝⎜⎞⎠⎟=0000⎛⎝⎜⎞⎠⎟=BAWe have  A≠ 0,  B ≠ 0  and AB = BA = 0.
+Definition	2.2.12	Powers	of	Square	Matrices	
+Let A be a square matrix and n a nonnegative 
+integer. We define as follows:  
+    An=I     if  n=0AA!An times"#$%$     if  n≥1⎧⎨⎪⎩⎪  A3=1000⎛⎝⎜⎞⎠⎟1000⎛⎝⎜⎞⎠⎟1000⎛⎝⎜⎞⎠⎟=1000⎛⎝⎜⎞⎠⎟e.g. 
+  An=Aif  n≥1Exercise.	
+Theorem	2.2.11	
+1.   (Associative Law for Matrix Multiplication) 
+      If  A, B  and  C  are  m x p,  p x q  and  q x n  
+matrices respectively, then 
+A(BC) = (AB)C. 
+Theorem	2.2.11	
+2.   (Distributive Law for Matrix Addition and 
+Multiplication) 
+      If  A, B  and  B’  are  m x p,  p x n  and  p x n  
+matrices respectively, then 
+A(B + B’) = AB + AB’. 
+      If  A, C  and  C’  are  p x n,  m x p  and  m x p  
+matrices respectively, then 
+(C + C’) A = CA + C’A. 
+Theorem	2.2.11	
+3.   If  a  is a scalar and   A, B  are  m x p,  p x n   
+matrices respectively, then 
+a(AB) = (aA)B = A(aB). 
+Proof	of	the	first	part	of	Theorem	2.2.11	
+To prove  A(B + B’) = AB + AB’: 
+Since the size of  A  is  m x p  and  the size of  B + B’  
+is  p x n,  the size of  A(B + B’)  is  m x n. 
+ 
+On the other hand, both the sizes of  AB  and  AB’  
+are  m x n  and hence the size of  AB + AB’  is  m x n. 
+ 
+Thus the size of  A(B + B’)  is equal to the size of  
+AB + AB’. 
+The same size 
+Proof	of	the	first	part	of	Theorem	2.2.11	
+Let  A = (aij),  B = (bij)  and  B’ = (bij’ ). 
+For any  i, j, 
+   the  (i, j)-entry of  A(B + B’) 
+= ai1[the (1, j)-entry of  B + B’]  
+        + ai2[the (2, j)-entry of  B + B’]  
+             + ···  
+                  + aip[the (p, j)-entry  B + B’] 
+The same entries 
+Recall  A = (aij),  B = (bij)  and  B’ = (bij’ ). 
+For any  i, j, 
+   the  (i, j)-entry of  A(B + B’) 
+= ai1[b1j + b1j’ ] 
+        + ai2[b2j + b2j’ ]  
+             + ···  
+                  + aip[bpj + bpj’ ] 
+= [ai1b1j + ai2b2j + ··· + aipbpj] 
+        + [ai1b1j’ + ai2b2j’ + ··· + aipbpj’ ] 
+= [the  (i, j)-entry of  AB] + [the  (i, j)-entry of  AB’] 
+= the  (i, j)-entry of  AB + AB’. 
+ 
+the (1, j)-entry of  B + B’ 
+the (2, j)-entry of  B + B’ 
+the (p, j)-entry of  B + B’ 
+
+Exercise	4.14	
+Complete the proof of Theorem 4.13. 
+Theorem	2.2.11	(4)	
+Let  A  be a  m x n   matrix. 
+1.  A0n x q = 0m x q  and  0p x m A = 0p x n   
+2.  AIn = Im A = A  
+Notation	2.2.15	
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+== ×
+ma
+a
+a
+A !
+2
+1
+pmija)( where 
+)(
+)(
+)(
+21
+22221
+11211
+mpmm
+p
+p
+aaa
+aaa
+aaa
+!
+"
+!
+!
+=
+=
+=
+ma
+a
+a
+2
+1
+For  i = 1, 2, …, m,  ai  is the ith row of  A. 
+Notation	2.2.15	
+)()( nbbbB !21== ×npijb
+where 
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+=
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+=
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+=
+pn
+n
+n
+pp b
+b
+b
+b
+b
+b
+b
+b
+b
+!…!!
+2
+1
+2
+22
+12
+1
+21
+11
+nbbb 21
+For  j = 1, 2, …, n,  bj  is the jth column of  B. 
+Notation	2.2.15	
+)( n
+m
+bbb
+a
+a
+a
+AB !" 21
+2
+1
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+=
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+=
+nmmm
+n
+n
+bababa
+bababa
+bababa
+!
+"""
+!
+!
+21
+22212
+12111
+where 
+)(
+)(
+2211
+2
+1
+21
+psrpsrsr
+ps
+s
+s
+rprr
+bababa
+b
+b
+b
+aaa
++++=
+⎟⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+=
+!
+"!srba
+Notation	2.2.15	
+)( nbbbAAB !21= )( nAbAbAb !21=
+For  j = 1, 2, …, n,  Abj  is the jth column of  AB. 
+  AB=a1a2!am⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟B  =a1Ba2B!amB⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟For  i = 1, 2, …, m,  ai B  is the ith row of  AB. 
+A0n x q = 0m x q  Proof	of	Theorem	2.2.11	(4)	
+    A=(aij)m×n=a1a2!am⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟    0n×p=(0)n×p=(0n×10n×1!0n×1)    A0n×p=a1a2!am⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟(0n×10n×1"0n×1)  =a10n×1a10n×1!a10n×1a20n×1a20n×1!a20n×1"""am0n×1am0n×1!am0n×1⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟    ai0n×1=ai1×0+ai2×0+!ain×0=0A0n x q = 0m x q  
+
+Proof	of	Theorem	2.2.11	(4)	
+    In=(e1e2!en)    AIn=(Ae1Ae2!Aen)
+AIn = A  
+where 
+   e1=10!0⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟e2=01!0⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟…en=00!1⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟  Aej=a1eja2ej!amej⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟  aiej=aij⇒AIn = A  
+   =a1ja2j!amj⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟= j-th column of A 
+Exercise	2.2.16	
+  A=1−1024−1⎛⎝⎜⎞⎠⎟a1=(1−10)a2=(24−1)  B=132−684⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟b1=128⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟b2=3−64⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟Work out  AB  in the three different forms discussed 
+in Notation 4.16. 
+Remark	2.2.17	
+Consider the system of linear equations: 
+⎪
+⎪
+⎩
+⎪
+⎪
+⎨
+⎧
+=+++
+=+++
+=+++
+mnmnmm
+nn
+nn
+bxaxaxa
+bxaxaxa
+bxaxaxa
+!
+"
+!
+!
+2211
+22222121
+11212111
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+=
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+mnmnmm
+n
+n
+b
+b
+b
+x
+x
+x
+aaa
+aaa
+aaa
+!!
+"
+!!!
+"
+"
+2
+1
+2
+1
+21
+22221
+11211
+We can rewrite the system using the matrix 
+multiplication: 
+Remark	2.2.17	
+Let 
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+=
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+=
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+=
+mnmnmm
+n
+n
+b
+b
+b
+x
+x
+x
+aaa
+aaa
+aaa
+!!
+"
+!!!
+"
+"
+2
+1
+2
+1
+21
+22221
+11211
+bxA
+Then the system can be written as  Ax = b. 
+A  is called the coefficient matrix of the system. 
+x  is called the variable matrix of the system. 
+b  is called the constant matrix of the system. 
+Remark	2.2.17	
+The system can also be written as: 
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+=
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+++
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+⎛
++
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+⎛
+m
+n
+mn
+n
+n
+mm
+b
+b
+b
+x
+a
+a
+a
+x
+a
+a
+a
+x
+a
+a
+a
+!!
+"
+!!
+2
+1
+2
+1
+2
+2
+22
+12
+1
+1
+21
+11
+Let  A = (c1  c2 ··· cn)  where  cj  is the jth column of  
+A. 
+Then the system becomes  c1x1 + c2x2 + ··· + cnxn = b. 
+Example	2.2.18	
+  −4y+6z=2x−z=1y+5z=−4⎧⎨⎪⎪⎩⎪⎪  ⇔0−4610−1015⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=21−4⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  ⇔010⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟x+−401⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟y+6−15⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟z=21−4⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Learning	outcomes	(Section	2.2)	
+(1) When are two matrices equal?   
+  
+ 
+(3) Common rules of matrix operations (including 
+commutative law and associative law for matrix addition).  
+(2) Basic matrix operations: (a) matrix addition; (b) matrix 
+subtraction; (c) multi- plying a scalar to a matrix.  
+ 
+(4) Definition of matrix multiplication. To write down the (i,j)-
+entry of a product AB in terms of the entries in A and B.  
+(5) Understand the difference between pre-multiplication and 
+post-multiplication.  
+  
+ 
+Learning	outcomes	(Section	2.2)	
+(6) Common rules of matrix multiplication (including 
+associative and distributive laws).  
+ 
+ 
+(8) Powers of square matrices.  
+(7) How to prove a matrix equation by (i,j)-entry argument.  
+(9) (Notation 2.2.15) Row and column representation of matrix 
+multiplication.  
+(10) Representing a linear system as Ax = b. What is a 
+coefficient matrix, variable matrix and constant matrix?  
+ 
+  
+ 
+Matrix 
+Diagonal 
+zero 
+identity 
+Square 
+Scalar 
+cA 
+ A ± B 
+ AB 
+Theorem 2.2.6 
+ Theorem 2.2.11 
+Matrix form of 
+linear system 
+An 
+Triangular 
+Symmetric 
+Notation 
+2.2.15 

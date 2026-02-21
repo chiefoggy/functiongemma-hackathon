@@ -1,0 +1,50 @@
+Lecture 22Ranges and Kernels
+Definition 7.2.1Let T : Rn®Rmbe a linear transformation.The range of T,  denoted by R(T), is the set of imagesof T, i.e. R(T) = {T(u) | u∈Rn} ⊆Rm.
+Example 7.2.2Let T : R2®R3be a linear transformation defined by
+Then   Txy⎛⎝⎜⎞⎠⎟⎛⎝⎜⎞⎠⎟=2x+yx+yx⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟   for  xy⎛⎝⎜⎞⎠⎟∈R2   R(T)=2x+yx+yx⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟      x,y∈R⎧⎨⎪⎪⎩⎪⎪⎫⎬⎪⎪⎭⎪⎪
+Example 7.2.2Since (2x + y,  x + y,  x)T = x(2, 1, 1) + y(1, 1, 0), 
+In fact, R(T)is the plane x–y–z= 0in R3. 
+R(T)= span{(2, 1, 1)T, (1, 1, 0)T}, 
+Discussion 7.2.3Let T : Rn®Rmbe a linear transformation and let {u1, u2, …, un}be a basis for Rn. In Discussion 7.1.6, the image of every vector v∈Rnunder Tis a linear combination of T(u1), T(u2), …, T(un), i.e. T(v)∈span{T(u1), T(u2), …, T(un)}for all v∈Rn. Hence R(T)⊆span{T(u1), T(u2), …, T(un)}.Conversely, every linear combination of T(u1), T(u2), …, T(un)is an element of R(T)(why?). So R(T)= span{T(u1), T(u2), …, T(un)}.
+Theorem 7.2.4Let T : Rn®Rmbe a linear transformation and Athe standard matrix for T. ThenR(T)= the column space of Awhich is a subspace of Rm.  
+Proof of Theorem 7.2.4Take the standard basis {e1, e2, …, en}for Rn. By Discussion 7.1.8, T(e1), T(e2), …, T(en)are the ncolumns of A. Following Discussion 7.2.3, we have R(T)= span{T(e1), T(e2), …, T(en)}=the column space of A.
+Definition 7.2.5Let Tbe a linear transformation. The dimensionof R(T) is called the rank of Tand is denoted by rank(T).
+By Theorem 7.2.4, if Ais the standard matrix for T, then rank(T) = rank(A). 
+Example 7.2.6Let T : R4®R4be a linear transformation defined by
+Find a basis for the range of Tand determine the rank of T.    Txyzw⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟=3x+4y+z+2wx+4y+3z−2w−x+y+2z−3w−x+2y+3z−4w⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟   for  xyzw⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟∈R4
+Solution of Example 7.2.6The range of Tis equal to the column space of the matrix 
+By Gaussian Elimination, we reduce Ato 
+So {(3, 1, –1, –1)T, (4, 4, 1, 2)T}is a basis for R(T)and  rank(T) = dim (R(T)) = 2.
+  A=3412143−2−112−3−123−4⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟ 10−12011−100000000⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟
+Definition 7.2.7Let T : Rn®Rmbe a linear transformation.The kernel of T, denoted by Ker(T), is the set of vectors in Rnwhose image is the zero vector in Rm, i.e. Ker(T)= {u| T(u) = 0} ⊆Rn. 
+Example 7.2.8.1Let T1: R3®R4be a linear transformation defined by
+The kernelof T1is the set of vectors u∈R3such that T1(u) = 0. That is, we need to solve   T1xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=3x+3y+2z3x+4y+2z2x−2y−4z4x+2y+z⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟   for  xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟∈R3  T1xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=0000⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟
+Example 7.2.8.1This is equivalent to 
+By solving the linear system, we get only the trivial solution x= 0, y= 0, z= 0. Thus Ker(T1) = {(0, 0, 0)T}. 
+  3323422−2−4421⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=0000⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟
+Example 7.2.8.2Let T2: R3®R3be a linear transformation defined by
+By equating 
+we get x= –z/3and y= –z/3. So 
+   T2xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=x+2y+z−x+y5x+4y+3z⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟   for  xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟∈R3  x+2y+z−x+y5x+4y+3z⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=000⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Example 7.2.8.2
+   Ker(T2)=−z3−z3z⎛⎝⎜⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟⎟     y∈R⎧⎨⎪⎪⎪⎩⎪⎪⎪⎫⎬⎪⎪⎪⎭⎪⎪⎪=span{(1,1,−3)T}
+Theorem 7.2.9Let T : Rn®Rmbe a linear transformation and Athe standard matrix for T. ThenKer(T) = the nullspace of Awhich is a subspaceof Rn. 
+ProofKer(T) = {u | T(u) = 0} = {u | Au = 0}which is the nullspace of A. 
+Definition 7.2.10Let Tbe a linear transformation. The dimensionof Ker(T)is called the nullity of Tand is denoted by nullity(T).
+By Theorem 7.2.9, if Ais the standard matrix for T, then nullity(T) = nullity(A).
+Example 7.2.11.1The nullity of the linear transformation in Example 7.2.8.1is 0(Recall Ker(T1) = {(0, 0, 0)T})while the nullity of the linear transformation in Example 7.2.8.2is 1. 
+   Ker(T2)=−z3−z3z⎛⎝⎜⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟⎟     y∈R⎧⎨⎪⎪⎪⎩⎪⎪⎪⎫⎬⎪⎪⎪⎭⎪⎪⎪=span{(1,1,−3)T}
+Example 7.2.11.2Let T : R4®R4be a linear transformation defined by 
+Find a basis for the kernel of Tand determine the nullity of T.    Txyzw⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟=2y+2z−2w−x+y−2w2x+2z+2w3x+y+4z+2w⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟   for  xyzw⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟∈R4
+SolutionThe kernel is found by solving
+The linear system has a general solution x= –s–t, y= −s + t,z = s,w = t where s, tare arbitrary parameters. Thus the kernel is the subspace. 
+  022−2−110−220223142⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟xyzw⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟=0000⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟
+Solution
+{(–1, –1, 1, 0)T, (–1, 1, 0, 1)T}is a basis for the kernel and nullity(T) = dim(Ker(T)) = 2.
+   Ker(T)=s−1−110⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟+t−1101⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟     s,t∈R⎧⎨⎪⎪⎩⎪⎪⎫⎬⎪⎪⎭⎪⎪
+Theorem 7.2.12 (Dimension Theorem for Linear Transformations) If T : Rn®Rmis a linear transformation, thenrank(T) + nullity(T) = n. 
+Proof of Theorem 7.2.12The theorem is a restatement of Theorem4.3.4, the Dimension Theorem for Matrices: If Ais an mnmatrix, then rank(A) + nullity(A) = n. If we define a linear transformation T : Rn®Rmby T(x) = A xfor x∈Rn. Since rank(T) = rank(A) and nullity(T) = nullity(A), we have rank(T) + nullity(T) = rank(A) + nullity(A) = n. 
+Learning outcomes (Section 7.2)(1)What is the range, R(T), of a linear transformation T?
+(3)What is the dimension of R(T)and rank(T)?(2)If Ais the standard matrix for T, how is R(T)related to A? 
+(5) If Ais the standard matrix for T, how is Ker(T) related to A? (6)What is the dimension of Ker(T)and nullity(T)?(7)The dimension theorem for linear transformations. 
+(4)What is the kernel, Ker(T), of a linear transformation T?

@@ -1,0 +1,256 @@
+Rank 
+Theorem 4.2.1 
+rank(AB) ≤ min{rank(A) , rank(B) } 
+Nullspace 
+Nullility 
+Theorem 4.3.6 
+rank(A) + nullity(A) = n 
+Lecture	16	
+The	Dot	Product	
+and	
+Orthogonal	Bases	
+Discussion	5.1.1.1	
+Let  u = (u1, u2)  be a vector in  R2. 
+2221||||uu+=uThe length of  u  is given by 
+     y                           u = (u1, u2)             || u ||                         u2                                         x (0, 0)       u1 
+Discussion	5.1.1.2	
+Let  u = (u1, u2 , u3)  be a vector in  R3. 
+232221||||uuu++=uThe length of  u  is given by 
+                    z                                         u = (u1, u2 , u3)                            || u ||                                        u3             (0, 0, 0)                                                     y                                            u1                        u2  x 
+Discussion	5.1.1.3	
+Let  u  and  v  be two vector from  R2  or  R3. 
+The distance between   u  and  v  is equal to the 
+length of the vector  u – v,  i.e.  d(u, v) = || u – v ||. 
+u             u – v               v  
+Discussion	5.1.1.3	
+Let    be the angle between  u  and  v. 
+  u             u – v                  v  
+|| u – v ||2 = || u ||2 + || v ||2 – 2|| u || || v || cos(q ) 
+⎟⎟⎠⎞⎜⎜⎝⎛−−+=⇒−||||||||2||||||||||||cos2221vuvuvuθθθ
+Discussion	5.1.1.3	
+If  u = (u1, u2)  and  v = (v1, v2)  are vectors in  R2, 
+then 
+222211)()(||||),(dvuvu−+−=−=vuvu⎟⎠⎞⎜⎝⎛+=−||||||||cos22111vuvuvu   θ=cos−1[u12+u22]+[v12+v22]−[(u1−v1)2+(u2−v2)2]2||u||||v||⎛⎝⎜⎞⎠⎟
+Discussion	5.1.1.3	
+If  u = (u1, u2 , u3)  and  v = (v1, v2 , v3)  are vectors in  
+R3,  then 
+233222211)()()(||||),(dvuvuvu−+−+−=−=vuvu⎟⎟⎠⎞⎜⎜⎝⎛ −+−+−−+++++||||||||2])()()[(][][ 233222211232221232221 vuvuvuvuvvvuuu1cos−=θ⎟⎠⎞⎜⎝⎛++=−||||||||cos3322111vuvuvuvu
+Definition	5.1.2	
+Let  u = (u1, u2, …, un)  and  v = (v1, v2, …, vn) be 
+two vectors in  Rn. 
+nnvuvuvu+++=⋅!2211vu1. The dot product (or inner product) of  u  and  v  is 
+defined to be the value 
+22221||||nuuu+++=⋅=!uuu2. The norm (or length) of  u  is defined to be the 
+value 
+In particular, vectors of norm  1  are called unit 
+vectors. 
+Definition	5.1.2	
+2222211)()()(||||),(dnnvuvuvu−++−+−=−=!vuvu3. The distant between  u  and  v  is 
+⎟⎠⎞⎜⎝⎛⋅−||||||||cos1vuvu4. The angle between  u  and  v  is 
+Remark	5.1.3	
+Let  u  and  v  be two vectors in  Rn. 
+Suppose  u  and  v  are written as row vectors, 
+i.e.  u = (u1, u2, …, un)  and  v = (v1, v2, …, vn). 
+nnvuvuvu+++=⋅!2211vu()Tnnvvvuuuuv=⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎝⎛=!"2121
+Remark	5.1.3	
+Suppose  u  and  v  are written as column vectors, 
+⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎝⎛=nuuu!21u⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎝⎛=nvvv!21vi.e.                  and 
+nnvuvuvu+++=⋅!2211vu()vuTnnvvvuuu=⎟⎟⎟⎟⎟⎠⎞⎜⎜⎜⎜⎜⎝⎛=!"2121
+Example	5.1.4	
+The angle between  u  and  v  is 
+  u=(1,0,−2,2)v=(1,−1,−1,3)  u⋅v=1×1+0×(−1)+(−2)×(−1)+2×3=9  ||u||=12+02+(−2)2+22=9=3  ||v||=12+(−1)2+(−1)2+32=12=23  d(u,v)=(1−1)2+(0−(−1))2+(−2−(−1))2+(2−3)2=3 cos−193×23⎛⎝⎜⎞⎠⎟=cos−132⎛⎝⎜⎞⎠⎟=π6
+Theorem	5.1.5	
+Let  a  be a scalar and  u, v, w  vectors in  Rn. 
+1.  u · v = v · u 
+2.  (u + v) · w = u · w + v · w 
+      w · (u + v) = w · u + w · v 
+3.  (au) · v = u · (av) = a(u · v) 
+4.  || au || = |a| || u || 
+≥5.    u · u    0 
+      u · u  = 0  if and only if  u = 0. 
+Proof	of	Theorem	5.1.5.5	
+Let  u = (u1, u2, …, un). 
+Then  u · u = u1
+2 + u2
+2 + ··· + un
+2     0. 
+⇔⇔⇔≥If  u = 0,  then  u · u = 0. 
+On the other hand, 
+                u · u = 0 
+u1
+2 + u2
+2 + ··· + un
+2 = 0 
+u1 = 0,  u2 = 0,  …,  un = 0 
+u = 0 
+Exercise	5.1.5	
+Complete the proof of Theorem 5.1.5. See Question 
+5.3 in the textbook. 
+Definition	5.2.1	
+1. Two vectors  u  and  v  in  Rn  are called 
+orthogonal if  u · v = 0. 
+2. A set  S  of vectors in  Rn  is called orthogonal if 
+every pair of distinct vectors in  S  are 
+orthogonal. 
+3. A set  S  of vectors in  Rn  is called orthonormal 
+if  S  is orthogonal and every vector in  S  is a 
+unit vector. 
+Remark	5.2.2	
+Let  u  and  v  be two vectors in  Rn. 
+2)0(cos||||||||cos11π==⎟⎠⎞⎜⎝⎛⋅−−vuvuIf  u  and  v  are orthogonal, then 
+Thus the concept of “orthogonal” in  Rn  is the same 
+as the concept of “perpendicular” in  R2  and  R3.  
+Example	5.2.3.1	
+So  (2, –1, 5, 4)  and  (–1, 1, –1, 2)  are orthogonal. 
+ (2,−1,5,4)⋅(−1,1,−1,2)=2×(−1)+(−1)×1+5×(−1)+4×2=0
+Example	5.2.3.2	
+Let  u1 = (2, 0, 0),  u2 = (0, 1, 1)  and  u3 = (0, 1, –1). 
+                       z                                         u3                                                     y        u1    x                                  u2  
+Since  u1 · u2 = 0,  u1 · u3 = 0  and  u2 · u3 = 0, 
+the set  {u1, u2, u3}  is orthogonal. 
+Example	5.2.3.2	
+Let 
+1||||||||||||1||||1===iuiuiuuviiFor  i = 1, 2, 3, 
+0)(||||||||1||||1||||1=⋅=⎟⎠⎞⎜⎝⎛⋅⎟⎠⎞⎜⎝⎛=⋅jiuujuiujiuuuuvvjijiFor  i     j, 
+So the set  {v1, v2, v3}  is orthonormal. 
+≠  v1=1||u1||u1=12(2,0,0)=(1,0,0)v2=1||u2||u2=12(0,1,1)=(0,12,12)v3=1||u3||u3=12(0,1,−1)=(0,12,−12)
+Remark	on	Example	5.2.3.2	
+The process of converting an orthogonal set to an 
+orthonormal set by multiplying each vector  ui  by  
+1/|| ui ||  is called normalizing. 
+Example	5.2.3.3	
+Consider the standard basis  {e1, e2, …, en}  for  Rn. 
+For  i = 1, 2, …, n,  || ei || = 1. 
+≠For  i     j,  ei · ej = 0. 
+So the standard basis is an orthonormal set. 
+Theorem	5.2.4	
+Let  S  be an orthogonal set of nonzero vectors in a 
+vector space. 
+Show that  S  is linearly independent. 
+Proof	of	Theorem	5.2.4	
+Let S = {u1, u2, …, uk}. Consider the equation  
+ c1u1 + c2u2 + ··· + ckuk = 0  
+Since S is orthogonal, uj · ui = 0  when  j    i. 
+ And  ui · ui = || ui || 
+2. 
+≠For  i = 1, 2, …, k, 
+                (c1u1 + c2u2 + ··· + ckuk) · ui 
+= c1(u1 · ui) + c2(u2 · ui) + ··· + ci–1(ui–1 · ui) +  
+ci (ui · ui) + ci+1(ui+1 · ui) + ··· + ck (uk · ui). 
+So (c1u1 + c2u2 + ··· + ckuk) · ui= ci || ui || 
+2 = 0. 
+Thus ci = 0 and  S  is linearly independent.  
+Definition	5.2.5	
+1. A basis  S  for a vector space is called an 
+orthogonal basis if  S  is orthogonal. 
+2. A basis  S  for a vector space is called an 
+orthonormal basis if  S  is orthonormal. 
+Remark	5.2.6	
+By Exercise 5.2.4 and Theorem 3.6.7, to determine 
+whether a set  S  of nonzero vectors in a vector space 
+of dimension  k  is an orthogonal (resp. orthonormal) 
+basis, we only need to check 
+(i)   S  is orthogonal (resp. orthonormal); and 
+ 
+(ii)  |S| = k. 
+Example	5.2.7.1	
+The standard basis for  Rn  is an orthogonal basis as 
+well as orthonormal basis. 
+Example	5.2.7.2	
+)1,1,0()1,1,0()0,0,2(−===321uuuBy Example 5.2.3.2,  {u1, u2, u3}  is orthogonal. 
+By Remark 5.2.6,  {u1, u2, u3}  is an orthogonal 
+basis for  R3. 
+),,0(),,0()0,0,1(21212121−===321vvvBy Example 5.2.3.2,  {v1, v2, v3}  is orthonormal. 
+By Remark 5.2.6,  {v1, v2, v3}  is an orthonormal 
+basis for  R3. 
+Theorem	5.2.8	
+1.  If  S = {u1, u2, …, uk}  is an orthogonal basis of a 
+vector space  V,  then for any vector  w  in  V,  
+kkkuuuwuuuwuuuww222||||||||||||222111⋅++⋅+⋅=!⎟⎟⎠⎞⎜⎜⎝⎛⋅⋅⋅=222||,,||,||)(kkuuwuuwuuww||||||2211…Si.e. 
+2.  If  T = {v1, v2, …, vk}  is an orthonormal basis for 
+a vector space  V,  then for any vector  w  in  V, 
+w = (w · v1)v1 + (w · v2)v2 + ··· + (w · vk)vk,  
+i.e. (w)T = (w · v1, w · v2, …, w · vk). 
+Proof	of	Theorem	5.2.8.1	
+Let  w = c1u1 + c2u2 + ··· + ckuk  where  c1, c2, …, ck  
+are real numbers. 
+For  i = 1, 2, …, k, 
+  w · ui = (c1u1 + c2u2 + ··· + ckuk) · ui 
+Since  ui · ui = || ui || 
+2  and  uj · ui = 0  if  j    i,   
+w · ui = ci || ui || 
+2. 
+= c1(u1 · ui) + c2(u2 · ui) + ··· + ci–1(ui–1 · ui) +  
+ci (ui · ui) + ci+1(ui+1 · ui) + ··· + ck (uk · ui). 
+⎟⎟⎠⎞⎜⎜⎝⎛⋅⋅⋅=222||,,||,||)(kkuuwuuwuuww||||||2211…SSo 
+≠
+Proof	of	Theorem	5.2.8.2	
+Part 2 follows from Part 1 because  vi · vi = 1  for all  
+i.  
+Example	5.2.9.1	
+S = {v1, v2}  is an orthonormal basis for  R2. 
+ 
+Let  w = (x, y)  be a vector in  R2. 
+    w⋅v1=x+2y5w⋅v2=2x−y5    ⇒w=x+2y5v1+2x−y5v2   (w)S=(x+2y5,2x−y5)   v1=(15,25)v2=(25,−15)
+Example	5.2.9.2	
+Let  u1 = (1, 1, 1),  u2 = (0, –1, 1)  and  u3 = (2, –1, –1). 
+S = {u1, u2 , u3}  is an orthogonal basis for  R3. 
+ 
+Let  w = (1, –1, 1). 
+   w=w⋅u1||u1||2u1+w⋅u2||u2||2u2+w⋅u3||u3||2u3 =13,1,13⎛⎝⎜⎞⎠⎟    (w)S=w⋅u1||u1||2,w⋅u2||u2||2,w⋅u3||u3||2⎛⎝⎜⎞⎠⎟=13,22,26⎛⎝⎜⎞⎠⎟
+Definition	5.2.10	
+Let  V  be a subspace of  Rn. 
+A vector  u  is said to be orthogonal (or perpendicular) 
+to  V  if  u  is orthogonal to all vectors in  V. 
+u  
+                     V 
+the origin 
+Example	5.2.11.1	
+Let  V  be a plane in  R3  defined by the equation 
+ax + by +cz = 0. 
+Let  n = (a, b, c). 
+For any vector  u = (x, y, z)  in  V, 
+n · u = ax + by + cz = 0. 
+Thus  n  is orthogonal to  V. 
+}0|{}0|),,({33=⋅∈==++∈=unuRRczbyaxzyxVIn fact, 
+The vector  n  is called a normal vector of  V. 
+Example	5.2.11.2		Question	
+Let  V = span{u1, u2}  be a subspace of  R4  where  
+u1 = (1, 2, 2, –1)  and  u2 = (2, 3, 2, 1). 
+Find all vectors that are orthogonal to  V. 
+Example	5.2.11.2		Solution	
+Let  v = (w, x, y, z)  be a vector in  R4. 
+         v · (au1 + bu2) = 0  for all  a, b  in  R 
+So a vector  v  is orthogonal to  V  if and only if 
+v = (2s –5t, –2s + 3t, s, t) = s(2, –2, 1, 0) + t(–5, 3, 0, 1) 
+for some  s, t  in  R, 
+i.e.  v  is contained in  span{(2, –2, 1, 0), (–5, 3, 0, 1)}. 
+⇔⇔⇔ v · u1 = 0  and  v · u2 = 0 
+ w + 2x + 2y – z= 0  and  2x + 3y + 2z + z= 0 
+        (w, x, y, z) = (2s –5t, –2s + 3t, s, t)  for some  s, t  in  R 
+Remark	5.2.12	
+In general, if V = {u1, u2, …, uk} is a subspace of Rn, 
+then a vector v ∈ Rn is orthogonal toV if and only if  
+v · ui = 0 for i =1, 2 ,..., k.  
+Learning outcomes (Section 5.1) 
+(1) Understand the definition of length, distance, angle, 
+dot product in the general context of Rn.  
+(2) (Theorem 5.1.5) Some properties involving dot 
+product.  
+Learning outcomes (Section 5.2) 
+(1) When do we say two vectors are orthogonal? What 
+does it mean when we say a set is an orthogonal (or 
+orthonormal) set?  
+(2) An orthogonal set of nonzero vectors is always a 
+linearly independent set.  
+(3) Bases with special properties - orthogonal (resp. 
+orthonormal) bases. How to determine if a given set of 
+vectors is an orthogonal (resp. orthonormal) basis for a 
+vector space V if we know the dimension of V.  
+(5) When do we say that a vector u is orthogonal to a 
+vector space V ? How do we find all vectors that are 
+orthogonal to V ?  
+(4) (Theorem 5.2.8) If S is an orthogonal (resp. 
+orthonormal) basis for a vector space V, how can we 
+express a vector w ∈ V in terms of the vectors in S 
+efficiently (without having to solve linear systems)?  

@@ -1,27 +1,40 @@
 """
-FastAPI backend — run from repo root: uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
+Deep-Focus Backend: Hybrid Study Hub API
+Run from repo root: uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
 """
+
 import os
 import sys
+import uuid
 import tempfile
+import time
 from pathlib import Path
+from typing import List, Dict, Any
 
-# Ensure repo root is on path (for main.generate_hybrid, etc.)
+from fastapi import FastAPI, Request, UploadFile, File, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+
+# --- REPO PATH SETUP ---
+# Ensure we can import from the root 'main.py'
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(_REPO_ROOT))
 
-from fastapi import FastAPI, Request, UploadFile, File
-from fastapi.middleware.cors import CORSMiddleware
-import yfinance as yf
-
-from main import generate_hybrid, generate_cactus, transcribe_audio
-
+# Import your core logic from the root main.py
+from main import generate_hybrid, generate_cactus, generate_cloud, generate_cactus_text, transcribe_audio
 from backend import config as library_config
 from backend.indexer import run_index, get_status as get_index_status
-from backend.retrieval import search as retrieval_search
+from backend.retrieval import search as retrieval_search, reset_rag_model
 
-app = FastAPI(title="Deep-Focus API")
+app = FastAPI(title="Deep-Focus: Privacy-First Study Hub")
 
+# Optional multipart support (upload/transcribe)
+try:
+    import multipart  # type: ignore
+    MULTIPART_OK = True
+except Exception:
+    MULTIPART_OK = False
+
+# --- CORS CONFIGURATION ---
 app.add_middleware(
     CORSMiddleware,
     allow_origins=os.getenv("CORS_ORIGINS", "http://localhost:3000").split(","),
@@ -30,241 +43,193 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# --- GLOBAL STATE ---
+conversation_history = []
+TOOL_HANDLERS = {}
+UPLOADS_DIR = Path(os.environ.get("DEEPFOCUS_UPLOADS_DIR", _REPO_ROOT / "uploads"))
 
-# ---- Tool implementations ----
-def get_stock_price(ticker: str):
-    try:
-        stock = yf.Ticker(ticker)
-        info = stock.info
-        price = info.get("currentPrice") or info.get("regularMarketPrice") or info.get("previousClose")
-        name = info.get("shortName", ticker.upper())
-        if price:
-            return {"type": "stock_widget", "data": {"ticker": ticker.upper(), "name": name, "price": price}}
-        return {"type": "text", "data": f"Could not retrieve the current price for {ticker.upper()}."}
-    except Exception as e:
-        return {"type": "text", "data": f"Error fetching data for {ticker.upper()}: {str(e)}"}
-
-
-def get_company_news(ticker: str):
-    try:
-        stock = yf.Ticker(ticker)
-        news = stock.news or []
-        headlines = [{"title": item["title"], "link": item.get("link", "#")} for item in news[:3] if "title" in item]
-        if headlines:
-            return {"type": "news_widget", "data": {"ticker": ticker.upper(), "headlines": headlines}}
-        return {"type": "text", "data": f"No recent news found for {ticker.upper()}."}
-    except Exception as e:
-        return {"type": "text", "data": f"Error fetching news for {ticker.upper()}: {str(e)}"}
-
-
-def calculate_roi(initial_value: float, final_value: float):
-    roi = ((final_value - initial_value) / initial_value) * 100
-    return f"The Return on Investment (ROI) is {roi:.2f}%."
-
-
-def get_exchange_rate(base_currency: str, target_currency: str):
-    rates = {"USD_EUR": 0.85, "EUR_USD": 1.18, "USD_GBP": 0.75, "GBP_USD": 1.33}
-    pair = f"{base_currency.upper()}_{target_currency.upper()}"
-    rate = rates.get(pair, 1.0)
-    return f"The exchange rate from {base_currency.upper()} to {target_currency.upper()} is {rate}."
-
-
-def calculate_compound_interest(principal: float, rate: float, years: int):
-    amount = principal * (1 + rate / 100) ** years
-    return f"The compound interest amount after {years} years is ${amount:.2f}."
-
-
-def get_crypto_price(symbol: str):
-    prices = {"BTC": 60000.0, "ETH": 4000.0, "SOL": 150.0}
-    price = prices.get(symbol.upper(), 1000.0)
-    return f"The current price for {symbol.upper()} is ${price:.2f}."
-
-
-def calculate_mortgage_payment(principal: float, annual_rate: float, years: int):
-    monthly_rate = annual_rate / 100 / 12
-    num_payments = years * 12
-    if monthly_rate == 0:
-        payment = principal / num_payments
-    else:
-        payment = principal * (monthly_rate * (1 + monthly_rate) ** num_payments) / (
-            (1 + monthly_rate) ** num_payments - 1
-        )
-    return f"The monthly mortgage payment is ${payment:.2f}."
-
-
-FINANCE_TOOLS = [
-    {"name": "get_stock_price", "description": "Get the current stock price for a given ticker symbol.", "parameters": {"type": "object", "properties": {"ticker": {"type": "string", "description": "The stock ticker symbol, e.g., AAPL."}}, "required": ["ticker"]}},
-    {"name": "get_company_news", "description": "Get the latest news headlines for a company.", "parameters": {"type": "object", "properties": {"ticker": {"type": "string", "description": "The stock ticker symbol."}}, "required": ["ticker"]}},
-    {"name": "calculate_roi", "description": "Calculate Return on Investment (ROI) given initial and final values.", "parameters": {"type": "object", "properties": {"initial_value": {"type": "number"}, "final_value": {"type": "number"}}, "required": ["initial_value", "final_value"]}},
-    {"name": "get_exchange_rate", "description": "Get the exchange rate between two currencies.", "parameters": {"type": "object", "properties": {"base_currency": {"type": "string"}, "target_currency": {"type": "string"}}, "required": ["base_currency", "target_currency"]}},
-    {"name": "calculate_compound_interest", "description": "Calculate the compound interest amount.", "parameters": {"type": "object", "properties": {"principal": {"type": "number"}, "rate": {"type": "number"}, "years": {"type": "integer"}}, "required": ["principal", "rate", "years"]}},
-    {"name": "get_crypto_price", "description": "Get the current price for a given cryptocurrency symbol.", "parameters": {"type": "object", "properties": {"symbol": {"type": "string"}}, "required": ["symbol"]}},
-    {"name": "calculate_mortgage_payment", "description": "Calculate the monthly mortgage payment.", "parameters": {"type": "object", "properties": {"principal": {"type": "number"}, "annual_rate": {"type": "number"}, "years": {"type": "integer"}}, "required": ["principal", "annual_rate", "years"]}},
-]
-
-TOOL_HANDLERS = {
-    "get_stock_price": get_stock_price,
-    "get_company_news": get_company_news,
-    "calculate_roi": lambda **kw: {"type": "text", "data": calculate_roi(**kw)},
-    "get_exchange_rate": lambda **kw: {"type": "text", "data": get_exchange_rate(**kw)},
-    "calculate_compound_interest": lambda **kw: {"type": "text", "data": calculate_compound_interest(**kw)},
-    "get_crypto_price": lambda **kw: {"type": "text", "data": get_crypto_price(**kw)},
-    "calculate_mortgage_payment": lambda **kw: {"type": "text", "data": calculate_mortgage_payment(**kw)},
-}
-
-# Hub tools: search the library corpus (syllabi, timelines, notes)
+# --- HUB TOOLS DEFINITION ---
 HUB_TOOLS = [
     {
         "name": "search_hub",
-        "description": "Search the user's library (indexed files: PDFs, docs, code, spreadsheets) for a query. Use for questions like 'quiz timeline', 'syllabus summary', 'assignment due dates', or any content in the user's learning materials.",
+        "description": "Searches your learning materials (PDFs, notes, code, sheets) for specific info, timelines, or summaries.",
         "parameters": {
             "type": "object",
-            "properties": {"query": {"type": "string", "description": "Search query, e.g. 'quiz timeline' or 'syllabus'"}},
+            "properties": {
+                "query": {"type": "string", "description": "The specific question or topic to find in your files."}
+            },
             "required": ["query"],
         },
     },
 ]
 
-
-def search_hub(query: str):
-    """Handler: search corpus and return text for the model. Includes files_touched for sidebar."""
+# --- TOOL HANDLERS ---
+def handle_search_hub(query: str, force_local: bool = False) -> Dict[str, Any]:
+    """Logic: Retrieve snippets locally, then synthesize a response."""
+    print(f"DEBUG: Handling search_hub for query: {query}")
     results = retrieval_search(query, top_k=5)
+    
     if not results:
-        return {"type": "text", "data": "No matching content found in the library. Try indexing files first (set library root and run Index).", "files_touched": []}
-    parts = [f"**{r['path']}**: {r['snippet']}" for r in results]
-    files_touched = list({r["path"] for r in results})
-    return {"type": "text", "data": "\n\n".join(parts), "files_touched": files_touched}
+        print("DEBUG: No results found in retrieval.")
+        return {
+            "type": "text", 
+            "data": "I couldn't find anything relevant in your library. Try re-indexing your root folder or rephrasing your question.",
+            "files_touched": []
+        }
+    
+    # Filter out placeholders and extract unique paths
+    files_touched = list({r["path"] for r in results if r["path"] != "Library Document"})
+    context_blocks = []
+    for i, r in enumerate(results):
+        source = os.path.basename(r['path']) if r['path'] != "Library Document" else f"Result {i+1}"
+        context_blocks.append(f"Source: {source}\nContent: {r['snippet']}")
+    
+    context_text = "\n\n".join(context_blocks)
+    
+    # Synthesis Prompt: We use the context found locally to generate a smart answer
+    synthesis_prompt = (
+        "You are an expert academic assistant. Use the following snippets from the student's learning materials to answer the question below. "
+        "Guidelines:\n"
+        "1. Provide a clear, structured, and informative answer.\n"
+        "2. Cite the source files (e.g., 'According to Lecture 01...') where possible.\n"
+        "3. If the provided context does not contain the answer, say 'I couldn't find the specific answer in your current files, but based on general knowledge...' or state that the information is missing.\n"
+        "4. Focus on accuracy and academic tone.\n\n"
+        f"Context:\n{context_text}\n\n"
+        f"Student's Question: {query}"
+    )
+    
+    if force_local:
+        print("DEBUG: Calling generate_cactus_text for synthesis (local)...")
+        reply = generate_cactus_text([{"role": "user", "content": synthesis_prompt}])
+        response_text = reply.get("response") or "I found relevant notes but encountered an error while summarizing them locally."
+    else:
+        print("DEBUG: Calling generate_cloud for synthesis...")
+        # We call generate_cloud for the synthesis, but we pass NO tools to avoid an infinite loop
+        # Important: passing the synthesis_prompt as a single user message
+        reply = generate_cloud([{"role": "user", "content": synthesis_prompt}], [])
+        response_text = reply.get("response") or "I found relevant notes but encountered an error while summarizing them."
+    print(f"DEBUG: Synthesis complete. Response length: {len(response_text)}")
+    
+    return {
+        "type": "text",
+        "data": response_text,
+        "files_touched": files_touched
+    }
 
+# Register handlers
+TOOL_HANDLERS["search_hub"] = handle_search_hub
 
-TOOL_HANDLERS["search_hub"] = lambda **kw: search_hub(kw["query"])
+# --- HELPER FUNCTIONS ---
+def _normalize_path(path: str) -> str:
+    if not path: return ""
+    return os.path.normpath(os.path.expanduser(path.strip()))
 
-
-def get_chat_tools():
-    """Tools for chat: finance + hub if library root is set."""
-    tools = list(FINANCE_TOOLS)
-    if library_config.get_library_root():
-        tools = list(HUB_TOOLS) + tools
-    return tools
-
-
-conversation_history = []
-
+# --- API ENDPOINTS ---
 
 @app.get("/health")
-def health():
-    return {"status": "ok"}
+async def health():
+    return {"status": "ok", "timestamp": time.time()}
 
-
-# ---- Library hub API ----
-def _normalize_path(path: str) -> str:
-    """Strip leading/trailing whitespace only, expand ~, then normpath. Preserves spaces inside path."""
-    if not path or not isinstance(path, str):
-        return ""
-    path = path.strip()
-    path = os.path.expanduser(path)
-    return os.path.normpath(path)
-
+# --- LIBRARY MANAGEMENT ---
 
 @app.get("/api/library/root")
-def get_library_root():
+async def get_root():
     return {"root": library_config.get_library_root()}
-
 
 @app.put("/api/library/root")
-async def put_library_root(request: Request):
+async def set_root(request: Request):
     body = await request.json()
-    raw = (body.get("root") or "").strip()
-    library_config.set_library_root(_normalize_path(raw) if raw else "")
-    return {"root": library_config.get_library_root()}
-
-
-@app.post("/api/library/index")
-def trigger_index():
-    root = library_config.get_library_root()
-    if not root:
-        return {"ok": False, "error": "Library root not set"}
-    status = run_index(root)
-    return {"ok": True, "status": status}
-
-
-@app.get("/api/library/status")
-def library_status():
-    return get_index_status()
-
+    path = _normalize_path(body.get("root", ""))
+    library_config.set_library_root(path)
+    return {"root": path}
 
 @app.post("/api/library/validate")
 async def validate_path(request: Request):
-    """Validate that a path exists and is a directory (path sent in body; if omitted, use current root)."""
-    import os
-    try:
-        body = await request.json()
-    except Exception:
-        body = {}
-    raw = (body.get("path") or "").strip() or library_config.get_library_root() or ""
-    if not raw:
-        return {"ok": False, "error": "No path provided", "path": ""}
-    path = _normalize_path(raw)
-    if not os.path.exists(path):
-        return {"ok": False, "error": f"Path does not exist (resolved: {path})", "path": path}
-    if not os.path.isdir(path):
-        return {"ok": False, "error": f"Not a directory (resolved: {path})", "path": path}
-    try:
-        count = sum(1 for _ in Path(path).rglob("*") if _.is_file())
-    except Exception as e:
-        return {"ok": False, "error": f"Cannot read directory: {e}", "path": path}
-    return {"ok": True, "path": path, "exists": True, "is_dir": True, "file_count": count}
-
+    body = await request.json()
+    path_str = _normalize_path(body.get("path", ""))
+    
+    if not path_str:
+        return {"ok": False, "error": "No path provided."}
+        
+    path = Path(path_str)
+    if not path.exists():
+        return {"ok": False, "error": "Path does not exist.", "path": path_str}
+    if not path.is_dir():
+        return {"ok": False, "error": "Path is not a directory.", "path": path_str}
+        
+    # Count supported files
+    from backend.parsers import SUPPORTED_EXTENSIONS
+    count = 0
+    for p in path.rglob("*"):
+        if p.is_file() and p.suffix.lower() in SUPPORTED_EXTENSIONS:
+            count += 1
+            
+    return {"ok": True, "file_count": count, "path": path_str}
 
 @app.get("/api/library/suggested-roots")
-def suggested_roots():
-    """Return common machine locations for the user to pick (no typing)."""
-    import os
-    home = os.path.expanduser("~")
+async def suggested_roots():
+    home = Path.home()
     candidates = [
         ("Home", home),
-        ("Documents", os.path.join(home, "Documents")),
-        ("Desktop", os.path.join(home, "Desktop")),
-        ("Downloads", os.path.join(home, "Downloads")),
+        ("Documents", home / "Documents"),
+        ("Desktop", home / "Desktop"),
+        ("Downloads", home / "Downloads"),
     ]
-    out = []
-    for label, path in candidates:
-        if os.path.isdir(path):
-            out.append({"label": label, "path": path})
-    try:
-        cwd = os.getcwd()
-        if cwd not in [p["path"] for p in out]:
-            out.append({"label": "Current folder", "path": cwd})
-    except Exception:
-        pass
-    return {"roots": out}
+    roots = [{"label": label, "path": str(path)} for label, path in candidates if path.exists()]
+    return {"roots": roots}
 
+@app.post("/api/library/index")
+async def trigger_index():
+    root = library_config.get_library_root()
+    if not root or not os.path.exists(root):
+        raise HTTPException(status_code=400, detail="Valid library root not set.")
+    status = run_index(root)
+    reset_rag_model()
+    return {"ok": True, "status": status}
 
-@app.post("/api/library/upload")
-async def upload_library(files: list[UploadFile] = File("files")):
-    """
-    Accept a folder of files (from browser folder picker). Save to cache, set as library root, run index.
-    """
-    import uuid
-    if not files:
-        return {"ok": False, "error": "No files received"}
-    cache_base = _REPO_ROOT / "cache"
-    upload_dir = cache_base / f"upload_{uuid.uuid4().hex[:12]}"
-    upload_dir.mkdir(parents=True, exist_ok=True)
-    for f in files:
-        if not f.filename or f.filename.startswith("."):
-            continue
-        safe = f.filename.replace("..", "").lstrip("/")
-        path = upload_dir / safe
-        path.parent.mkdir(parents=True, exist_ok=True)
-        content = await f.read()
-        path.write_bytes(content)
-    library_config.set_library_root(str(upload_dir))
-    status = run_index(str(upload_dir))
-    return {"ok": True, "root": str(upload_dir), "status": status, "files_received": len(files)}
+@app.get("/api/library/status")
+async def get_status():
+    return get_index_status()
 
+if MULTIPART_OK:
+    @app.post("/api/library/upload")
+    async def upload_library(files: List[UploadFile] = File(...)):
+        if not files:
+            raise HTTPException(status_code=400, detail="No files uploaded.")
+
+        UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+        upload_root = UPLOADS_DIR / str(uuid.uuid4())
+        upload_root.mkdir(parents=True, exist_ok=True)
+
+        saved = 0
+        for f in files:
+            filename = f.filename or ""
+            rel = Path(filename)
+            if rel.is_absolute():
+                rel = Path(*rel.parts[1:])
+            rel = Path(*[p for p in rel.parts if p not in ("..", ".", "")])
+            if not rel.parts:
+                rel = Path(uuid.uuid4().hex)
+
+            dest = upload_root / rel
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            content = await f.read()
+            dest.write_bytes(content)
+            saved += 1
+
+        library_config.set_library_root(str(upload_root))
+        status = run_index(str(upload_root))
+        reset_rag_model()
+        return {"ok": True, "root": str(upload_root), "status": status, "files_saved": saved}
+else:
+    @app.post("/api/library/upload")
+    async def upload_library_unavailable():
+        raise HTTPException(status_code=501, detail="Upload requires python-multipart, which is not installed.")
+
+# --- CHAT & HYBRID ROUTING ---
 
 @app.post("/api/chat")
-async def chat(request: Request):
+async def chat_endpoint(request: Request):
     global conversation_history
     data = await request.json()
     user_msg = data.get("message", "")
@@ -272,39 +237,53 @@ async def chat(request: Request):
 
     if user_msg.lower() == "clear":
         conversation_history = []
-        return {"response": "Conversation cleared!", "metrics": None}
+        return {"response": "History cleared.", "metrics": None}
 
     conversation_history.append({"role": "user", "content": user_msg})
 
-    tools = get_chat_tools()
+    # 1. Get appropriate tools
+    tools = HUB_TOOLS if library_config.get_library_root() else []
+
+    # 2. Hybrid Route
     if force_local:
         result = generate_cactus(conversation_history, tools)
         result["source"] = "on-device (forced)"
     else:
         result = generate_hybrid(conversation_history, tools)
 
+    # 3. Handle Function Calls (if any)
     calls = result.get("function_calls", [])
     files_touched = []
+    final_blocks = []
+    
     if calls:
-        blocks = [{"type": "text", "content": "Here are the results of my financial tool calls:\n"}]
-        text_for_history = "Here are the results of my financial tool calls:\n"
-        for c in calls:
-            name, args = c["name"], c["arguments"]
-            try:
-                res = TOOL_HANDLERS.get(name, lambda **_: {"type": "text", "data": "Unknown tool."})(**args)
-                if isinstance(res, dict) and res.get("files_touched"):
-                    files_touched.extend(res["files_touched"])
-                blocks.append(res if isinstance(res, dict) and "type" in res else {"type": "text", "content": str(res)})
-                text_for_history += f"- **{name}**: {res.get('data', res) if isinstance(res, dict) else res}\n"
-            except Exception as e:
-                blocks.append({"type": "text", "content": f"- **{name}**: Error - {e}"})
-                text_for_history += f"- **{name}**: Error - {e}\n"
-        conversation_history.append({"role": "assistant", "content": text_for_history})
-        agent_reply = blocks
+        summary_text = ""
+        for call in calls:
+            name = call["name"]
+            args = call["arguments"]
+            handler = TOOL_HANDLERS.get(name)
+            
+            if handler:
+                res = handler(force_local=force_local, **args)
+                files_touched.extend(res.get("files_touched", []))
+                final_blocks.append(res)
+                summary_text += f"\n[Executed {name}]: {res.get('data')}"
+            else:
+                final_blocks.append({"type": "text", "data": f"Error: Tool {name} not found."})
+        
+        conversation_history.append({"role": "assistant", "content": summary_text})
+        agent_reply = final_blocks
     else:
-        msg = "I couldn't determine a financial tool to use for that query."
-        conversation_history.append({"role": "assistant", "content": msg})
-        agent_reply = msg
+        # No tool called; prefer response, otherwise fall back to a text generation path
+        agent_reply = result.get("response")
+        if not agent_reply:
+            if force_local:
+                fallback = generate_cactus_text(conversation_history)
+                agent_reply = fallback.get("response") or "No response generated."
+            else:
+                fallback = generate_cloud(conversation_history, [])
+                agent_reply = fallback.get("response") or "No response generated."
+        conversation_history.append({"role": "assistant", "content": agent_reply})
 
     return {
         "response": agent_reply,
@@ -313,23 +292,28 @@ async def chat(request: Request):
             "confidence": result.get("confidence", 0.0),
             "latency_ms": result.get("total_time_ms", 0.0),
         },
-        "files_touched": list(dict.fromkeys(files_touched)),
+        "files_touched": list(set(files_touched)),
     }
 
+# --- AUDIO & EXTRAS ---
 
-@app.post("/api/transcribe")
-async def transcribe(audio: UploadFile = File(...)):
-    content = await audio.read()
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
-        tmp.write(content)
-        tmp_path = tmp.name
-    try:
-        text = transcribe_audio(tmp_path)
-        return {"text": text.strip()}
-    finally:
-        if os.path.exists(tmp_path):
-            os.remove(tmp_path)
-
+if MULTIPART_OK:
+    @app.post("/api/transcribe")
+    async def transcribe(audio: UploadFile = File(...)):
+        content = await audio.read()
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+            tmp.write(content)
+            tmp_path = tmp.name
+        try:
+            text = transcribe_audio(tmp_path)
+            return {"text": text.strip()}
+        finally:
+            if os.path.exists(tmp_path):
+                os.remove(tmp_path)
+else:
+    @app.post("/api/transcribe")
+    async def transcribe_unavailable():
+        raise HTTPException(status_code=501, detail="Transcription requires python-multipart, which is not installed.")
 
 if __name__ == "__main__":
     import uvicorn

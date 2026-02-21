@@ -1,0 +1,150 @@
+S
+MA1101R Linear Algebra IIntroductory Lecture (Lecture 00)
+Welcome
+SAll NUS studentsSAll non-NUS (exchange) students
+Outline of today’s lecture
+SPart I: Module informationSPart II: About Linear AlgebraSPart III: Study Guide for this module
+Part I –Your lecturersSYour (friendly) lecturers:S(Lecture Group 2) Dr Ng Kah Loon (KL) –module coordinatorSOffice: S17-07-20STel: 65162751SEmail: matngkl@nus.edu.sgS(Lecture Group 1) Dr Zhang Lei SOffice: S17-06-05STel: 65162747SEmail: matzhlei@nus.edu.sgSEach lecturer will be covering the same content of the course (difference in delivery and styles).
+
+
+Part I –Module Web Page
+SIVLE –https://ivle.nus.edu.sgSForumSWorkbin(tutorials, lab worksheets, homework)SAnnouncementSGradebook (to check your homework, test and lab quiz scores)SLumiNUS–https://luminus.nus.edu.sgSFor Webcast lectures (both groups)
+Part I –IVLE and LumiNUS
+
+Part I –IVLE and LumiNUS
+
+Part I –Contact hours
+SLecturesS2 lecture groupsSGroup 1 (Monday 4:00-5:30pm, Wednesday 8:00-9:30am)SGroup 2 (Tuesday 8.00-9.30am, Thursday 2.00-3.30pm)S23 lectures (including Lecture 0, approx. 1.5 hours each)S2 lectures per week, excluding recess week (22ndSep –30thSep)SLectures for both groups will be webcasted (https://luminus.nus.edu.sg) 
+Part I –Contact hours
+STutorialsS11 tutorials (1 hour each, final tutorial may be conducted during lectures).S1 tutorial per week, attendance will be taken.
+Part I –Contact hours
+SLab sessionsS5 lab worksheetsSLab weeks are  4, 5, 9, 11, 12SLab quiz in week 13.SAll students –Free and Easy. Attendance will not be taken (more details in a while).
+Part I –Textbook(s)
+SLinear Algebra –Concepts and Techniques on Euclidean Spaces (Second Edition)SBy Ma S.L., V . Tan and Ng K.L.SPublisher: McGraw HillSAvailable at Co-Op (Science@LT27)SChapters used as lecture notesSExercise sets used as tutorial problems (some) and self practiceSOther reference books (see handouts, uploaded in IVLE)
+
+Part I –Assessments
+Total marks (100%)
+Final Exam (60%)
+CA (40%)
+Mid Term Test (20%)
+Lab Quiz (10%)
+Homework   (10%)Weeks 4,6,9,12Week 13Week 7
+Part I –Final Examination
+SDate: 30thNovember (Friday, PM session)SDuration: 2 hoursSVenue: Not available yetSOne A4 size helpsheet(double sided, self prepared*)SDetails laterSNo make-up examination
+
+Part I –Mid Term Test
+SDate: Week 7, date TBCSDuration: 1 hour (will start at 7pm, tentative)SVenue: Not available yetSOne A4 size helpsheet(double sided, self prepared*)SDetails laterSAbsent without valid reason à0; otherwise, onemake up test will be arranged.
+Part I –Tutorial sessions
+SWeekly 1-hour meeting with your tutorSFirst session starts on week 3 (27th–31stAug)STutorial problem set will be uploaded into IVLE in advance, please attempt all the questions before attending your tutorial.SYour tutor will discuss the problems in class. Students may be asked to present their solutions.
+Part I –Homework
+SThere will be a total of 4 homework setsSHomework sets will be available in IVLE.SHomework must be handed in during Monday’s (Group 1) or Tuesday’s (Group 2) lecture on weeks 4,6,9,11.SLate submissions will not be accepted without valid reason.
+Part I –Homework
+Group 1 –on weeks where homework is dueSSubmission is done during Monday lecture 4-6pmSEnvelope to be placed outside lecturer’s office (S17-06-05) after Monday lecture and be left there until 3pm on Tuesday.SStudents can place their homework in the envelope if they did not submit it during lecture.SNo further extension given (other than MC) once 3pm is passed.
+Part I –Homework
+Group 2 –on weeks where homework is dueSSubmission is done during Tuesday lecture 8-10amSEnvelope to be placed outside lecturer’s office (S17-07-20) after Tuesday lecture and be left there until 3pm on Tuesday (same day).SStudents can place their homework in the envelope if they did not submit it during lecture.SNo further extension given (other than MC) once 3pm is passed.
+Part I –Lab Sessions/Quiz
+S5 Lab Sessions + 1 Lab QuizSLab Session weeks: 4, 5, 9, 11, 12SLab Quiz week: 13SWorksheetsSDownloaded from IVLESEnhance your understanding of conceptsSUse MATLAB for lab activitiesSNo computer programming knowledge neededSNo need to hand in worksheetSVenue: S17-03-02
+Part I –Lab Sessions/QuizSNo formal class structure
+SOn lab session weeks, go to S17-03-02 anytime during the following designated time slots to complete your worksheet.SMonday 8am-10am; Tuesday 1pm-3pmSWednesday 1pm-4pm; Thursday 12pm-2pm and 4pm-5pmSFriday 12pm-1pmSOnce you have completed your worksheet, you can leave the lab. No attendance will be taken.
+SDuring the above time slots, there will be a lab assistant to assist you if necessary.SIf you are unable to go to the lab during the above time slots, you may still complete your worksheet in the lab at any other time convenient to you. However, there will not be any lab assistant present.SAvailability of  computers is on a first-come-first-served basis. SYou do not need to go to the lab at the same time ever y week.SThere will be formal class structure for the lab quiz in week 13. More details later.
+Part I –Tutorial registration 
+SCORS balloting: 17th–21stAugust (Iteration 2, Rounds 1A and 1B)SManual registration: 22nd–24thAugust. For students who failed to secure any groups.SNon graduating (and Exchange) students: contact me between 17th–19thAugust and state your (ranked) preferences
+Time slot9-1010-1111-1212-11-22-33-44-55-66-7
+MondayT08(S17-04-04) T07(S17-06-11)T10(S17-04-04)
+Tuesday T14(S16-03-04) T05(S16-04-31)
+Wednesday
+Thursday T09(S16-04-31)T15(S16-04-31) T02(S17-04-05)T04(S17-04-05)
+Friday T03(S17-04-05)T06(S17-04-05)T11(S16-03-09)T13(S16-04-35)
+T01(S17-04-05)T12(S16-03-09)
+Time slot8-99-1010-1111-1212-11-22-33-44-55-6
+MondayB1B2
+Tuesday B3B4
+Wednesday B5B6B7
+Thursday B8B9 B10
+Friday B11
+All labs at S17-03-02
+Part I –Is this module for me?
+SIf this module is part of your major requirement –NO CHOICE!SIf you are taking this module as an electiveSIt’s Level 1000 math, but…SMany students find it challengingSVery different from A-Level (H2) math
+Key points
+SNO Late homeworkSLab Quiz (10%) = 4 HomeworksSFinal Exam (60%)SThe module is difficult. 
+A.Please raise your hand if the answer is A;B.Please hold still if the answer is B.
+Time to run
+What is this module?
+A.MA1101R   Linear Algebra IB.MA6201      Topics in Automorphicforms
+What shall we do on Wednesday’s morning?
+A.Wake up naturally without alarm clockB.Set alarm for 6 AM and prepare to run to LT27 in case of MRT breakdown.
+What is the weight of Final Exam?
+A.60%B.60%
+End of Part I
+STake a 10 minutes break!
+Part II –About Linear Algebra
+
+
+
+
+
+Example 1: Egypt
+Egypt (about 1650 B.C.)
+Example 2: China
+About 400 A.D.English version
+The Chicken-Rabbits Problem
+Now there are pheasants and rabbits in the same cage. The top [of the cage] has 35 heads and the bottom has 94 legs.Find the number of pheasants and rabbits.
+Linear Equations
+Unknown variables:•x: the number of pheasants;•y: thenumberof rabbits.
+•35 heads:
+•94 legs:
+x+y=35
+2x+4y=94
+For example: Linear systems vectors, matrices
+Part II –About Linear Algebra 
+SWhat is Linear Algebra?SLinear = having the properties of lines (线性代数)S1 dimensional linear object = lineS2 dimensional linear object = plane
+SLinear Algebra is the study of mathematical objects and properties that are related to lines, planes and their generalization.
+Part II –What is it for? 
+SThe techniques and concepts are useful in solving problems in many areas:SMathematics (Math trench)SPhysics (Circuit)SStatistics (Linear regression)SChemistry (Balancing chemical Eq.)SComputer Science (Alpha GO)SEngineeringSEconomics, and many more
+Physical problem
+Linear model
+Problem solved
+Linear algebra techniques
+Interpretation
+Example 3
+Sergey Brin Larry Page
+How to rank websites?
+
+PageRank Algorithm
+
+Part II –Vectors and Matrices 
+2-dimension Algebraic expression24⎛⎝⎜⎞⎠⎟1236⎛⎝⎜⎞⎠⎟
+Transformation of a vector to another
+‘arrow’ in xy-plane
+Geometrical representation
+3-dimension214⎛⎝⎜⎜⎞⎠⎟⎟14620−1352⎛⎝⎜⎜⎞⎠⎟⎟Algebraic
+‘arrow’ in xyz-space
+Transformation of a vector to another
+Geometrical
+> 3-dimension201−2⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟210−22014101−12301⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟Algebraic
+Geometrical?
+None
+Part II –Linear systems 
+Geometrical interpretation:2 linesLinear system: 2 equations, 2 variablesx+y=12x+3y=2⎧⎨⎪⎩⎪Solution:x=1,y=0Geometrical interpretation:point of intersection of the 2 lines
+Linear system: 5 equations, 4 variables
+Algebraic generalization
+x+y+z+w=12x−y+3z+5w=2x+2y+7z+0w=00x−3y−4z+2w=15x−2y+3z+w=−4⎧⎨⎪⎪⎪⎩⎪⎪⎪How to find solution?
+Any geometrical interpretation?
+Part II –Linear systems (different expressions) x+y+z+w=12x−y+3z+5w=2x+2y+7z+0w=00x−3y−4z+2w=15x−2y+3z+w=−4⎧⎨⎪⎪⎪⎩⎪⎪⎪Standard form
+11112−13512700−3−425−231⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟xyzw⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟=1201−4⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟Matrix equation form
+x12105⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟+y1−12−3−2⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟+z137−43⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟+w15021⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟=1201−4⎛⎝⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟Vector equation form
+
+
+Part II –Topics to be covered
+SChapter 1: Linear systems and Gaussian EliminationSChapter 2: Matrices and its operationsSChapter 3: Vector spacesSChapter 4: Vector spaces associated with matricesSChapter 5: OrthogonalitySChapter 6: DiagonalizationSChapter 7: Linear Transformations
+
+Part III –Study Guide
+SDiscipline is critical to your successSWork consistently and regularlySPreview and reviewSPractice on the exercise problemsSTry your best to solve the advanced problems
+SDo I need to memorize?SMemorize key definitions and results (after sometime it should come naturally)SDo not memorize examples/solutions/proofsSHelpsheet= no need to memorize?SMake learning more efficient and effective
+Part III –Study Guide
+SUnderstand the conceptsSVisualize the concepts (in lower dimension)SExtend the concepts (in higher dimension)SLearn from examplesSApply the concepts to solve problemsSSee the connection among concepts
+SAsk questionsSDo not wait till you have too many “confounding” questionsSDo not stop at “knowing” how to solve a questionSDiscuss questions with friends SFeel free to see me for consultation
+Part III –Study Guide
+SComputational questionsS“Life saver” SPractice makes perfectSDo not rely on “eye-power”SIndirect computational questions
+SProofsSConnect conceptsSRecall definitions and resultsSProving techniquesSLearn from examplesSPractice
+The end !

@@ -1,0 +1,103 @@
+Lecture 7Determinants (Continued)
+Discussion 2.5.14.1Consider elementary row operationsof the first type:Multiply a row by a constant
+÷÷÷øöçççèæ=÷÷÷øöçççèæ=ihgkfekkdcbaihgfedcbaBABis obtained from  Aby multiplying the second row of  Aby a constant  k.det(B) = a(ke)i+ b(kf )g+ c(kd)h–c(ke)g–a(kf)h–b(kd)i= k(aei+ bfg+ cdh–ceg–afh–bdi)= kdet(A)
+÷÷÷øöçççèæ=10000001kE
+Discussion 2.5.14.1det(B) = kdet(A)Note that  B= EAand  det(E) = k.So  det(EA) = det(B) = kdet(A) = det(E)det(A).
+Discussion 2.5.14.2Consider elementary row operationsof the second type:Interchange two rows
+÷÷÷øöçççèæ=÷÷÷øöçççèæ=fedihgcbaihgfedcbaBABis obtained from  Aby interchanging the second and third rows of  A.det(B) = ahf+ bid+ cge–chd –aie–bgf= –(aei+ bfg+ cdh–ceg–afh–bdi)= –det(A)
+÷÷÷øöçççèæ=010100001E
+Discussion 2.5.14.2det(B) = –det(A)Note that  B= EAand  det(E) = –1.So  det(EA) = det(B) = –det(A) = det(E)det(A).
+Discussion 2.5.14.3Consider elementary row operationsof the third type:adding a multiple of a row to another row
+÷÷÷øöçççèæ+++=÷÷÷øöçççèæ=kcikbhkagfedcbaihgfedcbaBABis obtained from  Aby adding  ktimes of the first row of  Ato the third row.det(B) = ae(i+ kc)+ bf(g+ ka)+ cd(h+ kb)–ce(g+ ka) –af(h+ kb) –bd(i+ kc)= aei+ bfg+ cdh–ceg–afh–bdi= det(A)
+÷÷÷øöçççèæ=10010001kE
+Discussion 2.5.14.3det(B) = det(A)Note that  B= EAand  det(E) = 1.So  det(EA) = det(B) = det(A) = det(E)det(A).
+Theorem 2.5.15Let  Abe a square matrix.1.If  Bis a square matrix obtained from  Aby multiplying one row of  Aby a constant  k,  then  det(B) = kdet(A).2.If  Bis a square matrix obtained from  Aby inter-changing two rows of  A,  then  det(B) = –det(A).3.If  Bis a square matrix obtained from  Aby adding a multiple of one row of  Ato another row, then  det(B) = det(A).4.Let  Ebe an elementary matrix of the same size as  A.  Then  det(EA) = det(E)det(A).
+Proof of Theorem 2.5.15.3Let
+Let  Bbe a square matrix obtained from  Aby adding  ktimes of the ith row of  Ato the jth row.
+÷÷÷÷÷øöçççççèæ=nnnnnnaaaaaaaaa!"""!!212222111211A
+Proof of Theorem 2.5.15
+For  p= 1, 2, …, n,the (j, p)-cofactor of  B= the (j, p)-cofactor of  A.
+÷÷÷÷÷÷÷÷÷÷÷÷øöççççççççççççèæ+++=+++---nnnnnjjjinjnijijnjjjiniinaaaaaakaakaakaaaaaaaaaaa!"""!!!"""!"""!21,12,11,12211,12,11,12111211B
+Proof of Theorem 2.5.15Compute  det(B)by expanding along the jth row:
+jninjnjijjijAkaaAkaaAkaa)()()()det(222111++++++=!Bwhere  Aijis the  (i, j)-cofactor of  A.)()(22112211jninjijijnjnjjjjAaAaAakAaAaAa+++++++=!!)()det(2211jninjijiAaAaAak++++=!A
+Proof of Theorem 2.5.15)()det()det(2211jninjijiAaAaAak++++=!ABith row
+jth row jninjijinnnnnjjjiniinjjjiniinAaAaAaaaaaaaaaaaaaaaaaaa+++=+++---!!"""!!!"""!"""!221121,12,11,121,12,11,12111211By Theorem 2.5.12.1, 02211=+++jninjijiAaAaAa!
+Proof of Theorem 2.5.15)()det()det(2211jninjijiAaAaAak++++=!AB)det(0)det(AA=´+=k
+Exercise 2.5.15Complete the prove of Theorem 2.5.15.
+Remark 2.5.16By Theorem 2.5.15, we can use elementary row operations to transform a square matrix to a triangular matrixand then by Theorem 2.5.8, compute the determinant accordingly.
+Example 2.5.17
+ 0−1202−33−20240002−1 0−6655728151882351008  R1↔R2= −57280−665151882351008  R3−3R1=R4−R1 −57280−6650−32−103−20  R3−R2/2=R4+R2/2 −57280−66500−1−7/20015/2  R4+R3= −57280−66500−1−7/2000−1 =−5×(−6)×(−1)×(−1)=30
+Remark 2.5.18Since  det(A) = det(AT)for any square matrix  A,  Theorem 2.5.15is still true if we change “rows”to “columns”. Let  Abe a square matrix.1.If  Bis a square matrix obtained from  Aby multiplying one columnof  Aby a constant  k,  then  det(B) = kdet(A).2.If  Bis a square matrix obtained from  Aby inter-changing two columnsof  A,  then  det(B) = –det(A).3.If  Bis a square matrix obtained from  Aby adding a multiple of one column of  Ato another column, then  det(B) = det(A).4.Let  Ebe an elementary matrix of the same size as  A.  Then  det(AE) = det(A)det(E).
+Theorem 2.5.19A square matrix  Ais invertible if and only ifdet(A)   0.≠
+Proof of Theorem 2.5.19Let  Abe a square matrix and let  E1,E2,…,Ekbe elementary matrices such that  B= Ek···E2E1Ais the reduced row-echelon formof  A.By Theorem 2.5.15.4,  det(B) = det(Ek)···det(E2)det(E1)det(A). 
+Proof of Theorem 2.5.19  ()Suppose  Ais invertible.By Theorem 2.4.7,  B= Iand hence  det(B) = 1.i.e.  1 = det(Ek)···det(E2)det(E1)det(A).So  det(A) 0.
+⇒≠
+Proof of Theorem 2.5.19  ()Suppose  Ais singular (not invertible).By Theorem 2.4.7,  BI.Since  Bis square and in reduced row-echelon form, Bmust have a row consisting entirely of zero.
+÷÷÷÷÷÷÷÷øöççççççççèæ*Ä***Ä*****Ä¾®¾!!!!!!""!!!#!!!00000000000000)|(0AGaussian Elimination
+⇐≠
+Proof of Theorem 2.5.19  ()Hence  det(B) = 0.i.e.  0 = det(Ek)···det(E2)det(E1)det(A).Since  det(Ei) 0for all  i,  det(A) = 0.≠⇐That is, if  det(A)   0, Ais invertible.≠
+Example 2.5.20.1÷øöçèæ=dcbaAWe know that  det(A) = ad–bc.By Theorem 2.5.19,  Ais invertible if and only if  ad –bc0.The result is the same as in Example 2.4.11.≠
+Example 2.5.20.2By Example 2.5.4.2,  det(B) = 38.So  Bis invertible.
+By Example 2.5.7,  det(C) = 14.So  Cis invertible.
+  B=1−5320−22−45⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  C=041−2103−132010−3−12⎛⎝⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟
+Remark 2.5.21Theorem 2.5.19provides us a formula to check whether a given square matrix is invertible.However, for matrices of higher order, to compute determinants may not be easierthan the method discussed in Remark 2.4.10.
+Remark 2.5.21Let  Abe a square matrix.By Theorem 2.4.7and Theorem 2.5.19, the linear system  Ax= 0has only the trivial solution if and only if  det(A) 0.That is, the linear system  Ax= 0has non-trivial solutions if and only if  det(A) = 0. 
+≠
+Theorem 2.5.22Let  Aand  Bbe two square matrices of order  nand  aa scalar.1.det(aA) = an det(A);2.det(AB) = det(A)det(B);  and
+)det(1)det(1AA=-3.if  A is invertible, then
+Proof of Theorem 2.5.22.1aAis obtained from  Aby multiplying  ato every row of  A.
+)det()det()det(  timesAAAnnaaaaa==!"#$By Theorem 2.5.15.1,
+Proof of Theorem 2.5.22.2  Case 1:  Ais singularSuppose  Ais singular (not invertible), i.e.  det(A) = 0.By Theorem 2.4.14,  ABis singular, i.e.  det(AB) = 0.So  det(AB) = 0 = det(A)det(B).
+Proof of Theorem 2.5.22.2  Case 2:Ais invertibleSuppose  Ais invertible. By Theorem 6.1,  A= E1E2···Ekwhere  E1,E2,…,Ekare elementary matrices.det(AB) = det(E1E2···EkB)= det(E1)det(E2)···det(Ek)det(B)= det(E1E2···Ek)det(B)= det(A)det(B).
+Proof of Theorem 2.5.22.3Suppose  Ais invertible.Since  AA–1= I,det(A)det(A–1) = det(AA–1) = det(I) = 1.
+)det(1)det(1AA=-So
+Example 2.5.23.1
+  A=1−5320−22−45⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  det(3A)=3−15960−66−1215=33det(A)=27×38=1026  det(A)=38
+Example 2.5.23.2
+  A=1−5320−22−45⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  B=41−2201−3−12⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟   det(A)=38det(B)=1    det(AB)=1−5320−22−45⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟41−2201−3−12⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  =−15−2−1144−8−15−32=det(A)det(B)=38×1=38 
+Example 2.5.23.3
+  A=1−5320−22−45⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  det(A)=38  A−1=−4191338519−719−138419−419−319519⎛⎝⎜⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟⎟  det(A−1)=1det(A)=138
+Definition 2.5.24Let  Abe a square matrix of order  n.The adjointof  Ais the  nxnmatrix
+where  Aijis the  (i, j)-cofactor of  A. ÷÷÷÷÷øöçççççèæ=÷÷÷÷÷øöçççççèæ=nnnnnnTnnnnnnAAAAAAAAAAAAAAAAAA!"""!!!"""!!212221212111212222111211)adj(A
+Theorem 2.5.25Let  Abe a square matrix.
+)adj(AAA)det(11=-If  Ais invertible, then
+Proof of Theorem 2.5.25Let
+where  Aij=the  (i, j)-cofactor of  A.÷÷÷÷÷øöçççççèæ=nnnnnnaaaaaaaaa!"""!!212222111211A÷÷÷÷÷øöçççççèæ=nnnnnnAAAAAAAAA!"""!!212221112111)adj(ANote that the (i, j)-entry of adj(A)equals Aji.
+Proof of Theorem 2.5.25For i= 1, 2, …, n,the  (i, i)-entry of  A[adj(A)]= ai1the  (1, i)-entry of adj(A) +ai2the  (2, i)-entry of adj(A) +…+ ainthe  (n, i)-entry of adj(A)Since the (i, j)-entry of adj(A)equals Aji,the  (i, i)-entry of  A[adj(A)]ininiiiiAaAaAa+++=!2211= det(A)by Theorem 2.5.6. (co-factor expansion of i-th row)
+Proof of Theorem 2.5.25For i= 1, 2, …, nand  j= 1, 2, …, nwith  ij, 
+jninjijiAaAaAa+++=!2211≠the  (i, j)-entry of  A[adj(A)]= ai1the  (1, j)-entry of adj(A) +ai2the  (2, j)-entry of adj(A) +…+ ainthe  (n, j)-entry of adj(A)Since the (i, j)-entry of adj(A)equals Aji,the  (i, j)-entry of  A[adj(A)]
+By Theorem 2.5.12.1, 02211=+++jninjijiAaAaAa!ithrow
+jth row jninjijinnnnnjjjiniinjjjiniinAaAaAaaaaaaaaaaaaaaaaaaa+++=+++---!!"""!!!"""!"""!221121,12,11,121,12,11,12111211
+the  (i, j)-entry of  A[adj(A)]= 0.
+Proof of Theorem 2.5.25So  A[adj(A)]  = det(A)I[]IAAA=Þ)adj()det(1)adj(AAA)det(11=-By Theorem 2.4.26,
+Example 2.5.26.1  A=abcd⎛⎝⎜⎞⎠⎟ad−bc≠0   abcd⎛⎝⎜⎞⎠⎟M11=dA11=(−1)1+1M11=d   abcd⎛⎝⎜⎞⎠⎟M12=cA12=(−1)1+2M12=−c   abcd⎛⎝⎜⎞⎠⎟M21=bA21=(−1)2+1M21=−b   abcd⎛⎝⎜⎞⎠⎟M22=aA22=(−1)2+2M22=a
+
+Example 2.5.26.1
+   adj(A)=d−c−ba⎛⎝⎜⎞⎠⎟T=d−b−ca⎛⎝⎜⎞⎠⎟   A−1=1det(A)adj(A)=1ad−bcd−b−ca⎛⎝⎜⎞⎠⎟
+  B=−51621−74−32⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟Example 2.5.26.2  det(B)=3+−+−+−+−+⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟   adj(B)=+det(M11)−det(M12)+det(M13)−det(M21)+det(M22)−det(M23)+det(M31)−det(M32)+det(M33)⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟TCheck board
+   B−1=1det(B)adj(B)
+  M11=−51621−74−32⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  M12=−51621−74−32⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  M13=−51621−74−32⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  M21=−51621−74−32⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  M22=−51621−74−32⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  M23=−51621−74−32⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  M31=−51621−74−32⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  M32=−51621−74−32⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  M33=−51621−74−32⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  Mij
+
+   adj(B)=+1−7−32−2−742+214−3−16−32+−5642−−514−3+161−7−−562−7+−5121⎛⎝⎜⎜⎜⎜⎜⎜⎜⎜⎜⎞⎠⎟⎟⎟⎟⎟⎟⎟⎟⎟T
+  =−19−32−10−20−34−11−13−23−7⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟T=−19−20−13−32−34−23−10−11−7⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟   B−1=1det(B)adj(B)=−19/3−20/3−13/3−32/3−34/3−23/3−10/3−11/3−7/3⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟
+Theorem 2.5.27  (Cramer’s Rule)Suppose  Ax= bis a linear system where  Ais an n xninvertible matrix.Let  Aibe the matrix obtained from  Aby replacing the ithcolumn of  Aby  b.Then the system has a unique solution
+÷÷÷÷÷øöçççççèæ=)det()det()det()det(1nAAAAx!21
+Proof of Theorem 2.5.27
+÷÷÷÷÷øöçççççèæ=÷÷÷÷÷øöçççççèæ=÷÷÷÷÷øöçççççèæ=nnnnnnnnbbbxxxaaaaaaaaa!!"!!!""2121212222111211bxALet
+where  Aij=the  (i, j)-cofactor of  A.÷÷÷÷÷øöçççççèæ=nnnnnnAAAAAAAAA!"""!!212221212111)Aadj(
+Proof of Theorem 2.5.27bAbAxbAxA)adj()det(11==Û=-÷÷÷÷÷øöçççççèæ÷÷÷÷÷øöçççççèæ=÷÷÷÷÷øöçççççèæÛnnnnnnnnbbbAAAAAAAAAxxx!"!!!""!21212221212111)det(121A)(2211)det(1niniiiAbAbAbx+++=!AThen for  i= 1, 2, …, n,
+  det(Ai)
+Proof of Theorem 2.5.27
+det(Ai) nninninnnniiniiaabaaaaabaaaaabaaa!!""""""""""""!!!!1,1,2121,221,2222111,111,11211+-+-+-=)det()det(2211)det(1)(AAAi=+++=niniiiAbAbAbx!we have   =b1A1i+b2A2i+!+bnAni
+Example 2.5.28  QuestionUse Cramer’s rule to solve the system of linear equations
+  −5x+y+6z=72x+y−7z=−184x−3y+2z=17⎧⎨⎪⎩⎪⎪
+Example 2.5.28  Solution
+Rewrite the linear system asBy Cramer’s rule,  −51621−74−32⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟xyz⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟=7−1817⎛⎝⎜⎜⎜⎞⎠⎟⎟⎟  x=716−181−717−32−51621−74−32=63=2
+Example 2.5.28  SolutionBy Cramer’s rule,
+  y=−5762−18−74172−51621−74−32=−33=−1  z=−51721−184−317−51621−74−32=93=3
+Learning outcomes (Section 2.5)(5) (Theorem 2.5.15) What happens to the determinant of a matrix Awhen we perform ERO on A? If E is an elementary matrix, what is the determinant of EA? 
+(9) What is the (classical) adjoint of an nnmatrix A. If Ais invertible, how is the inverse of Arelated to its adjoint?
+(6) Using Theorem 2.5.15, how to compute the determinant of Aby ERO. 
+(8) (Theorem 2.5.22) Some properties involving determinants.
+(10) Cramer’s Rule for solving linear systems. 
+(7) Ais invertible if and only if det(A)    0. ≠
