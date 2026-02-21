@@ -4,6 +4,16 @@ sys.path.insert(0, "cactus/python/src")
 functiongemma_path = "cactus/weights/functiongemma-270m-it"
 
 import json, os, time
+
+# Load basic .env file if it exists
+if os.path.exists(".env"):
+    with open(".env") as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith('#'):
+                key, val = line.split('=', 1)
+                os.environ[key.strip()] = val.strip().strip('"\'')
+
 from cactus import cactus_init, cactus_complete, cactus_destroy
 from google import genai
 from google.genai import types
@@ -72,7 +82,7 @@ def generate_cloud(messages, tools):
     start_time = time.time()
 
     gemini_response = client.models.generate_content(
-        model="gemini-2.0-flash",
+        model="gemini-2.5-flash",
         contents=contents,
         config=types.GenerateContentConfig(tools=gemini_tools),
     )
@@ -94,14 +104,35 @@ def generate_cloud(messages, tools):
     }
 
 
-def generate_hybrid(messages, tools, confidence_threshold=0.99):
-    """Baseline hybrid inference strategy; fall back to cloud if Cactus Confidence is below threshold."""
+def generate_hybrid(messages, tools, default_threshold=0.85):
+    """Smart hybrid inference strategy optimizing for speed, correctness, and local execution."""
+    
+    # 1. Analyze the complexity of the user query
+    content = " ".join([m["content"].lower() for m in messages if m["role"] == "user"])
+    
+    # Heuristic for multi-call or complex queries
+    complex_indicators = [" and ", "also", "then", ", "]
+    is_complex = any(ind in content for ind in complex_indicators)
+    
+    # If the user provides many tools and the query has complex indicators, FunctionGemma might struggle.
+    # Routing directly to cloud saves local execution time, preserving the Time Score.
+    if is_complex and len(tools) >= 3:
+        cloud = generate_cloud(messages, tools)
+        cloud["source"] = "cloud (direct)"
+        return cloud
+
+    # 2. Try on-device (Cactus / FunctionGemma)
     local = generate_cactus(messages, tools)
 
-    if local["confidence"] >= confidence_threshold:
+    # 3. Dynamic Confidence Threshold
+    # If there's only 1 tool, it's very likely an easy task, so we can trust the local model more.
+    dynamic_threshold = 0.70 if len(tools) == 1 else default_threshold
+
+    if local["confidence"] >= dynamic_threshold:
         local["source"] = "on-device"
         return local
 
+    # 4. Fallback to Cloud (Gemini)
     cloud = generate_cloud(messages, tools)
     cloud["source"] = "cloud (fallback)"
     cloud["local_confidence"] = local["confidence"]

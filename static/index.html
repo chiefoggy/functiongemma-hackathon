@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance-Gemma Hybrid AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f1115;
+            --panel-bg: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-primary: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.5);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar / Info Panel */
+        aside {
+            width: 350px;
+            background: var(--panel-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        aside h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .metrics-card {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .metric-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .metric-value {
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #334155;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: var(--success);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(20px);
+        }
+
+        .source-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .source-device {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .source-cloud {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+        }
+
+        .source-unknown {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+        }
+
+        /* Main Chat Area */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.05), transparent 40%);
+        }
+
+        .chat-container {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .message {
+            max-width: 80%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            align-self: flex-end;
+            align-items: flex-end;
+        }
+
+        .message.assistant {
+            align-self: flex-start;
+        }
+
+        .bubble {
+            padding: 1rem 1.5rem;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .user .bubble {
+            background: var(--accent-primary);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .assistant .bubble {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-bottom-left-radius: 4px;
+            backdrop-filter: blur(10px);
+        }
+
+        .input-area {
+            padding: 2rem;
+            background: rgba(15, 17, 21, 0.8);
+            border-top: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+        }
+
+        form {
+            display: flex;
+            gap: 1rem;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            border-radius: 30px;
+            color: var(--text-main);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px var(--accent-glow);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        button {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 0 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #334155;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .typing-indicator {
+            display: inline-flex;
+            gap: 4px;
+            padding: 1rem 1.5rem;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+            width: fit-content;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .typing-indicator span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        code {
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #60a5fa;
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside>
+        <div>
+            <h1>Finance Gemma</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-top: 0.5rem;">
+                A hybrid edge-cloud AI explicitly trained for financial tool calling and routing.
+            </p>
+        </div>
+
+        <div class="metrics-card">
+            <h3 style="margin: 0; font-size: 1rem; color: white;">Last Execution Metrics</h3>
+            <div class="metric-row">
+                <span class="metric-label">Source</span>
+                <span id="metric-source" class="source-badge source-unknown">Waiting</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">Confidence</span>
+                <span id="metric-confidence" class="metric-value">0.00%</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">Latency</span>
+                <span id="metric-latency" class="metric-value">0 ms</span>
+            </div>
+            <div class="toggle-row">
+                <span class="metric-label" style="color: white; display: flex; align-items: center; gap: 8px;">
+                    ⚡ Force Local AI
+                </span>
+                <label class="switch">
+                    <input type="checkbox" id="forceLocalToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <button type="button" onclick="clearConversation()"
+            style="margin-top: auto; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color);">
+            Clear Conversation
+        </button>
+    </aside>
+
+    <main>
+        <div class="chat-container" id="chatContainer">
+            <div class="message assistant">
+                <div class="bubble">
+                    Hello! I'm your hybrid financial assistant. I can help you look up stock prices, analyze company
+                    news, and calculate ROI. <br><br>
+                    <i>Powered by FunctionGemma (Device) & Gemini 2.5 Flash (Cloud).</i>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <form id="chatForm">
+                <input type="text" id="userInput" placeholder="E.g., What is the stock price of AAPL?"
+                    autocomplete="off" required>
+                <button type="submit" id="sendBtn">Send</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        const chatForm = document.getElementById('chatForm');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const chatContainer = document.getElementById('chatContainer');
+
+        // Metrics DOM elements
+        const metricSource = document.getElementById('metric-source');
+        const metricConfidence = document.getElementById('metric-confidence');
+        const metricLatency = document.getElementById('metric-latency');
+
+        function appendMessage(role, content) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${role}`;
+
+            // Format content basic markdown-like syntax for bold logic
+            let formattedContent = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            formattedContent = formattedContent.replace(/\\n/g, '<br>');
+
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.innerHTML = formattedContent;
+
+            msgDiv.appendChild(bubble);
+            chatContainer.appendChild(msgDiv);
+            scrollToBottom();
+        }
+
+        function showTyping() {
+            const id = 'typing-' + Date.now();
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message assistant';
+            msgDiv.id = id;
+
+            msgDiv.innerHTML = `
+                <div class="typing-indicator">
+                    <span></span><span></span><span></span>
+                </div>
+            `;
+
+            chatContainer.appendChild(msgDiv);
+            scrollToBottom();
+            return id;
+        }
+
+        function removeTyping(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+
+        function scrollToBottom() {
+            chatContainer.scrollTo({
+                top: chatContainer.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+
+        function updateMetrics(metrics) {
+            if (!metrics) return;
+
+            // Format Source
+            const source = metrics.source || 'unknown';
+            metricSource.textContent = source;
+            metricSource.className = 'source-badge';
+            if (source.includes('on-device')) metricSource.classList.add('source-device');
+            else if (source.includes('cloud')) metricSource.classList.add('source-cloud');
+            else metricSource.classList.add('source-unknown');
+
+            // Format Confidence
+            const conf = metrics.confidence || 0;
+            metricConfidence.textContent = (conf * 100).toFixed(1) + '%';
+
+            // Format Latency
+            const lat = metrics.latency_ms || 0;
+            metricLatency.textContent = lat.toFixed(0) + ' ms';
+        }
+
+        async function clearConversation() {
+            try {
+                await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: "clear" })
+                });
+
+                chatContainer.innerHTML = '';
+                appendMessage('assistant', 'Conversation history cleared. How can I help you?');
+                updateMetrics({ source: 'cleared', confidence: 0, latency_ms: 0 });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            // UI Optimistic Update
+            userInput.value = '';
+            sendBtn.disabled = true;
+            appendMessage('user', text);
+            const typingId = showTyping();
+            const forceLocal = document.getElementById('forceLocalToggle').checked;
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: text, force_local: forceLocal })
+                });
+
+                const data = await response.json();
+
+                removeTyping(typingId);
+                appendMessage('assistant', data.response);
+                updateMetrics(data.metrics);
+
+            } catch (error) {
+                removeTyping(typingId);
+                appendMessage('assistant', 'Error connecting to the hybrid router backend.');
+                console.error(error);
+            } finally {
+                sendBtn.disabled = false;
+                userInput.focus();
+            }
+        });
+    </script>
+</body>
+
+</html>
