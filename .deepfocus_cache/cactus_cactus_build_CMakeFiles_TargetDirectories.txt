@@ -1,4 +1,0 @@
-/Users/weidong/Documents/development/cactus-gemini/cactus/cactus/build/CMakeFiles/cactus.dir
-/Users/weidong/Documents/development/cactus-gemini/cactus/cactus/build/CMakeFiles/cactus_ffi.dir
-/Users/weidong/Documents/development/cactus-gemini/cactus/cactus/build/CMakeFiles/edit_cache.dir
-/Users/weidong/Documents/development/cactus-gemini/cactus/cactus/build/CMakeFiles/rebuild_cache.dir

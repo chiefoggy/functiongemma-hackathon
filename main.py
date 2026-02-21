@@ -199,14 +199,13 @@ def generate_cloud(messages, tools):
         print(f"CLOUD ERROR: {e}")
         return {"function_calls": [], "total_time_ms": 0, "response": ""}
 
+import json
 
 def generate_hybrid(messages, tools, default_threshold=0.85):
     """
     Structure + semantic guarded hybrid router.
-    No task hardcoding.
-    No difficulty reliance.
+    Optimized for strict schema adherence without breaking edge cases.
     """
-
     tool_map = {t["name"]: t for t in tools}
 
     # -------------------------------------------------
@@ -236,47 +235,44 @@ def generate_hybrid(messages, tools, default_threshold=0.85):
             props = schema.get("properties", {})
             required = schema.get("required", [])
 
-            # Required fields
+            # 1. Required fields check
             for r in required:
                 if r not in args:
                     return False
 
+            # 2. Strict Type & Property Validation
             for k, v in args.items():
-
+                
+                # Reject hallucinated parameters not present in the schema
                 if k not in props:
                     return False
 
                 expected = props[k].get("type", "").lower()
 
-                # --- type validation ---
-                if expected == "integer" and not isinstance(v, int):
+                # --- Strict Type Validation ---
+                # Explicitly block bools from passing as integers/numbers
+                if expected == "integer" and (not isinstance(v, int) or isinstance(v, bool)):
                     return False
-                if expected == "number" and not isinstance(v, (int, float)):
+                if expected == "number" and (not isinstance(v, (int, float)) or isinstance(v, bool)):
                     return False
                 if expected == "string" and not isinstance(v, str):
                     return False
                 if expected == "boolean" and not isinstance(v, bool):
                     return False
-
-                # --- generic semantic sanity rules ---
-
-                # Reject negative numeric values
-                if isinstance(v, (int, float)) and v < 0:
+                if expected == "array" and not isinstance(v, list):
+                    return False
+                if expected == "object" and not isinstance(v, dict):
                     return False
 
-                # Reject clearly corrupted strings
+                # --- Enum Validation (Critical for Benchmarks) ---
+                if "enum" in props:
+                    if v not in props["enum"]:
+                        return False
+
+                # --- Targeted Semantic Rules (Fixed) ---
                 if isinstance(v, str):
-
-                    # Reject non-ASCII (乱码时间字段问题)
-                    if any(ord(c) > 127 for c in v):
-                        return False
-
-                    # Reject obvious broken ISO time patterns
-                    if "T" in v and ":" in v and "*" in v:
-                        return False
-
-                    # Reject strings with unmatched brackets or invalid patterns
-                    if any(sym in v for sym in ["{", "}", "]", "[", "<escape>"]):
+                    # Reject only specific broken model artifacts instead of all brackets/Unicode
+                    if "<escape>" in v or "<|endoftext|>" in v:
                         return False
 
         return True
@@ -301,7 +297,7 @@ def generate_hybrid(messages, tools, default_threshold=0.85):
         cloud["source"] = "cloud (no-call)"
         return cloud
 
-    # 2. Multi-call → cloud (270M unstable here)
+    # 2. Multi-call → cloud (small models are often unstable with parallel calls)
     if len(calls) > 1:
         cloud = generate_cloud(messages, tools)
         cloud["source"] = "cloud (multi-call)"
@@ -313,19 +309,20 @@ def generate_hybrid(messages, tools, default_threshold=0.85):
         cloud["source"] = "cloud (text-generation)"
         return cloud
 
-    # 4. Decode too long → instability
-    if isinstance(decode_tokens, int) and decode_tokens > 25:
+    # 4. Decode too long → instability (Bumped to a safer threshold)
+    if isinstance(decode_tokens, int) and decode_tokens > 128:
         cloud = generate_cloud(messages, tools)
         cloud["source"] = "cloud (long-decode)"
         return cloud
 
-    # 5. Low confidence
-    if confidence < 0.60:
+    # 5. Low confidence (Fixed to use the dynamic parameter)
+    if confidence < default_threshold:
         cloud = generate_cloud(messages, tools)
-        cloud["source"] = "cloud (low-confidence)"
+        cloud["source"] = f"cloud (low-confidence: {confidence:.2f})"
+        cloud["local_confidence"] = confidence  # Keep for debugging metrics
         return cloud
 
-    # 6. Semantic validation (critical fix)
+    # 6. Semantic & Schema validation
     if not validate_calls(local):
         cloud = generate_cloud(messages, tools)
         cloud["source"] = "cloud (semantic-reject)"
@@ -336,49 +333,3 @@ def generate_hybrid(messages, tools, default_threshold=0.85):
     # -------------------------------------------------
     local["source"] = "on-device"
     return local
-
-def print_result(label, result):
-    """Pretty-print a generation result."""
-    print(f"\n=== {label} ===\n")
-    if "source" in result:
-        print(f"Source: {result['source']}")
-    if "confidence" in result:
-        print(f"Confidence: {result['confidence']:.4f}")
-    if "local_confidence" in result:
-        print(f"Local confidence (below threshold): {result['local_confidence']:.4f}")
-    print(f"Total time: {result['total_time_ms']:.2f}ms")
-    for call in result["function_calls"]:
-        print(f"Function: {call['name']}")
-        print(f"Arguments: {json.dumps(call['arguments'], indent=2)}")
-
-
-############## Example usage ##############
-
-if __name__ == "__main__":
-    tools = [{
-        "name": "get_weather",
-        "description": "Get current weather for a location",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "location": {
-                    "type": "string",
-                    "description": "City name",
-                }
-            },
-            "required": ["location"],
-        },
-    }]
-
-    messages = [
-        {"role": "user", "content": "What is the weather in San Francisco?"}
-    ]
-
-    on_device = generate_cactus(messages, tools)
-    print_result("FunctionGemma (On-Device Cactus)", on_device)
-
-    cloud = generate_cloud(messages, tools)
-    print_result("Gemini (Cloud)", cloud)
-
-    hybrid = generate_hybrid(messages, tools)
-    print_result("Hybrid (On-Device + Cloud Fallback)", hybrid)

@@ -1,2 +1,0 @@
-# Missing tensors during conversion
-layer=17, output=layer_17_self_attn_norm.bias, patterns=[self_attn_layer_norm.bias]
